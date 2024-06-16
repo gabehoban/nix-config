@@ -3,7 +3,6 @@ let
   defaultDns = [ "10.32.40.51" "10.32.40.52" ];
   isGamestation = if (hostname == "baymax") && (desktop != null) then true else false;
   isInstall = if (builtins.substring 0 4 hostname != "iso-") then true else false;
-  saveBattery = false;
 in
 {
   imports = lib.optional (builtins.pathExists (./. + "/${desktop}")) ./${desktop};
