@@ -1,6 +1,6 @@
 { config, desktop, lib, pkgs, username, ... }:
 let
-  inherit (pkgs.stdenv) isDarwin isLinux;
+  inherit (pkgs.stdenv) isLinux;
 in
 {
   # import the DE specific configuration and any user specific desktop configuration
