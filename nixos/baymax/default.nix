@@ -7,6 +7,7 @@
     ./persistence.nix
     ../_mixins/services/clamav.nix
     ../_mixins/services/filesync.nix
+    ../_mixins/services/ollama.nix
   ];
 
   zramSwap.enable = true;

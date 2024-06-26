@@ -21,6 +21,7 @@ in
     ] ++ lib.optionals (isWorkstation) [
       _1password-gui
       firefox
+      cachix.bin
       celluloid
       element-desktop
       fractal

@@ -107,5 +107,13 @@
 
     # Custom packages and modifications, exported as overlays
     overlays = import ./overlays { inherit inputs; };
+
+    ciSystems =
+      let
+        nixos = nixpkgs.lib.genAttrs
+          (builtins.attrNames inputs.self.nixosConfigurations)
+          (attr: inputs.self.nixosConfigurations.${attr}.config.system.build.toplevel);
+      in
+        nixos;
   };
 }

@@ -36,6 +36,7 @@
                 # vscode
                 ".vscode"
                 ".vscode-insiders"
+                ".config/cachix"
                 ".config/Code/User"
                 ".config/Code - Insiders/User"
                 # 1Password
