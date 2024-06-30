@@ -1,5 +1,5 @@
 { inputs, ... }: {
-  imports = [ ./nerd-fonts.nix ];
+  # imports = [ ./nerd-fonts.nix ];
 
   programs.starship = {
     enable = true;
@@ -20,11 +20,10 @@
         format = "[$ssh_symbol$hostname]($style) ";
         ssh_only = false;
       };
-      nix_shell.disabled = true;
       dotnet.detect_files = [ "global.json" "Directory.Build.props" "Directory.Build.targets" "Packages.props" ]; # Excluding project.json
       java.detect_extensions = [ "java" "class" "gradle" "cljs" "cljc" ]; # Exluding .jar
 
-      palette = "catppuccin_macchiato";
-    } // builtins.fromTOML (builtins.readFile "${inputs.catppuccin-starship}/palettes/macchiato.toml");
+      palette = "catppuccin_frappe";
+    } // builtins.fromTOML (builtins.readFile "${inputs.catppuccin-starship}/palettes/frappe.toml");
   };
 }

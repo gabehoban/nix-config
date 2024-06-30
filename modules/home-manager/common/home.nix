@@ -2,7 +2,6 @@
   imports = [ ./starship ];
 
   home.packages = with pkgs; [
-    neovim
     nil
   ];
 
@@ -49,17 +48,17 @@
     userEmail = "gabehoban@icloud.com";
     signing = {
       key = "0xAFD8F294983C4F95";
-      signByDefault = false;
+      signByDefault = true;
     };
     aliases = {
       root = "rev-parse --show-toplevel";
     };
     extraConfig = {
       init.defaultBranch = "main";
-      merge.ff = false;
+      merge.ff = true;
       pull.ff = "only";
-      advice.detatchedHead = false;
       feature.manyFiles = true;
+      advice.detatchedHead = false;
       url."git@github.com:".pushInsteadOf = "https://github.com/";
       url."git@gitlab.com:".pushInsteadOf = "https://gitlab.com/";
     };
@@ -72,7 +71,7 @@
     mutableKeys = false;
     publicKeys = [
       {
-        source = ../../keys/gpg.asc;
+        source = ../../../keys/gpg.asc;
         trust = "ultimate";
       }
     ];
@@ -100,11 +99,6 @@
       s2k-mode = "3";
       s2k-count = "65011712";
     };
-  };
-
-  programs.tmux = {
-    enable = true;
-    mouse = true;
   };
 
   programs.lf = {

@@ -1,7 +1,4 @@
 { pkgs, ... }: {
-  programs.zsh.enable = true;
-  users.defaultUserShell = pkgs.zsh;
-
   # Enable X11, but get rid of xterm
   services.xserver.enable = true;
   services.xserver.excludePackages = [ pkgs.xterm ];
@@ -16,6 +13,13 @@
   programs.system-config-printer.enable = true;
 
   environment.systemPackages = [ pkgs.firefox ];
+
+  # 1Password
+  programs._1password.enable = true;
+  programs._1password-gui = {
+    enable = true;
+    polkitPolicyOwners = [ "gabehoban" ];
+  };
 
   # Some packages aren't on nixpkgs
   services.flatpak.enable = true;

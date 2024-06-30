@@ -1,15 +1,14 @@
-{ pkgs
-, inputs
-, ...
-}:
+{ pkgs, inputs, ... }:
 let
   inherit (inputs) self agenix;
 in
 {
   imports = [ agenix.homeManagerModules.age ] ++ (with self.homeManagerModules; [
-    home
-    wezterm
-    vscode
+    common-home
+
+    gui-firefox
+    gui-vscode
+    gui-wezterm
   ]);
 
   # Darwin doesn't support services.gpg-agent

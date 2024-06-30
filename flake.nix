@@ -48,6 +48,9 @@
       inputs.flake-utils.follows = "flake-utils";
       inputs.flake-compat.follows = "flake-compat";
     };
+    impermanence = {
+      url = "github:nix-community/impermanence";
+    };
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -88,6 +91,14 @@
         modules = [
           { nixpkgs.overlays = [ inputs.nix-vscode-extensions.overlays.default ]; }
           ./hosts/baymax/configuration.nix
+        ];
+        specialArgs = { inherit inputs; };
+      };
+
+      nixosConfigurations."rpi-sekio" = nixosSystem {
+        system = "aarch64-linux";
+        modules = [
+          ./hosts/rpi-sekio/configuration.nix
         ];
         specialArgs = { inherit inputs; };
       };

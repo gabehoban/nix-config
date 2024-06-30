@@ -1,13 +1,15 @@
 {
-  gnome = import ./gnome.nix;
-  hm = import ./hm.nix;
-  nix = import ./nix.nix;
-  nixpkgs = import ./nixpkgs.nix;
-  packages = import ./packages.nix;
-  pc = import ./pc.nix;
-  pipewire = import ./pipewire.nix;
-  steam = import ./steam.nix;
-  users = import ./users.nix;
-  virt-manager = import ./virt-manager.nix;
-  zram = import ./zram.nix;
+  # common module group
+  common-home-manager = import ./common/home-manager.nix;
+  common-nix          = import ./common/nix.nix;
+  common-packages     = import ./common/packages.nix;
+  common-shell        = import ./common/shell.nix;
+  common-zram         = import ./common/zram.nix;
+
+  # graphical module group
+  gui-gaming          = import ./graphical/gaming.nix;
+  gui-gnome           = import ./graphical/gnome.nix;
+  gui-misc            = import ./graphical/misc.nix;
+  gui-nvidia          = import ./graphical/nvidia.nix;
+  gui-pipewire        = import ./graphical/pipewire.nix;
 }

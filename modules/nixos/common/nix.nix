@@ -1,8 +1,4 @@
-{ inputs
-, pkgs
-, lib
-, ...
-}:
+{ inputs, pkgs, lib, ... }:
 let
   inherit (pkgs.stdenv.hostPlatform) isDarwin;
   flakeInputs = lib.filterAttrs (_: input: input ? "_type" && input._type == "flake") inputs;
@@ -12,15 +8,17 @@ let
     else "@wheel";
 in
 {
+  nixpkgs = {
+    config.allowUnfree = true;
+  };
+
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
     trusted-users = [ "root" sudoGroup ];
     auto-optimise-store = !isDarwin;
     substituters = [
       "https://nix-community.cachix.org"
-      # my own cache server
       "https://gabehoban.cachix.org"
-      # cuda-maintainer's cache server
       "https://cuda-maintainers.cachix.org"
     ];
 
@@ -31,9 +29,6 @@ in
     ];
     builders-use-substitutes = true;
   };
-
-  # Add inputs to registry and path for caching and consistency
-  # https://github.com/jakelogemann/fnctl/blob/f5ddc7c88ae22579ce61d5201da92e90852cfce0/nix/lib/mkSystem.nix#L37-L40
   nix.registry = lib.mapAttrs (_: flake: { inherit flake; }) flakeInputs;
   nix.nixPath = lib.mapAttrsToList (name: flake: "${name}=${flake}") flakeInputs;
 

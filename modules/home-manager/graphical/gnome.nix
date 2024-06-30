@@ -36,22 +36,13 @@ in
 
   # Qt styling isn't controlled by Gnome or gnome-tweaks
   qt.enable = true;
-  qt.platformTheme = "gnome";
+  qt.platformTheme.name = "adwaita";
   qt.style = {
     package = pkgs.adwaita-qt;
     name = "adwaita-dark";
   };
 
   dconf.settings = {
-    "org/gnome/desktop/background" = {
-      color-shading-type = "solid";
-      picture-options = "zoom";
-      picture-uri = "file:///run/current-system/sw/share/backgrounds/gnome/adwaita-l.jpg";
-      picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/gnome/adwaita-d.jpg";
-      primary-color = "#3071AE";
-      secondary-color = "#000000";
-    };
-
     "org/gnome/desktop/interface" = {
       clock-format = "12h";
       clock-show-date = true;
@@ -60,16 +51,8 @@ in
       gtk-theme = "Adwaita-dark";
     };
 
-    "org/gnome/desktop/screensaver" = {
-      color-shading-type = "solid";
-      picture-options = "zoom";
-      picture-uri = "file:///run/current-system/sw/share/backgrounds/gnome/adwaita-l.jpg";
-      primary-color = "#3071AE";
-      secondary-color = "#000000";
-    };
-
     "org/gnome/desktop/wm/preferences" = {
-      num-workspaces = 1;
+      num-workspaces = 3;
       button-layout = "appmenu:minimize,maximize,close";
     };
 

@@ -22,8 +22,9 @@
 
     userSettings = {
       "catppuccin.accentColor" = "sky";
-      "workbench.colorTheme" = "Catppuccin Macchiato";
-      "workbench.iconTheme" = "catppuccin-perfect-macchiato";
+      "workbench.colorTheme" = "Catppuccin Frappé";
+      "workbench.iconTheme" = "catppuccin-perfect-frappe";
+      "explorer.confirmDragAndDrop" = "false";
 
       "editor.bracketPairColorization.enabled" = "true";
       "editor.fontFamily" = "'Monaspace Krypton','Font Awesome 6 Free Solid'";
