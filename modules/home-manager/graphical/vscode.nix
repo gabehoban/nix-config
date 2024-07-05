@@ -24,20 +24,21 @@
       "catppuccin.accentColor" = "sky";
       "workbench.colorTheme" = "Catppuccin Frappé";
       "workbench.iconTheme" = "catppuccin-perfect-frappe";
-      "explorer.confirmDragAndDrop" = "false";
+      "explorer.confirmDragAndDrop" = false;
 
-      "editor.bracketPairColorization.enabled" = "true";
+      "editor.bracketPairColorization.enabled" = true;
       "editor.fontFamily" = "'Monaspace Krypton','Font Awesome 6 Free Solid'";
       "editor.fontLigatures" = "'calt', 'liga', 'dlig', 'ss01', 'ss02', 'ss03', 'ss06'";
-      "editor.guides.bracketPairs" = "true";
-      "editor.guides.bracketPairsHorizontal" = "true";
-      "editor.guides.highlightActiveBracketPair" = "true";
+      "editor.guides.bracketPairs" = true;
+      "editor.guides.bracketPairsHorizontal" = true;
+      "editor.guides.highlightActiveBracketPair" = true;
 
       "files.autoSave" = "onFocusChange";
       "files.eol" = "\n";
-      "files.insertFinalNewline" = "true";
-      "files.trimFinalNewlines" = "true";
-      "files.trimTrailingWhitespace" = "true";
+      "files.insertFinalNewline" = true;
+      "files.trimFinalNewlines" = true;
+      "files.trimTrailingWhitespace" = true;
+      "git.confirmSync" = false;
     };
   };
 }

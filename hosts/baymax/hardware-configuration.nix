@@ -140,6 +140,16 @@
     device = "/dev/disk/by-uuid/6f177b73-a236-4227-9a3c-66ec9cc97d19";
     fsType = "xfs";
   };
+  fileSystems."/mnt/media" = {
+    device = "10.32.40.10:/mnt/TANK/Media";
+    options = [ "x-systemd.automount" "noauto" "x-systemd.idle-timeout=600" ];
+    fsType = "nfs";
+  };
+  fileSystems."/mnt/paperless" = {
+    device = "10.32.40.10:/mnt/TANK/Paperless";
+    options = [ "x-systemd.automount" "noauto" "x-systemd.idle-timeout=600" ];
+    fsType = "nfs";
+  };
 
   # Enables DHCP on each ethernet and wireless interface.
   networking.useDHCP = lib.mkDefault true;
