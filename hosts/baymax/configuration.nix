@@ -1,8 +1,8 @@
-{ config
-, pkgs
-, inputs
-, lib
-, ...
+{
+  config,
+  inputs,
+  lib,
+  ...
 }:
 let
   inherit (inputs)
@@ -20,9 +20,7 @@ in
       inherit (lanzaboote.nixosModules) lanzaboote;
       inherit (impermanence.nixosModules) impermanence;
       inherit (home-manager.nixosModules) home-manager;
-      inherit (nixos-hardware.nixosModules)
-        common-pc-ssd
-        ;
+      inherit (nixos-hardware.nixosModules) common-pc-ssd;
       inherit (self.nixosModules)
         common-home-manager
         common-nix
@@ -61,13 +59,13 @@ in
   time.timeZone = "America/New_York";
 
   users.groups = {
-    "gabehoban" = {};
-    docker = {};
-    dialout = {};
+    "gabehoban" = { };
+    docker = { };
+    dialout = { };
     # for openocd (embedded system development)
-    plugdev = {};
+    plugdev = { };
     # misc
-    uinput = {};
+    uinput = { };
   };
 
   users.users."gabehoban" = {
@@ -89,7 +87,7 @@ in
     ];
   };
   users.users.root = {
-    initialHashedPassword = config.users.users."gabehoban".initialHashedPassword;
+    inherit (config.users.users."gabehoban") initialHashedPassword;
     openssh.authorizedKeys.keys = config.users.users."gabehoban".openssh.authorizedKeys.keys;
   };
 
@@ -107,9 +105,7 @@ in
       "/var/log"
       "/var/lib"
     ];
-    files = [
-      "/etc/machine-id"
-    ];
+    files = [ "/etc/machine-id" ];
 
     # the following directories will be passed to /persistent/home/$USER
     users.gabehoban = {
@@ -150,6 +146,9 @@ in
         # 1Password
         ".config/1Password"
 
+        # Discord
+        ".config/discord"
+
         # vscode
         ".vscode"
         ".vscode-insiders"
@@ -163,9 +162,7 @@ in
         ".local/share"
         ".local/state"
       ];
-      files = [
-        ".config/nushell/history.txt"
-      ];
+      files = [ ".config/nushell/history.txt" ];
     };
   };
 

@@ -1,11 +1,13 @@
-{ inputs, pkgs, lib, ... }:
+{
+  inputs,
+  pkgs,
+  lib,
+  ...
+}:
 let
   inherit (pkgs.stdenv.hostPlatform) isDarwin;
   flakeInputs = lib.filterAttrs (_: input: input ? "_type" && input._type == "flake") inputs;
-  sudoGroup =
-    if isDarwin
-    then "@admin"
-    else "@wheel";
+  sudoGroup = if isDarwin then "@admin" else "@wheel";
 in
 {
   nixpkgs = {
@@ -13,8 +15,14 @@ in
   };
 
   nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
-    trusted-users = [ "root" sudoGroup ];
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    trusted-users = [
+      "root"
+      sudoGroup
+    ];
     auto-optimise-store = !isDarwin;
     substituters = [
       "https://nix-community.cachix.org"

@@ -1,9 +1,8 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   imports = [ ./starship ];
 
-  home.packages = with pkgs; [
-    nil
-  ];
+  home.packages = with pkgs; [ nil ];
 
   home.sessionVariables = {
     EDITOR = "nvim";
@@ -14,11 +13,15 @@
 
   programs.zsh = {
     enable = true;
+    enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     oh-my-zsh = {
       enable = true;
-      plugins = [ "git" "yarn" ];
+      plugins = [
+        "git"
+        "yarn"
+      ];
       extraConfig = ''
         zstyle ':bracketed-paste-magic' active-widgets '.self-*'
 
@@ -26,6 +29,22 @@
         export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
         gpgconf --launch gpg-agent
       '';
+    };
+  };
+
+  programs.atuin = {
+    enable = true;
+    enableBashIntegration = true;
+    enableZshIntegration = true;
+    flags = [ "--disable-up-arrow" ];
+    settings = {
+      auto_sync = true;
+      dialect = "us";
+      show_preview = true;
+      style = "compact";
+      sync_frequency = "1h";
+      sync_address = "https://atuin.labrats.cc";
+      update_check = false;
     };
   };
 

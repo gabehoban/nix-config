@@ -1,4 +1,5 @@
-{ inputs, ... }: {
+{ inputs, ... }:
+{
   # imports = [ ./nerd-fonts.nix ];
 
   programs.starship = {
@@ -20,8 +21,19 @@
         format = "[$ssh_symbol$hostname]($style) ";
         ssh_only = false;
       };
-      dotnet.detect_files = [ "global.json" "Directory.Build.props" "Directory.Build.targets" "Packages.props" ]; # Excluding project.json
-      java.detect_extensions = [ "java" "class" "gradle" "cljs" "cljc" ]; # Exluding .jar
+      dotnet.detect_files = [
+        "global.json"
+        "Directory.Build.props"
+        "Directory.Build.targets"
+        "Packages.props"
+      ]; # Excluding project.json
+      java.detect_extensions = [
+        "java"
+        "class"
+        "gradle"
+        "cljs"
+        "cljc"
+      ]; # Exluding .jar
 
       palette = "catppuccin_frappe";
     } // builtins.fromTOML (builtins.readFile "${inputs.catppuccin-starship}/palettes/frappe.toml");

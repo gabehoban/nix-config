@@ -1,24 +1,35 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   programs.vscode = {
     enable = true;
     package = pkgs.vscode;
     mutableExtensionsDir = true;
 
-    extensions = (with pkgs.vscode-extensions; [
-      # Themes
-      catppuccin.catppuccin-vsc
+    extensions =
+      (with pkgs.vscode-extensions; [
+        # Themes
+        catppuccin.catppuccin-vsc
 
-      # Language support
-      hashicorp.terraform
-      jnoortheen.nix-ide
-      ms-azuretools.vscode-docker
-      ms-python.python
-      redhat.vscode-yaml
-    ])
-    ++ (with pkgs.vscode-marketplace; [
-      thang-nm.catppuccin-perfect-icons
-      mrmlnc.vscode-json5
-    ]);
+        # Misc Extensions
+        christian-kohler.path-intellisense
+        ryu1kn.partial-diff
+        github.vscode-github-actions
+        github.vscode-pull-request-github
+
+        # Language support
+        hashicorp.terraform
+        jnoortheen.nix-ide
+        ms-azuretools.vscode-docker
+        ms-python.python
+        redhat.vscode-yaml
+      ])
+      ++ (with pkgs.vscode-marketplace; [
+        thang-nm.catppuccin-perfect-icons
+        mrmlnc.vscode-json5
+        coolbear.systemd-unit-file
+        codezombiech.gitignore
+        bmalehorn.shell-syntax
+      ]);
 
     userSettings = {
       "catppuccin.accentColor" = "sky";

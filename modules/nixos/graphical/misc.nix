@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   # Enable X11, but get rid of xterm
   services.xserver.enable = true;
   services.xserver.excludePackages = [ pkgs.xterm ];

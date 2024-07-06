@@ -7,10 +7,9 @@
   pkgs,
   modulesPath,
   ...
-}: {
-  imports = [
-    (modulesPath + "/installer/scan/not-detected.nix")
-  ];
+}:
+{
+  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   # Use the EFI boot loader.
   boot.loader.efi.canTouchEfiVariables = true;
@@ -20,17 +19,24 @@
   # boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelPackages = pkgs.linuxPackages_xanmod_latest;
 
-  boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
-  boot.initrd.kernelModules = [];
-  boot.kernelModules = ["kvm-intel"]; # kvm virtualization support
+  boot.initrd.availableKernelModules = [
+    "xhci_pci"
+    "ahci"
+    "nvme"
+    "usbhid"
+    "usb_storage"
+    "sd_mod"
+  ];
+  boot.initrd.kernelModules = [ ];
+  boot.kernelModules = [ "kvm-intel" ]; # kvm virtualization support
   boot.extraModprobeConfig = "options kvm_intel nested=1"; # for intel cpu
-  boot.kernelParams = ["nvidia.NVreg_PreserveVideoMemoryAllocations=1"];
-  boot.extraModulePackages = [];
+  boot.kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" ];
+  boot.extraModulePackages = [ ];
   # clear /tmp on boot to get a stateless /tmp directory.
   boot.tmp.cleanOnBoot = true;
 
   # Enable binfmt emulation of aarch64-linux, this is required for cross compilation.
-  boot.binfmt.emulatedSystems = ["aarch64-linux"];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   # supported file systems, so we can mount any removable disks with these filesystems
   boot.supportedFilesystems = [
     "ext4"
@@ -65,7 +71,7 @@
     fsType = "btrfs";
     # btrfs's top-level subvolume, internally has an id 5
     # we can access all other subvolumes from this subvolume.
-    options = ["subvolid=5"];
+    options = [ "subvolid=5" ];
   };
 
   # equal to `mount -t tmpfs tmpfs /`
@@ -74,26 +80,40 @@
     fsType = "tmpfs";
     # set mode to 755, otherwise systemd will set it to 777, which cause problems.
     # relatime: Update inode access times relative to modify or change time.
-    options = ["relatime" "mode=755"];
+    options = [
+      "relatime"
+      "mode=755"
+    ];
   };
 
   fileSystems."/nix" = {
     device = "/dev/disk/by-uuid/23b4a475-1b77-42c7-a767-7261fa7504cc";
     fsType = "btrfs";
-    options = ["subvol=@nix" "noatime" "compress-force=zstd:1"];
+    options = [
+      "subvol=@nix"
+      "noatime"
+      "compress-force=zstd:1"
+    ];
   };
 
   # for guix store, which use `/gnu/store` as its store directory.
   fileSystems."/gnu" = {
     device = "/dev/disk/by-uuid/23b4a475-1b77-42c7-a767-7261fa7504cc";
     fsType = "btrfs";
-    options = ["subvol=@guix" "noatime" "compress-force=zstd:1"];
+    options = [
+      "subvol=@guix"
+      "noatime"
+      "compress-force=zstd:1"
+    ];
   };
 
   fileSystems."/persistent" = {
     device = "/dev/disk/by-uuid/23b4a475-1b77-42c7-a767-7261fa7504cc";
     fsType = "btrfs";
-    options = ["subvol=@persistent" "compress-force=zstd:1"];
+    options = [
+      "subvol=@persistent"
+      "compress-force=zstd:1"
+    ];
     # impermanence's data is required for booting.
     neededForBoot = true;
   };
@@ -101,30 +121,42 @@
   fileSystems."/snapshots" = {
     device = "/dev/disk/by-uuid/23b4a475-1b77-42c7-a767-7261fa7504cc";
     fsType = "btrfs";
-    options = ["subvol=@snapshots" "compress-force=zstd:1"];
+    options = [
+      "subvol=@snapshots"
+      "compress-force=zstd:1"
+    ];
   };
 
   fileSystems."/tmp" = {
     device = "/dev/disk/by-uuid/23b4a475-1b77-42c7-a767-7261fa7504cc";
     fsType = "btrfs";
-    options = ["subvol=@tmp" "compress-force=zstd:1"];
+    options = [
+      "subvol=@tmp"
+      "compress-force=zstd:1"
+    ];
   };
 
   # mount swap subvolume in readonly mode.
   fileSystems."/swap" = {
     device = "/dev/disk/by-uuid/23b4a475-1b77-42c7-a767-7261fa7504cc";
     fsType = "btrfs";
-    options = ["subvol=@swap" "ro"];
+    options = [
+      "subvol=@swap"
+      "ro"
+    ];
   };
 
   # remount swapfile in read-write mode
   fileSystems."/swap/swapfile" = {
     # the swapfile is located in /swap subvolume, so we need to mount /swap first.
-    depends = ["/swap"];
+    depends = [ "/swap" ];
 
     device = "/swap/swapfile";
     fsType = "none";
-    options = ["bind" "rw"];
+    options = [
+      "bind"
+      "rw"
+    ];
   };
 
   fileSystems."/boot" = {
@@ -132,23 +164,11 @@
     fsType = "vfat";
   };
 
-  swapDevices = [
-    {device = "/swap/swapfile";}
-  ];
+  swapDevices = [ { device = "/swap/swapfile"; } ];
 
   fileSystems."/mnt/games" = {
     device = "/dev/disk/by-uuid/6f177b73-a236-4227-9a3c-66ec9cc97d19";
     fsType = "xfs";
-  };
-  fileSystems."/mnt/media" = {
-    device = "10.32.40.10:/mnt/TANK/Media";
-    options = [ "x-systemd.automount" "noauto" "x-systemd.idle-timeout=600" ];
-    fsType = "nfs";
-  };
-  fileSystems."/mnt/paperless" = {
-    device = "10.32.40.10:/mnt/TANK/Paperless";
-    options = [ "x-systemd.automount" "noauto" "x-systemd.idle-timeout=600" ];
-    fsType = "nfs";
   };
 
   # Enables DHCP on each ethernet and wireless interface.

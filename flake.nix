@@ -64,13 +64,14 @@
   };
 
   outputs =
-    { self
-    , nixpkgs
-    , nix-darwin
-    , flake-utils
-    , pre-commit-hooks
-    , ...
-    } @ inputs:
+    {
+      self,
+      nixpkgs,
+      nix-darwin,
+      flake-utils,
+      pre-commit-hooks,
+      ...
+    }@inputs:
     let
       inherit (nix-darwin.lib) darwinSystem;
       inherit (flake-utils.lib) eachDefaultSystem;
@@ -83,7 +84,9 @@
           { nixpkgs.overlays = [ inputs.nix-vscode-extensions.overlays.default ]; }
           ./hosts/macbook/darwin-configuration.nix
         ];
-        specialArgs = { inherit inputs; };
+        specialArgs = {
+          inherit inputs;
+        };
       };
 
       nixosConfigurations."baymax" = nixosSystem {
@@ -92,41 +95,35 @@
           { nixpkgs.overlays = [ inputs.nix-vscode-extensions.overlays.default ]; }
           ./hosts/baymax/configuration.nix
         ];
-        specialArgs = { inherit inputs; };
-      };
-
-      nixosConfigurations."rpi-sekio" = nixosSystem {
-        system = "aarch64-linux";
-        modules = [
-          ./hosts/rpi-sekio/configuration.nix
-        ];
-        specialArgs = { inherit inputs; };
+        specialArgs = {
+          inherit inputs;
+        };
       };
 
       overlays = import ./overlays;
       nixosModules = import ./modules/nixos;
       homeManagerModules = import ./modules/home-manager;
     }
-    // eachDefaultSystem (system:
-    let
-      pkgs = nixpkgs.legacyPackages.${system};
-    in
-    {
-      formatter = pkgs.nixpkgs-fmt;
-      checks.pre-commit-check = pre-commit-hooks.lib.${system}.run {
-        src = ./.;
-        hooks = {
-          nixpkgs-fmt.enable = true;
-          deadnix.enable = true;
-          statix.enable = true;
+    // eachDefaultSystem (
+      system:
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
+      in
+      {
+        formatter = pkgs.nixpkgs-fmt;
+        checks.pre-commit-check = pre-commit-hooks.lib.${system}.run {
+          src = ./.;
+          hooks = {
+            nixpkgs-fmt.enable = true;
+            deadnix.enable = true;
+            statix.enable = true;
+          };
+          settings = {
+            deadnix.edit = true;
+            deadnix.noLambdaArg = true;
+          };
         };
-        settings = {
-          deadnix.edit = true;
-          deadnix.noLambdaArg = true;
-        };
-      };
-      devShell = pkgs.mkShell {
-        inherit (self.checks.${system}.pre-commit-check) shellHook;
-      };
-    });
+        devShell = pkgs.mkShell { inherit (self.checks.${system}.pre-commit-check) shellHook; };
+      }
+    );
 }

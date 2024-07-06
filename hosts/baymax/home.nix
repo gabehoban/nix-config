@@ -1,4 +1,5 @@
-{ pkgs , inputs , ... }: {
+{ pkgs, inputs, ... }:
+{
   imports = builtins.attrValues {
     inherit (inputs.self.homeManagerModules)
       common-home
@@ -35,9 +36,7 @@
   fonts.fontconfig.enable = true;
 
   programs.obs-studio.enable = true;
-  programs.obs-studio.plugins = with pkgs.obs-studio-plugins; [
-    obs-vkcapture
-  ];
+  programs.obs-studio.plugins = with pkgs.obs-studio-plugins; [ obs-vkcapture ];
   programs.nix-index.enable = true;
 
   home.stateVersion = "24.05";

@@ -1,7 +1,4 @@
-{ config
-, pkgs
-, ...
-}:
+{ config, pkgs, ... }:
 let
   # Redirect logging to /tmp to prevent Starship from logging to /nix
   starshipNerdFont = pkgs.runCommand "starship-nerd-font.toml" { STARSHIP_CACHE = "/tmp"; } ''

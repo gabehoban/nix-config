@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+_:
 let
   lock-false = {
     Value = false;
@@ -14,13 +14,13 @@ in
     firefox = {
       enable = true;
 
-      /* ---- POLICIES ---- */
+      # ---- POLICIES ----
       # Check about:policies#documentation for options.
       policies = {
         DisableTelemetry = true;
         DisableFirefoxStudies = true;
         EnableTrackingProtection = {
-          Value= true;
+          Value = true;
           Locked = true;
           Cryptomining = true;
           Fingerprinting = true;
@@ -36,7 +36,7 @@ in
         DisplayMenuBar = "default-off"; # alternatives: "always", "never" or "default-on"
         SearchBar = "unified"; # alternative: "separate"
 
-        /* ---- EXTENSIONS ---- */
+        # ---- EXTENSIONS ----
         # Check about:support for extension/add-on ID strings.
         # Valid strings for installation_mode are "allowed", "blocked",
         # "force_installed" and "normal_installed".
@@ -59,10 +59,13 @@ in
           };
         };
 
-        /* ---- PREFERENCES ---- */
+        # ---- PREFERENCES ----
         # Check about:config for options.
         Preferences = {
-          "browser.contentblocking.category" = { Value = "strict"; Status = "locked"; };
+          "browser.contentblocking.category" = {
+            Value = "strict";
+            Status = "locked";
+          };
           "extensions.pocket.enabled" = lock-false;
           "extensions.screenshots.disabled" = lock-true;
           "browser.topsites.contile.enabled" = lock-false;

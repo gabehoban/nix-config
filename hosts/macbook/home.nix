@@ -3,13 +3,15 @@ let
   inherit (inputs) self agenix;
 in
 {
-  imports = [ agenix.homeManagerModules.age ] ++ (with self.homeManagerModules; [
-    common-home
+  imports =
+    [ agenix.homeManagerModules.age ]
+    ++ (with self.homeManagerModules; [
+      common-home
 
-    gui-firefox
-    gui-vscode
-    gui-wezterm
-  ]);
+      gui-firefox
+      gui-vscode
+      gui-wezterm
+    ]);
 
   # Darwin doesn't support services.gpg-agent
   # https://github.com/nix-community/home-manager/issues/91
