@@ -2,13 +2,16 @@
   imports =
     [
       ./hardware-configuration.nix
-      ../common/global
-      ../common/optional/docker.nix
-      ../common/optional/roles/workstation/nvidia.nix
-      ../common/optional/roles/workstation/gnome.nix
-      ../common/optional/roles/workstation/steam.nix
-      ../common/optional/roles/workstation/bluetooth.nix
       ../../disko/pc-baymax.nix
+      # Defaults on all hosts
+      ../common/_global
+      # Hardware
+      ../common/hardware/nvidia.nix
+      ../common/hardware/bluetooth.nix
+      # Desktop
+      ../common/desktops/gnome.nix
+      # Applications
+      ../common/apps/steam.nix
     ];
 
   boot.loader.systemd-boot.enable = true;
