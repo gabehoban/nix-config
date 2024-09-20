@@ -14,16 +14,10 @@
       lib.elem hostname hostnameList;
   in
   { 
-  
-   sops.secrets.gabehoban_hash = {
-     sopsFile = ../../../secrets/main.yaml;
-     neededForUsers = true;
-   };
-
     programs.zsh.enable = true;
     users.mutableUsers = false;
     users.users.gabehoban = {
-      hashedPasswordFile = config.sops.secrets.gabehoban_hash.path;
+      hashedPassword = "$7$CU..../....O.oYdMuk1KNKYyTH5NQI0.$osnkjWYRy8VEV2nKeTV4.jtBoX5qd0O7LvuJDbkSBU/";
       isNormalUser = true;
       uid = 1000;
       openssh.authorizedKeys.keys = [

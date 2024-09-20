@@ -33,7 +33,6 @@
                   allowDiscards = true;
                   keyFile = "/tmp/secret.key";
                 };
-                additionalKeyFiles = [ "/dev/disk/by-id/usb-SMI_USB_DISK-0:0" ];
                 content = {
                   type = "btrfs";
                   extraArgs = [ "-f" "-L ${config.networking.hostName}" ]; # Override existing partition

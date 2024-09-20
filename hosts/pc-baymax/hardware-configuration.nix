@@ -10,12 +10,6 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  boot.initrd.luks.devices."encryptedRoot" = {
-    keyFileSize = 4096;
-    keyFile = lib.mkForce"/dev/disk/by-id/usb-USB_SanDisk_3.2Gen1_03008614032324050208-0:0";
-    keyFileTimeout = 5;
-  };
-
   hardware.opengl.driSupport32Bit = true;
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
