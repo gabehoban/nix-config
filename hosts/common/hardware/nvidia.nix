@@ -1,4 +1,5 @@
-{pkgs, config, ...}: {
+{ pkgs, config, ... }:
+{
 
   environment.variables = {
     LIBVA_DRIVER_NAME = "nvidia";
@@ -22,7 +23,7 @@
   ];
 
   # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware = {
     nvidia = {
@@ -36,8 +37,8 @@
       enable = true;
       driSupport = true;
       driSupport32Bit = true;
-      extraPackages = with pkgs; [nvidia-vaapi-driver];
-      extraPackages32 = with pkgs.pkgsi686Linux; [nvidia-vaapi-driver];
+      extraPackages = with pkgs; [ nvidia-vaapi-driver ];
+      extraPackages32 = with pkgs.pkgsi686Linux; [ nvidia-vaapi-driver ];
     };
   };
 }

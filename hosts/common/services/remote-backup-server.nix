@@ -1,14 +1,19 @@
-{ inputs, config, lib, pkgs, ... }:
-let 
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
   st_secrets = builtins.fromJSON (builtins.readFile ../../../../../secrets/git_crypt_syncthing.json);
-in 
+in
 {
 
   systemd.tmpfiles.rules = [
     "d /data/syncthing 0755 syncthing syncthing -"
     "d /data/proxmox 0755 nfs nfs -"
   ];
-
 
   services = {
     syncthing = {
@@ -59,7 +64,7 @@ in
             versioning = {
               type = "simple";
               params.keep = "5";
-            };            
+            };
             devices = [
               "achilles"
               "aeneas"
@@ -105,7 +110,6 @@ in
     };
   };
 
-
   # nfs server 
   sops.secrets.nfs_hash = {
     sopsFile = ../../../../maul/secrets.yaml;
@@ -146,8 +150,26 @@ in
   };
   networking.firewall = {
     enable = true;
-      # for NFSv3; view with `rpcinfo -p` 8384 and 22000 are for syncthing, rest is nfs
-    allowedTCPPorts = [ 111  2049 4000 4001 4002 20048 8384 22000 ];
-    allowedUDPPorts = [ 111 2049 4000 4001  4002 20048 8384 22000 ];
+    # for NFSv3; view with `rpcinfo -p` 8384 and 22000 are for syncthing, rest is nfs
+    allowedTCPPorts = [
+      111
+      2049
+      4000
+      4001
+      4002
+      20048
+      8384
+      22000
+    ];
+    allowedUDPPorts = [
+      111
+      2049
+      4000
+      4001
+      4002
+      20048
+      8384
+      22000
+    ];
   };
 }

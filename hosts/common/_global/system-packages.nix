@@ -1,7 +1,7 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   # Configure Systemwide Packages
-  environment.systemPackages = with pkgs; 
-  [
+  environment.systemPackages = with pkgs; [
     vim
     dnsutils
     wget
@@ -23,7 +23,12 @@
   ];
 
   fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
+    (nerdfonts.override {
+      fonts = [
+        "FiraCode"
+        "DroidSansMono"
+      ];
+    })
   ];
 
   programs.zsh.enable = true;

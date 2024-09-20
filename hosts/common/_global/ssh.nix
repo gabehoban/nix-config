@@ -1,6 +1,11 @@
-{config, lib, outputs, ... }:
+{
+  config,
+  lib,
+  outputs,
+  ...
+}:
 let
-  
+
   inherit (config.networking) hostName;
   hasOptinPersistence = config.environment.persistence ? "/persist";
   hosts = outputs.nixosConfigurations;
@@ -16,10 +21,12 @@ in
       PasswordAuthentication = false;
     };
     # Commit to persistance with this.
-    hostKeys = [{
-      path = "${lib.optionalString hasOptinPersistence "/persist"}/etc/ssh/ssh_host_ed25519_key";
-      type = "ed25519";
-    }];
+    hostKeys = [
+      {
+        path = "${lib.optionalString hasOptinPersistence "/persist"}/etc/ssh/ssh_host_ed25519_key";
+        type = "ed25519";
+      }
+    ];
   };
 
   # Passwordless sudo login

@@ -1,7 +1,7 @@
-{ pkgs, ... }:{
+{ pkgs, ... }:
+{
 
-  home.packages = with pkgs; 
-  [ 
+  home.packages = with pkgs; [
     spotify
     bitwarden
     terminator
@@ -28,7 +28,7 @@
     protonvpn-gui
     watchmate
     cura
-  
+
     # Unstable pkgs
     unstable.hexchat
     unstable.signal-desktop

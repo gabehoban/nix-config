@@ -12,6 +12,4 @@
     ./impermanence.nix
   ];
 
-
-
 }

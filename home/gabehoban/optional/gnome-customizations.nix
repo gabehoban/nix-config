@@ -1,12 +1,16 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
 
-  home.packages = (with pkgs.gnomeExtensions; [
-    dash-to-dock
-    dash-to-panel
-    vitals
-    user-themes
-    tray-icons-reloaded
-  ]); 
+  home.packages = (
+    with pkgs.gnomeExtensions;
+    [
+      dash-to-dock
+      dash-to-panel
+      vitals
+      user-themes
+      tray-icons-reloaded
+    ]
+  );
 
   gtk = {
     enable = true;
@@ -31,7 +35,7 @@
     "org/gnome/shell" = {
       disable-user-extensions = false;
       favorite-apps = [
-        "org.gnome.Nautilus.desktop" 
+        "org.gnome.Nautilus.desktop"
         "firefox.desktop"
         "thunderbird.desktop"
         "spotify.desktop"
@@ -45,10 +49,10 @@
     };
 
     "org/gnome/shell/extensions/user-theme" = {
-       name = "Nordic-darker-standard-buttons";
+      name = "Nordic-darker-standard-buttons";
     };
 
-    "org/gnome/shell/extensions/dash-to-dock" = { 
+    "org/gnome/shell/extensions/dash-to-dock" = {
       running-indicator-style = "DOTS";
     };
 
@@ -72,7 +76,7 @@
     "org/gnome/shell/extensions/dash-to-dock" = {
       multi-monitor = true;
     };
-  
+
   };
 
 }

@@ -1,9 +1,10 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.vim = {
     enable = true;
-    plugins = with pkgs.vimPlugins; [
-      vim-airline
-    ];
-    settings = {ignorecase = true; };
+    plugins = with pkgs.vimPlugins; [ vim-airline ];
+    settings = {
+      ignorecase = true;
+    };
   };
 }

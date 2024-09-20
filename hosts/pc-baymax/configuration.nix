@@ -1,18 +1,23 @@
-{ inputs, config, pkgs,  ... }: {
-  imports =
-    [
-      ./hardware-configuration.nix
-      ../../disko/pc-baymax.nix
-      # Defaults on all hosts
-      ../common/_global
-      # Hardware
-      ../common/hardware/nvidia.nix
-      ../common/hardware/bluetooth.nix
-      # Desktop
-      ../common/desktops/gnome.nix
-      # Applications
-      ../common/apps/steam.nix
-    ];
+{
+  inputs,
+  config,
+  pkgs,
+  ...
+}:
+{
+  imports = [
+    ./hardware-configuration.nix
+    ../../disko/pc-baymax.nix
+    # Defaults on all hosts
+    ../common/_global
+    # Hardware
+    ../common/hardware/nvidia.nix
+    ../common/hardware/bluetooth.nix
+    # Desktop
+    ../common/desktops/gnome.nix
+    # Applications
+    ../common/apps/steam.nix
+  ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -44,8 +49,7 @@
 
   programs.dconf.enable = true;
 
- # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+  # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "24.05";
 
 }
-

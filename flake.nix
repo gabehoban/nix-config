@@ -19,19 +19,20 @@
     };
   };
 
-  outputs = { 
-    self, 
-    nixpkgs,
-    home-manager,
-    hyprland, 
-    hardware,
-    nix-colors,
-    sops-nix,
-    impermanence,
-    disko,
-    nixos-cosmic,
-     ...
-  }@inputs:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      hyprland,
+      hardware,
+      nix-colors,
+      sops-nix,
+      impermanence,
+      disko,
+      nixos-cosmic,
+      ...
+    }@inputs:
     let
       inherit (self) outputs;
 
@@ -42,15 +43,17 @@
       ];
 
       homeManagerServerModule = [
-      home-manager.nixosModules.home-manager
+        home-manager.nixosModules.home-manager
         {
           home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = { inherit inputs outputs; };
+          home-manager.extraSpecialArgs = {
+            inherit inputs outputs;
+          };
           home-manager.users.gabehoban = {
             # Import impermanence to home-manager
             imports = [
-            (impermanence + "/home-manager.nix")
-            ./home/gabehoban/server.nix
+              (impermanence + "/home-manager.nix")
+              ./home/gabehoban/server.nix
             ];
           };
           home-manager.backupFileExtension = "bak";
@@ -59,48 +62,54 @@
 
     in
     rec {
-    overlays = import ./overlays/unstable-pkgs.nix { inherit inputs ; };
-    # NixOS Configs
-    nixosConfigurations = {
-      # Main Desktop 
-      "pc-baymax" = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs outputs; };
-        system = "x86_64-linux";
-	      modules = defaultModules ++ [
-          nixos-cosmic.nixosModules.default
-	        ./hosts/pc-baymax/configuration.nix
-          {
-            nix.settings = {
-              substituters = [ "https://cosmic.cachix.org/" ];
-              trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" ];
-            };
-          }
-          hardware.nixosModules.common-gpu-nvidia-nonprime
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = { inherit inputs outputs; };
-            home-manager.users.gabehoban = {
-              # Import impermanence to home-manager
-              imports = [
-              # (impermanence + "/home-manager.nix")
-              ./home/gabehoban/pc-baymax.nix
-              ];
-            };
-            home-manager.backupFileExtension = "bak";
-          }
-	      ];
+      overlays = import ./overlays/unstable-pkgs.nix { inherit inputs; };
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
+
+      # NixOS Configs
+      nixosConfigurations = {
+        # Main Desktop 
+        "pc-baymax" = nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit inputs outputs;
+          };
+          system = "x86_64-linux";
+          modules = defaultModules ++ [
+            nixos-cosmic.nixosModules.default
+            ./hosts/pc-baymax/configuration.nix
+            {
+              nix.settings = {
+                substituters = [ "https://cosmic.cachix.org/" ];
+                trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" ];
+              };
+            }
+            hardware.nixosModules.common-gpu-nvidia-nonprime
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = {
+                inherit inputs outputs;
+              };
+              home-manager.users.gabehoban = {
+                # Import impermanence to home-manager
+                imports = [
+                  # (impermanence + "/home-manager.nix")
+                  ./home/gabehoban/pc-baymax.nix
+                ];
+              };
+              home-manager.backupFileExtension = "bak";
+            }
+          ];
+        };
+
+        # Backup Server
+        # "maul" = nixpkgs.lib.nixosSystem {
+        #   specialArgs = {inherit inputs outputs;};
+        #   system = "x86_64-linux";
+        #   modules = defaultModules ++ homeManagerServerModule ++ [
+        #     ./hosts/maul/configuration.nix
+        #   ];
+        # };
+
       };
-
-      # Backup Server
-      # "maul" = nixpkgs.lib.nixosSystem {
-      #   specialArgs = {inherit inputs outputs;};
-      #   system = "x86_64-linux";
-      #   modules = defaultModules ++ homeManagerServerModule ++ [
-      #     ./hosts/maul/configuration.nix
-      #   ];
-      # };
-
     };
-  };
 }

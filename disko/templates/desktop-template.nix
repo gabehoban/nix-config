@@ -40,9 +40,13 @@
                 };
                 content = {
                   type = "btrfs";
-                  extraArgs = [ "-f" "-L ${config.networking.hostName}" ]; # Override existing partition
+                  extraArgs = [
+                    "-f"
+                    "-L ${config.networking.hostName}"
+                  ]; # Override existing partition
                   # Creates a read only snapshot of the root subvol
-                  postCreateHook = /* sh */ ''
+                  postCreateHook = # sh
+                    ''
                       MNTPOINT=$(mktemp -d)
                       mount "/dev/disk/by-label/${config.networking.hostName}" "$MNTPOINT" -o subvol=/
                       trap 'umount $MNTPOINT; rm -rf $MNTPOINT' EXIT
@@ -63,7 +67,10 @@
                       mountpoint = "/home";
                     };
                     "/nix" = {
-                      mountOptions = [ "compress=zstd" "noatime" ];
+                      mountOptions = [
+                        "compress=zstd"
+                        "noatime"
+                      ];
                       mountpoint = "/nix";
                     };
                     "/swap" = {
@@ -82,4 +89,3 @@
     };
   };
 }
-

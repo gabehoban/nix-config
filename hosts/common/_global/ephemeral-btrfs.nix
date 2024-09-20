@@ -32,9 +32,7 @@ in
     systemd.services.restore-root = lib.mkIf phase1Systemd {
       description = "Rollback btrfs rootfs";
       wantedBy = [ "initrd.target" ];
-      requires = [
-        "dev-disk-by\\x2dlabel-${hostname}.device"
-      ];
+      requires = [ "dev-disk-by\\x2dlabel-${hostname}.device" ];
       after = [
         "dev-disk-by\\x2dlabel-${hostname}.device"
         "systemd-cryptsetup@${hostname}.service"

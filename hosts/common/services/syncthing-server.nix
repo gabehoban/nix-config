@@ -1,14 +1,18 @@
-{ inputs, config, lib, pkgs, ... }:
-let 
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
   st_secrets = builtins.fromJSON (builtins.readFile ../../../../../secrets/git_crypt_syncthing.json);
-in 
+in
 {
   environment.persistence = {
     "/persist" = {
-    hideMounts = true;
-      directories = [
-        "/var/lib/syncthing"
-      ];
+      hideMounts = true;
+      directories = [ "/var/lib/syncthing" ];
     };
   };
 
@@ -60,7 +64,7 @@ in
             versioning = {
               type = "simple";
               params.keep = "5";
-            };            
+            };
             devices = [
               "achilles"
               "aeneas"
@@ -106,6 +110,12 @@ in
     };
   };
   # FW Ports
-  networking.firewall.allowedTCPPorts = [ 8384 22000 ];
-  networking.firewall.allowedUDPPorts = [ 22000 21027 ];
+  networking.firewall.allowedTCPPorts = [
+    8384
+    22000
+  ];
+  networking.firewall.allowedUDPPorts = [
+    22000
+    21027
+  ];
 }

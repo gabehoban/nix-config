@@ -1,9 +1,15 @@
-{ lib, inputs, config, ... }: {
+{
+  lib,
+  inputs,
+  config,
+  ...
+}:
+{
   # Taken from Misterio77's config
 
   environment.persistence = {
     "/persist" = {
-    hideMounts = true;
+      hideMounts = true;
       directories = [
         "/var/lib/systemd"
         "/var/lib/NetworkManager"

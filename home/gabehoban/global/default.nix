@@ -1,4 +1,12 @@
-{ inputs, lib, config, pkgs, outputs, ... }: {
+{
+  inputs,
+  lib,
+  config,
+  pkgs,
+  outputs,
+  ...
+}:
+{
   imports = [
     ./git.nix
     ./vim.nix

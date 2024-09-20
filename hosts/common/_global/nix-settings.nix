@@ -1,4 +1,11 @@
-{ lib, config, inputs, outputs, ... }: {
+{
+  lib,
+  config,
+  inputs,
+  outputs,
+  ...
+}:
+{
   nix = {
     registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
     nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
@@ -6,7 +13,10 @@
     settings = {
       experimental-features = "nix-command flakes";
       auto-optimise-store = true;
-      trusted-users = ["root" "gabehoban"];
+      trusted-users = [
+        "root"
+        "gabehoban"
+      ];
     };
     gc = {
       automatic = true;
@@ -15,9 +25,7 @@
     };
   };
   nixpkgs = {
-    overlays = [
-      outputs.overlays.unstable-packages
-    ];
+    overlays = [ outputs.overlays.unstable-packages ];
     config = {
       allowUnfree = true;
     };

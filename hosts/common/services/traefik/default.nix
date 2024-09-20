@@ -1,5 +1,5 @@
-{ pkgs, config, ... }: {
-
+{ pkgs, config, ... }:
+{
 
   sops.secrets = {
     cloudflare_email = {
@@ -10,29 +10,36 @@
     };
   };
 
-
-	services.traefik = {
-		package = pkgs.unstable.traefik;
-		enable = true;
+  services.traefik = {
+    package = pkgs.unstable.traefik;
+    enable = true;
     dataDir = "/var/lib/traefik";
-    environmentFiles = [ config.sops.secrets.cloudflare_email.path config.sops.secrets.cloudflare_api_key.path  ];
-	};
+    environmentFiles = [
+      config.sops.secrets.cloudflare_email.path
+      config.sops.secrets.cloudflare_api_key.path
+    ];
+  };
 
   imports = [
     ./static-config.nix
     ./dynamic-config.nix
   ];
 
-  users.users.traefik.extraGroups = ["docker" "acme"];
+  users.users.traefik.extraGroups = [
+    "docker"
+    "acme"
+  ];
 
-  networking.firewall.allowedTCPPorts = [ 80 443 8080 ];
+  networking.firewall.allowedTCPPorts = [
+    80
+    443
+    8080
+  ];
 
-	environment.persistence = {
+  environment.persistence = {
     "/persist" = {
-    hideMounts = true;
-      directories = [
-        "/var/lib/traefik"
-      ];
+      hideMounts = true;
+      directories = [ "/var/lib/traefik" ];
     };
   };
 

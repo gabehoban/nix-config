@@ -35,8 +35,12 @@
                 };
                 content = {
                   type = "btrfs";
-                  extraArgs = [ "-f" "-L ${config.networking.hostName}" ]; # Override existing partition
-                  postCreateHook = /* sh */ ''
+                  extraArgs = [
+                    "-f"
+                    "-L ${config.networking.hostName}"
+                  ]; # Override existing partition
+                  postCreateHook = # sh
+                    ''
                       MNTPOINT=$(mktemp -d)
                       mount "/dev/disk/by-label/${config.networking.hostName}" "$MNTPOINT" -o subvol=/
                       trap 'umount $MNTPOINT; rm -rf $MNTPOINT' EXIT
@@ -52,18 +56,23 @@
                       mountpoint = "/persist";
                     };
                     "/nix" = {
-                      mountOptions = [ "compress=zstd" "noatime" ];
+                      mountOptions = [
+                        "compress=zstd"
+                        "noatime"
+                      ];
                       mountpoint = "/nix";
                     };
                     "/home" = {
-                      mountOptions = [ "compress=zstd" "noatime" ];
+                      mountOptions = [
+                        "compress=zstd"
+                        "noatime"
+                      ];
                       mountpoint = "/home";
                     };
                     "/swap" = {
                       mountpoint = "/.swapvol";
                       swap = {
                         swapfile.size = "32G";
-                        };
                       };
                     };
                   };
@@ -74,5 +83,5 @@
         };
       };
     };
-  }
-
+  };
+}
