@@ -68,14 +68,14 @@
       # NixOS Configs
       nixosConfigurations = {
         # Main Desktop 
-        "pc-baymax" = nixpkgs.lib.nixosSystem {
+        "pc_baymax" = nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit inputs outputs;
           };
           system = "x86_64-linux";
           modules = defaultModules ++ [
             nixos-cosmic.nixosModules.default
-            ./hosts/pc-baymax/configuration.nix
+            ./hosts/pc_baymax/configuration.nix
             {
               nix.settings = {
                 substituters = [ "https://cosmic.cachix.org/" ];
@@ -93,7 +93,7 @@
                 # Import impermanence to home-manager
                 imports = [
                   # (impermanence + "/home-manager.nix")
-                  ./home/gabehoban/pc-baymax.nix
+                  ./home/gabehoban/pc_baymax.nix
                 ];
               };
               home-manager.backupFileExtension = "bak";

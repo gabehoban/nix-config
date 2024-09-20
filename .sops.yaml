@@ -13,7 +13,7 @@ creation_rules:
         - *rpi_casio_server
         - *rpi_sekio_server
         - *rpi_skyio_server
-  - path_regex: hosts/pc-baymax/[^/]+\.(yaml|json|env|ini)$
+  - path_regex: hosts/pc_baymax/[^/]+\.(yaml|json|env|ini)$
     key_groups:
       - age:
         - *gabehoban_age

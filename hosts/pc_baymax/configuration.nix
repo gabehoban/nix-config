@@ -7,7 +7,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../disko/pc-baymax.nix
+    ../../disko/pc_baymax.nix
     # Defaults on all hosts
     ../common/_global
     # Hardware
@@ -31,9 +31,7 @@
   virtualisation.virtualbox.host.enableHardening = false;
   users.extraGroups.vboxusers.members = [ "gabehoban" ];
 
-  hardware.nvidia-container-toolkit.enable = true;
-
-  networking.hostName = "pc-baymax";
+  networking.hostName = "pc_baymax";
   networking.networkmanager.enable = true;
 
   time.timeZone = "America/New_York";
