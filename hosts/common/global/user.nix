@@ -1,0 +1,35 @@
+{config, pkgs, lib, ...}: 
+
+  let 
+    workstations = [ 
+      "pc-baymax" 
+    ];
+    servers = [ 
+      "rpi-casio" 
+      "rpi-sekio"
+      "rpi-skyio" 
+    ];
+
+    checkHostname = hostname: hostnameList: 
+      lib.elem hostname hostnameList;
+  in
+  { 
+  
+   sops.secrets.gabehoban_hash = {
+     sopsFile = ../../../secrets/main.yaml;
+     neededForUsers = true;
+   };
+
+    programs.zsh.enable = true;
+    users.mutableUsers = false;
+    users.users.gabehoban = {
+      hashedPasswordFile = config.sops.secrets.gabehoban_hash.path;
+      isNormalUser = true;
+      uid = 1000;
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGTRkzKhiDza+ClGzQcY8Tvsp5+2UhqVUg3Oie26ygy2 gabehoban@pc-baymax"
+      ];
+      shell = if checkHostname "${config.networking.hostName}" workstations then pkgs.zsh else pkgs.bash;
+      extraGroups = [ "wheel" "audio" "video" "plugdev" "dialout" "docker" "networkmanager" "adm" ];
+    };
+  }

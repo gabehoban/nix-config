@@ -1,0 +1,35 @@
+keys:
+  - &gabehoban_age age1jn6lgxzgg5vgjwcqfn5jg8tyc6acspq7yj8raxjuz9hxuqtpfd5st4y7xj
+  - &pc_baymax_workstation age1dq587j2mher0gfncjs3l8r9rjn5k6gtskwpxfz2knnr0d3ld6aqqucnyqp
+  - &rpi_casio_server age1nmg4qjqws0y9elyk9plk558fxujp6up4thegt2u50kmedttgw9zqhjwuqd
+  - &rpi_sekio_server age1kcytdwm24g9qddselmqwwe2dhk79g8zp2xn0kth0zx723fk58sxsyz5xav
+  - &rpi_skyio_server age1fntmdcw5c7tz3rghfwgjw2e7wxwsachwwx4vzf398jma3xgu4c9q2r3rdd
+creation_rules:
+  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+        - *gabehoban_age
+        - *pc_baymax_workstation
+        - *rpi_casio_server
+        - *rpi_sekio_server
+        - *rpi_skyio_server
+  - path_regex: hosts/pc-baymax/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+        - *gabehoban_age
+        - *pc_baymax_workstation
+  - path_regex: hosts/rpi-casio/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+        - *gabehoban_age
+        - *rpi_casio_server
+  - path_regex: hosts/rpi-sekio/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+        - *gabehoban_age
+        - *rpi_sekio_server
+  - path_regex: hosts/rpi-skyio/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+        - *gabehoban_age
+        - *rpi_skyio_server
