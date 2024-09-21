@@ -13,9 +13,12 @@
     # Hardware
     ../common/hardware/nvidia.nix
     ../common/hardware/bluetooth.nix
+    ../common/hardware/yubikey.nix
     # Desktop
     ../common/desktops/gnome.nix
     # Applications
+    ../common/apps/_1password.nix
+    ../common/apps/firefox.nix
     ../common/apps/steam.nix
   ];
 

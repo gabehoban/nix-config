@@ -10,7 +10,6 @@ let
   keys = builtins.filter isEd25519 config.services.openssh.hostKeys;
 in
 {
-
   sops.defaultSopsFile = ../../../secrets/main.yaml;
 
   sops = {
@@ -20,5 +19,4 @@ in
       generateKey = true;
     };
   };
-
 }

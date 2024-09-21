@@ -1,15 +1,14 @@
 {
-
   imports = [
     ./env-vars.nix
+    ./ephemeral-btrfs.nix
+    # ./formatter.nix
+    ./impermanence.nix
     ./nix-settings.nix
+    ./sops.nix
     ./ssh.nix
     ./system-packages.nix
-    ./user.nix
-    ./sops.nix
     ./systemd-initrd.nix
-    ./ephemeral-btrfs.nix
-    ./impermanence.nix
+    ./user.nix
   ];
-
 }

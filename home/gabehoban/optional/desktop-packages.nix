@@ -3,7 +3,6 @@
 
   home.packages = with pkgs; [
     spotify
-    bitwarden
     terminator
     guake
     evince
@@ -16,7 +15,6 @@
     appimage-run
     retroarchFull
     wakeonlan
-    firefox
     drawing
     nixos-anywhere
     rpcs3

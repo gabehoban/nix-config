@@ -17,17 +17,17 @@
       gnome-console
     ])
     ++ (with pkgs.gnome; [
-      cheese # webcam tool
+      cheese
       gnome-music
-      epiphany # web browser
-      geary # email reader
-      evince # document viewer
+      epiphany
+      geary
+      evince
       gnome-characters
-      totem # video player
-      tali # poker game
-      iagno # go game
-      hitori # sudoku game
-      atomix # puzzle game
+      totem
+      tali
+      iagno 
+      hitori
+      atomix
     ]);
 
   environment.systemPackages =

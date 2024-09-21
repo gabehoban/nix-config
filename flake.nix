@@ -5,7 +5,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager/release-24.05";
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     hardware.url = "github:nixos/nixos-hardware/master";
     nix-colors.url = "github:misterio77/nix-colors";
@@ -24,7 +23,6 @@
       self,
       nixpkgs,
       home-manager,
-      hyprland,
       hardware,
       nix-colors,
       sops-nix,
@@ -63,7 +61,6 @@
     in
     rec {
       overlays = import ./overlays/unstable-pkgs.nix { inherit inputs; };
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
 
       # NixOS Configs
       nixosConfigurations = {
@@ -76,12 +73,6 @@
           modules = defaultModules ++ [
             nixos-cosmic.nixosModules.default
             ./hosts/pc_baymax/configuration.nix
-            {
-              nix.settings = {
-                substituters = [ "https://cosmic.cachix.org/" ];
-                trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" ];
-              };
-            }
             hardware.nixosModules.common-gpu-nvidia-nonprime
             home-manager.nixosModules.home-manager
             {
@@ -96,7 +87,6 @@
                   ./home/gabehoban/pc_baymax.nix
                 ];
               };
-              home-manager.backupFileExtension = "bak";
             }
           ];
         };
