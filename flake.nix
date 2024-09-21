@@ -65,14 +65,14 @@
       # NixOS Configs
       nixosConfigurations = {
         # Main Desktop 
-        "pc_baymax" = nixpkgs.lib.nixosSystem {
+        "baymax" = nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit inputs outputs;
           };
           system = "x86_64-linux";
           modules = defaultModules ++ [
             nixos-cosmic.nixosModules.default
-            ./hosts/pc_baymax/configuration.nix
+            ./hosts/baymax/configuration.nix
             hardware.nixosModules.common-gpu-nvidia-nonprime
             home-manager.nixosModules.home-manager
             {
@@ -84,7 +84,7 @@
                 # Import impermanence to home-manager
                 imports = [
                   # (impermanence + "/home-manager.nix")
-                  ./home/gabehoban/pc_baymax.nix
+                  ./home/gabehoban/baymax.nix
                 ];
               };
             }

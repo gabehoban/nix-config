@@ -7,7 +7,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../../disko/pc_baymax.nix
+    ../../disko/baymax.nix
     # Defaults on all hosts
     ../common/_global
     # Hardware
@@ -34,7 +34,7 @@
   virtualisation.virtualbox.host.enableHardening = false;
   users.extraGroups.vboxusers.members = [ "gabehoban" ];
 
-  networking.hostName = "pc_baymax";
+  networking.hostName = "baymax";
   networking.networkmanager.enable = true;
 
   time.timeZone = "America/New_York";

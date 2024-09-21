@@ -6,7 +6,7 @@
 }:
 
 let
-  workstations = [ "pc_baymax" ];
+  workstations = [ "baymax" ];
   servers = [
     "rpi-casio"
     "rpi-sekio"
@@ -23,7 +23,7 @@ in
     isNormalUser = true;
     uid = 1000;
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGTRkzKhiDza+ClGzQcY8Tvsp5+2UhqVUg3Oie26ygy2 gabehoban@pc_baymax"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGTRkzKhiDza+ClGzQcY8Tvsp5+2UhqVUg3Oie26ygy2 gabehoban@baymax"
     ];
     shell = if checkHostname "${config.networking.hostName}" workstations then pkgs.zsh else pkgs.bash;
     extraGroups = [

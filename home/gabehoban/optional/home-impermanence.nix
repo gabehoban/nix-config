@@ -13,7 +13,7 @@
         directories = [
           "Documents"
           "Downloads"
-          "Code"
+          "repos"
           ".local/bin"
           ".local/share/nix"
           ".ssh"

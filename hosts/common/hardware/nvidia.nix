@@ -6,6 +6,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    cudaPackages.cudatoolkit
     egl-wayland
     libGL
     libglvnd
@@ -23,7 +24,12 @@
   ];
 
   # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver = {
+    videoDrivers = [ "nvidia" ];
+    deviceSection = ''
+      Option "Coolbits" "28"
+    '';
+  };
 
   hardware = {
     nvidia = {

@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
-  programs._1password = {
-    enable = true;
-  };
+  environment.systemPackages = with pkgs; [
+    _1password
+    _1password-gui
+  ];
 }
