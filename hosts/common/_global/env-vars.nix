@@ -1,5 +1,4 @@
 {
-
   environment = {
     variables = {
       EDITOR = "vim";
@@ -12,5 +11,4 @@
       home-rebuild = "home-manager switch --flake '/home/gabehoban/Repositories/nixos-config/#gabehoban@'$(hostname)";
     };
   };
-
 }

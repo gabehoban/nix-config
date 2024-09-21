@@ -1,16 +1,13 @@
 { pkgs, ... }:
 {
 
-  home.packages = (
-    with pkgs.gnomeExtensions;
-    [
-      dash-to-dock
-      dash-to-panel
-      vitals
-      user-themes
-      tray-icons-reloaded
-    ]
-  );
+  home.packages = with pkgs.gnomeExtensions; [
+    dash-to-dock
+    dash-to-panel
+    vitals
+    user-themes
+    tray-icons-reloaded
+  ];
 
   gtk = {
     enable = true;

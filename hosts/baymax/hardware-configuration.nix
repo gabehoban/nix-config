@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   modulesPath,
   ...
 }:
@@ -10,7 +9,7 @@
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   boot = {
-    kernelModules = [ 
+    kernelModules = [
       "kvm-intel"
       "debugfs=off"
       "page_alloc.shuffle=1"

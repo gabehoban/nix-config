@@ -1,11 +1,4 @@
-{
-  inputs,
-  lib,
-  config,
-  pkgs,
-  outputs,
-  ...
-}:
+{ config, outputs, ... }:
 {
 
   imports = [
@@ -14,6 +7,8 @@
     ./optional/desktop-packages.nix
     ./optional/terminator.nix
     ./optional/zsh.nix
+    ./optional/vscode-extensions.nix
+    ./optional/vscode-settings.nix
     ./optional/security-tooling.nix
   ];
 
@@ -21,7 +16,7 @@
     overlays = [ outputs.overlays.unstable-packages ];
     config = {
       allowUnfree = true;
-      allowUnfreePredicate = (_: true);
+      allowUnfreePredicate = _: true;
     };
   };
 

@@ -1,4 +1,4 @@
-{ config, ... }:
+_:
 
 let
   tr_secrets = builtins.fromJSON (builtins.readFile ../../../../../../secrets/git_crypt_traefik.json);

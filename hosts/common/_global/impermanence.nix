@@ -1,10 +1,4 @@
-{
-  lib,
-  inputs,
-  config,
-  ...
-}:
-{
+_: {
   # Taken from Misterio77's config
 
   environment.persistence = {

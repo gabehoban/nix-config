@@ -7,11 +7,6 @@
 
 let
   workstations = [ "baymax" ];
-  servers = [
-    "rpi-casio"
-    "rpi-sekio"
-    "rpi-skyio"
-  ];
 
   checkHostname = hostname: hostnameList: lib.elem hostname hostnameList;
 in

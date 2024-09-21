@@ -1,7 +1,7 @@
-{ pkgs, ... }:
-{
-  environment.systemPackages = with pkgs; [
-    _1password
-    _1password-gui
-  ];
+_: {
+  programs._1password.enable = true;
+  programs._1password-gui = {
+    enable = true;
+    polkitPolicyOwners = [ "gabehoban" ];
+  };
 }

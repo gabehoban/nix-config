@@ -25,7 +25,7 @@
       gnome-characters
       totem
       tali
-      iagno 
+      iagno
       hitori
       atomix
     ]);

@@ -1,25 +1,10 @@
-{ config, pkgs, ... }:
-let
-  lock-false = {
-    Value = false;
-    Status = "locked";
-  };
-  lock-true = {
-    Value = true;
-    Status = "locked";
-  };
-  lock-empty-string = {
-    Value = "";
-    Status = "locked";
-  };
-in {
+{ pkgs, ... }:
+{
   programs = {
     # - https://mozilla.github.io/policy-templates/
     firefox = {
       enable = true;
-      languagePacks = [
-        "en-US"
-      ];
+      languagePacks = [ "en-US" ];
       package = pkgs.firefox;
       preferences = {
         "browser.crashReports.unsubmittedCheck.autoSubmit2" = false;
@@ -144,8 +129,12 @@ in {
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/enterprise-policy-generator/latest.xpi";
             installation_mode = "force_installed";
           };
-          "{2adf0361-e6d8-4b74-b3bc-3f450e8ebb69}" = {
-            install_url = "https://addons.mozilla.org/firefox/downloads/latest/catppuccin-mocha-blue-git/latest.xpi";
+          "{f4c9e1d6-6630-4600-ad50-d223eab7f3e7}" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/nord-firefox/latest.xpi";
+            installation_mode = "force_installed";
+          };
+          "{d634138d-c276-4fc8-924b-40a0ea21d284}" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/1password-x-password-manager/latest.xpi";
             installation_mode = "force_installed";
           };
         };

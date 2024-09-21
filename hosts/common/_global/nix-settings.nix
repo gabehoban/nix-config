@@ -39,7 +39,10 @@
   };
 
   nixpkgs = {
-    overlays = [ outputs.overlays.unstable-packages ];
+    overlays = [
+      inputs.nix-vscode-extensions.overlays.default
+      outputs.overlays.unstable-packages
+    ];
     config = {
       allowUnfree = true;
     };

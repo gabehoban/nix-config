@@ -1,10 +1,4 @@
-{
-  lib,
-  pkgs,
-  config,
-  outputs,
-  ...
-}:
+{ pkgs, config, ... }:
 {
   services.tailscale.useRoutingFeatures = "server";
   # enable ip forwarding for TS Router.

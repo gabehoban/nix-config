@@ -1,6 +1,4 @@
 {
-  inputs,
-  lib,
   config,
   pkgs,
   outputs,
@@ -21,7 +19,7 @@
     overlays = [ outputs.overlays.unstable-packages ];
     config = {
       allowUnfree = true;
-      allowUnfreePredicate = (_: true);
+      allowUnfreePredicate = _: true;
     };
   };
 

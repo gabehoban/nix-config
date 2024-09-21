@@ -1,7 +1,7 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 {
   services.desktopManager.cosmic.enable = true;
   services.displayManager.cosmic-greeter.enable = true;
 
-  environment.systemPackages = (with pkgs; [ unstable.zafiro-icons ]);
+  environment.systemPackages = with pkgs; [ unstable.zafiro-icons ];
 }

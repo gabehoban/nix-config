@@ -1,11 +1,4 @@
-{
-  inputs,
-  lib,
-  config,
-  pkgs,
-  outputs,
-  ...
-}:
+{ ... }:
 {
   imports = [
     ./git.nix

@@ -1,12 +1,4 @@
-{
-  inputs,
-  lib,
-  config,
-  pkgs,
-  outputs,
-  ...
-}:
-{
+_: {
   home = {
     persistence = {
       "/persist/home/gabehoban" = {

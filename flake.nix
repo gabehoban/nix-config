@@ -12,6 +12,8 @@
     impermanence.url = "github:nix-community/impermanence";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs-unstable";
     nixos-cosmic = {
       url = "github:lilyinstarlight/nixos-cosmic";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -24,10 +26,10 @@
       nixpkgs,
       home-manager,
       hardware,
-      nix-colors,
       sops-nix,
       impermanence,
       disko,
+      nix-formatter-pack,
       nixos-cosmic,
       ...
     }@inputs:
@@ -39,32 +41,16 @@
         impermanence.nixosModules.impermanence
         sops-nix.nixosModules.sops
       ];
-
-      homeManagerServerModule = [
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = {
-            inherit inputs outputs;
-          };
-          home-manager.users.gabehoban = {
-            # Import impermanence to home-manager
-            imports = [
-              (impermanence + "/home-manager.nix")
-              ./home/gabehoban/server.nix
-            ];
-          };
-          home-manager.backupFileExtension = "bak";
-        }
-      ];
-
     in
-    rec {
+    {
       overlays = import ./overlays/unstable-pkgs.nix { inherit inputs; };
+
+      environment.systemPackages = [ nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style ];
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
 
       # NixOS Configs
       nixosConfigurations = {
-        # Main Desktop 
+        # Main Desktop
         "baymax" = nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit inputs outputs;
@@ -99,7 +85,6 @@
         #     ./hosts/maul/configuration.nix
         #   ];
         # };
-
       };
     };
 }
