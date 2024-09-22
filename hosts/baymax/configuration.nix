@@ -1,4 +1,5 @@
-_: {
+{ inputs, vars, ... }:
+{
   imports = [
     ./hardware-configuration.nix
     ../../disko/baymax.nix
@@ -18,13 +19,20 @@ _: {
     ../../modules/nixos/system/time
     ../../modules/nixos/system/environment
     ../../modules/nixos/system/impermanence
-    # Security
-    ../../modules/nixos/security
-    # Services
-    ../../modules/nixos/services
-    # User
-    ../../modules/nixos/user
   ];
+
+  home-manager = {
+    useUserPackages = true;
+    users.${vars.username} = {
+      imports = [
+        inputs.nix-index-database.hmModules.nix-index
+        ../../modules/home/user
+        ../../modules/home/programs/terminal
+        ../../modules/home/programs/graphical
+        ../../modules/home/programs/wms/gnome.nix
+      ];
+    };
+  };
 
   networking.hostName = "baymax";
   networking.networkmanager.enable = true;

@@ -1,5 +1,12 @@
-{ lib, pkgs, ... }:
 {
+  inputs,
+  lib,
+  pkgs,
+  ...
+}:
+{
+  imports = [ inputs.lanzaboote.nixosModules.lanzaboote ];
+
   environment.systemPackages = [ pkgs.sbctl ];
   # Lanzaboote currently replaces the systemd-boot module.
   # This setting is usually set to true in configuration.nix

@@ -1,10 +1,13 @@
 {
+  inputs,
   lib,
   config,
   pkgs,
   ...
 }:
 {
+  imports = [ inputs.hardware.nixosModules.common-gpu-nvidia-nonprime ];
+
   boot.blacklistedKernelModules = [ "nouveau" ];
 
   services.xserver = {

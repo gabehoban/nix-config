@@ -38,12 +38,6 @@
     }@inputs:
     let
       inherit (self) outputs;
-
-      defaultModules = [
-        disko.nixosModules.disko
-        impermanence.nixosModules.impermanence
-        lanzaboote.nixosModules.lanzaboote
-      ];
     in
     {
       overlays = import ./overlays/unstable-pkgs.nix { inherit inputs; };
@@ -54,43 +48,36 @@
       # NixOS Configs
       nixosConfigurations = {
         # Main Desktop
-        "baymax" = nixpkgs.lib.nixosSystem {
+        "baymax" = nixpkgs.lib.nixosSystem rec {
           specialArgs = {
             inherit inputs outputs;
+            vars = {
+              username = "gabehoban";
+            };
           };
           system = "x86_64-linux";
-          modules = defaultModules ++ [
+          modules = [
             ./hosts/baymax/configuration.nix
-            nixos-cosmic.nixosModules.default
-            hardware.nixosModules.common-gpu-nvidia-nonprime
             home-manager.nixosModules.home-manager
-            {
-              home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = {
-                inherit inputs outputs;
-              };
-              home-manager.users.gabehoban = {
-                imports = [
-                  inputs.nix-index-database.hmModules.nix-index
-                  ./modules/home/user
-
-                  ./modules/home/programs/terminal
-                  ./modules/home/programs/graphical
-                  ./modules/home/programs/wms/gnome.nix
-                ];
-              };
-            }
+            { home-manager.extraSpecialArgs = specialArgs; }
           ];
         };
 
-        # Backup Server
-        # "maul" = nixpkgs.lib.nixosSystem {
-        #   specialArgs = {inherit inputs outputs;};
-        #   system = "x86_64-linux";
-        #   modules = defaultModules ++ homeManagerServerModule ++ [
-        #     ./hosts/maul/configuration.nix
-        #   ];
-        # };
+        # ADS-B Server
+        "skyio" = nixpkgs.lib.nixosSystem rec {
+          specialArgs = {
+            inherit inputs outputs;
+            vars = {
+              username = "gabehoban";
+            };
+          };
+          system = "aarch64-linux";
+          modules = [
+            ./hosts/skyio/configuration.nix
+            home-manager.nixosModules.home-manager
+            { home-manager.extraSpecialArgs = specialArgs; }
+          ];
+        };
       };
     };
 }

@@ -35,6 +35,7 @@
         "firefox.desktop"
         "Alacritty.desktop"
         "code.desktop"
+        "steam.desktop"
       ];
       enabled-extensions = [
         "user-theme@gnome-shell-extensions.gcampax.github.com"
@@ -49,6 +50,8 @@
     };
 
     "org/gnome/shell/extensions/dash-to-dock" = {
+      dock-fixed = true;
+      dock-position = "BOTTOM";
       running-indicator-style = "DOTS";
     };
 

@@ -1,8 +1,8 @@
-{ outputs, ... }:
+{ outputs, vars, ... }:
 {
   home = {
-    username = "gabehoban";
-    homeDirectory = "/home/gabehoban";
+    username = "${vars.username}";
+    homeDirectory = "/home/${vars.username}";
 
     shellAliases = {
       # nix specific aliases
