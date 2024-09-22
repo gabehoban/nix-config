@@ -1,0 +1,36 @@
+{ pkgs, ... }:
+{
+  environment.systemPackages = with pkgs; [
+    age
+    bat
+    coreutils
+    curl
+    dnsutils
+    exfatprogs
+    file
+    findutils
+    git
+    host
+    htop
+    jq
+    killall
+    lsof
+    nmap
+    pciutils
+    pv
+    ripgrep
+    sops
+    ssh-to-age
+    tldr
+    tmux
+    tree
+    unzip
+    usbutils
+    util-linux
+    vim
+    wget
+    whois
+    xclip
+    zsh
+  ];
+}

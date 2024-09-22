@@ -8,12 +8,15 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     hardware.url = "github:nixos/nixos-hardware/master";
     nix-colors.url = "github:misterio77/nix-colors";
-    sops-nix.url = "github:Mic92/sops-nix";
     impermanence.url = "github:nix-community/impermanence";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    lanzaboote.url = "github:nix-community/lanzaboote/v0.4.1";
+    lanzaboote.inputs.nixpkgs.follows = "nixpkgs-unstable";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    nix-index-database.url = "github:nix-community/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs-unstable";
     nixos-cosmic = {
       url = "github:lilyinstarlight/nixos-cosmic";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -26,10 +29,10 @@
       nixpkgs,
       home-manager,
       hardware,
-      sops-nix,
       impermanence,
       disko,
-      nix-formatter-pack,
+      lanzaboote,
+      nix-index-database,
       nixos-cosmic,
       ...
     }@inputs:
@@ -39,7 +42,7 @@
       defaultModules = [
         disko.nixosModules.disko
         impermanence.nixosModules.impermanence
-        sops-nix.nixosModules.sops
+        lanzaboote.nixosModules.lanzaboote
       ];
     in
     {
@@ -57,8 +60,8 @@
           };
           system = "x86_64-linux";
           modules = defaultModules ++ [
-            nixos-cosmic.nixosModules.default
             ./hosts/baymax/configuration.nix
+            nixos-cosmic.nixosModules.default
             hardware.nixosModules.common-gpu-nvidia-nonprime
             home-manager.nixosModules.home-manager
             {
@@ -67,10 +70,13 @@
                 inherit inputs outputs;
               };
               home-manager.users.gabehoban = {
-                # Import impermanence to home-manager
                 imports = [
-                  # (impermanence + "/home-manager.nix")
-                  ./home/gabehoban/baymax.nix
+                  inputs.nix-index-database.hmModules.nix-index
+                  ./modules/home/user
+
+                  ./modules/home/programs/terminal
+                  ./modules/home/programs/graphical
+                  ./modules/home/programs/wms/gnome.nix
                 ];
               };
             }

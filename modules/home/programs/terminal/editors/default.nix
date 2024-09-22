@@ -1,0 +1,6 @@
+_: {
+  imports = [
+    ./micro
+    ./neovim
+  ];
+}
