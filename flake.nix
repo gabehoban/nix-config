@@ -28,12 +28,6 @@
       self,
       nixpkgs,
       home-manager,
-      hardware,
-      impermanence,
-      disko,
-      lanzaboote,
-      nix-index-database,
-      nixos-cosmic,
       ...
     }@inputs:
     let
