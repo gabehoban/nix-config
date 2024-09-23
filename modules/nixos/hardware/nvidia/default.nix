@@ -40,18 +40,16 @@
 
   hardware = {
     nvidia = {
-      package = config.boot.kernelPackages.nvidiaPackages.beta;
+      package = config.boot.kernelPackages.nvidiaPackages.latest;
       modesetting.enable = lib.mkDefault true;
 
       powerManagement = {
-        enable = lib.mkDefault true;
+        enable = lib.mkDefault false;
         finegrained = lib.mkDefault false;
       };
 
       open = lib.mkDefault false;
       nvidiaSettings = false;
-      nvidiaPersistenced = true;
-      forceFullCompositionPipeline = true;
     };
 
     nvidia-container-toolkit.enable = true;

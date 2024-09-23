@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ inputs, lib, ... }:
 let
   pagerArgs = [
     "--RAW-CONTROL-CHARS" # Only allow colors.
@@ -9,6 +9,19 @@ let
   ];
 in
 {
+  system.autoUpgrade = {
+    enable = true;
+    flake = inputs.self.outPath;
+    flags = [
+      "--update-input"
+      "nixpkgs"
+      "--no-write-lock-file"
+      "-L" # print build logs
+    ];
+    dates = "02:00";
+    randomizedDelaySec = "45min";
+  };
+
   environment = {
     sessionVariables = {
       XDG_BIN_HOME = "$HOME/.local/bin";
