@@ -4,7 +4,7 @@
     ./hardware-configuration.nix
     ../../disko/baymax.nix
     # Desktop
-    ../../modules/shared
+    ../../modules/nixos
     ../../modules/nixos/desktops/gnome.nix
     # Hardware
     ../../modules/nixos/hardware/audio

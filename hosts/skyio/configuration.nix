@@ -1,8 +1,19 @@
-{ inputs, vars, ... }:
+{
+  inputs,
+  vars,
+  pkgs,
+  ...
+}:
 {
   imports = [
     inputs.hardware.nixosModules.raspberry-pi-4
     ./hardware-configuration.nix
+  ];
+
+  console.enable = false;
+  environment.systemPackages = with pkgs; [
+    libraspberrypi
+    raspberrypi-eeprom
   ];
 
   home-manager = {

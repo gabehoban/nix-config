@@ -1,7 +1,5 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 {
-
-  hardware.enableRedistributableFirmware = true;
 
   boot = {
     kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
@@ -21,6 +19,18 @@
       makeModulesClosure = x: super.makeModulesClosure (x // { allowMissing = true; });
     })
   ];
+
+  hardware = {
+    raspberry-pi."4" = {
+      apply-overlays-dtmerge.enable = true;
+      fkms-3d.enable = true;
+    };
+    deviceTree = {
+      enable = true;
+    };
+    bluetooth.enable = false;
+    enableRedistributableFirmware = lib.mkForce false;
+  };
 
   fileSystems = {
     "/" = {

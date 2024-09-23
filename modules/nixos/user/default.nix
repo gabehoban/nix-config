@@ -1,10 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, vars, ... }:
 {
   programs.zsh = {
     enable = true;
   };
   users.mutableUsers = false;
-  users.users.gabehoban = {
+  users.users.${vars.username} = {
     hashedPassword = "$7$CU..../....O.oYdMuk1KNKYyTH5NQI0.$osnkjWYRy8VEV2nKeTV4.jtBoX5qd0O7LvuJDbkSBU/";
     isNormalUser = true;
     uid = 1000;
