@@ -100,7 +100,7 @@ in
   systemd.timers."nix-cache-build" = {
     wantedBy = [ "timers.target" ];
     timerConfig = {
-      OnCalendar = "daily";
+      OnCalendar = "*-*-* *:00:00";
       Unit = "nix-cache-build.service";
     };
   };
