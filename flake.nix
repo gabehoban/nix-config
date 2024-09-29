@@ -49,11 +49,6 @@
       url = "github:nix-community/nix-vscode-extensions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    ssh-keys = {
-      url = "https://github.com/gabehoban.keys";
-      flake = false;
-    };
   };
 
   outputs =

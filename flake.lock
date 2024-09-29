@@ -857,7 +857,6 @@
         "nix-vscode-extensions": "nix-vscode-extensions",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_3",
-        "ssh-keys": "ssh-keys",
         "treefmt-nix": "treefmt-nix"
       }
     },
@@ -901,18 +900,6 @@
         "owner": "oxalica",
         "repo": "rust-overlay",
         "type": "github"
-      }
-    },
-    "ssh-keys": {
-      "flake": false,
-      "locked": {
-        "narHash": "sha256-N+TR0wLJ04yFOOzHn/lRm9Dw2P2YQyDu3C/bsrE2yYc=",
-        "type": "file",
-        "url": "https://github.com/gabehoban.keys"
-      },
-      "original": {
-        "type": "file",
-        "url": "https://github.com/gabehoban.keys"
       }
     },
     "systems": {
