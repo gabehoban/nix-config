@@ -4,6 +4,7 @@ _: {
     polkit.enable = true;
   };
 
+  services.openssh.settings.LogLevel = "VERBOSE";
   services.fail2ban = {
     enable = true;
     maxretry = 3;
@@ -21,21 +22,10 @@ _: {
     };
   };
   services.clamav = {
-    daemon = {
-      enable = true;
-    };
-
-    fangfrisch = {
-      enable = true;
-    };
-
-    scanner = {
-      enable = true;
-    };
-
-    updater = {
-      enable = true;
-    };
+    daemon.enable = true;
+    fangfrisch.enable = true;
+    scanner.enable = true;
+    updater.enable = true;
   };
 
   # Security tweaks stolen from @hlissner
