@@ -31,7 +31,7 @@ in
         recommendedProxySettings = true;
         recommendedZstdSettings = true;
 
-        clientMaxBodySize = mkDefault "512m";
+        clientMaxBodySize = mkDefault "4G";
         serverNamesHashBucketSize = 1024;
         appendHttpConfig = ''
           # set the maximum size of the headers hash tables to 1024 bytes
