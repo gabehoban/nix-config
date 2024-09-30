@@ -40,6 +40,13 @@ in
       api-endpoint = "https://cache.lab4.cc/";
       database.url = "postgres://atticd?host=/run/postgresql&user=atticd";
 
+      storage = {
+        type = "s3";
+        bucket = "nix-cache";
+        region = "us-east-1";
+        endpoint = "http://discovery.gabehoban.lab4.cc:9000";
+      };
+
       # Data chunking
       #
       # Warning: If you change any of the values here, it will be
