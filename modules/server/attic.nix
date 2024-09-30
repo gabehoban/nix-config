@@ -26,10 +26,7 @@ let
 in
 {
   age.secrets.attic-creds.rekeyFile = "${inputs.self.outPath}/secrets/attic-creds.age";
-  age.secrets.attic-admin-token = {
-    rekeyFile = "${inputs.self.outPath}/secrets/attic-admin-token.age";
-    owner = "atticd";
-  };
+  age.secrets.attic-admin-token.rekeyFile = "${inputs.self.outPath}/secrets/attic-admin-token.age";
 
   services.atticd = {
     enable = true;
@@ -44,7 +41,7 @@ in
         type = "s3";
         bucket = "nix-cache";
         region = "us-east-1";
-        endpoint = "http://discovery.gabehoban.lab4.cc:9000";
+        endpoint = "http://10.32.40.10:9000";
       };
 
       # Data chunking
