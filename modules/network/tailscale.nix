@@ -13,7 +13,10 @@
   services.tailscale = {
     enable = true;
     authKeyFile = config.age.secrets.tailscale.path;
-    extraUpFlags = [ "--login-server=https://headscale.lab4.cc" ];
+    extraUpFlags = [
+      "--login-server=https://headscale.lab4.cc"
+      "--accept-routes"
+    ];
   };
   networking.firewall.allowedUDPPorts = [ 41641 ];
 }

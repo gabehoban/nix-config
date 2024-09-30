@@ -55,6 +55,11 @@
     };
   };
 
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = 1;
+    "net.ipv6.conf.all.forwarding" = 1;
+  };
+
   # Derp server
   networking.firewall.allowedUDPPorts = [ 3478 ];
   environment.systemPackages = [ config.services.headscale.package ];
