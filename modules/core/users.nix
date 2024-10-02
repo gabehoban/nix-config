@@ -8,13 +8,14 @@
 {
   programs.fish.enable = true;
 
-  age.secrets.user-password.rekeyFile = "${inputs.self.outPath}/secrets/user-password.age";
+  #age.secrets.user-password.rekeyFile = "${inputs.self.outPath}/secrets/user-password.age";
   users.users = {
     root.hashedPassword = "!";
     ${user} = {
       isNormalUser = true;
       shell = pkgs.fish;
-      hashedPasswordFile = config.age.secrets.user-password.path;
+      hashedPassword = !!todo;
+      #hashedPasswordFile = config.age.secrets.user-password.path;
       extraGroups = [
         "networkmanager"
         "wheel"

@@ -17,7 +17,6 @@
     ../../modules/services
   ];
 
-  networking.hostId = "007f0200";
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
   chaotic.scx.enable = true;
 }

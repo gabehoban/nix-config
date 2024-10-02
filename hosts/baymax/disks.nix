@@ -1,109 +1,119 @@
-{
-  inputs,
-  lib,
-  pkgs,
-  ...
-}:
-{
-  imports = [ inputs.disko.nixosModules.disko ];
+_: {
+  # For impermanence
+  boot.initrd.systemd.services.rollback = {
+    description = "Rollback BTRFS root subvolume to a pristine state";
+    unitConfig.DefaultDependencies = "no";
+    serviceConfig.Type = "oneshot";
+    wantedBy = [ "initrd.target" ];
+    after = [ "systemd-cryptsetup@crypted.service" ];
+    before = [ "sysroot.mount" ];
 
-  services.zfs = {
-    autoScrub.enable = true;
-    trim.enable = true;
+    script = ''
+      vgchange -ay pool
+      mkdir -p /btrfs_tmp
+      mount /dev/pool/root /btrfs_tmp
+
+      if [[ -e /btrfs_tmp/root ]]; then
+          mkdir -p /btrfs_tmp/old_roots
+          timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%-d_%H:%M:%S")
+          mv /btrfs_tmp/root "/btrfs_tmp/old_roots/$timestamp"
+      fi
+
+      delete_subvolume_recursively() {
+          IFS=$'\n'
+          for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
+              delete_subvolume_recursively "/btrfs_tmp/$i"
+          done
+          btrfs subvolume delete "$1"
+      }
+
+      for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30); do
+          delete_subvolume_recursively "$i"
+      done
+
+      btrfs subvolume create /btrfs_tmp/root
+      umount /btrfs_tmp
+    '';
+  };
+
+  fileSystems = {
+    "/persist" = {
+      neededForBoot = true;
+    };
   };
 
   disko.devices = {
     disk = {
-      disk0 = {
+      main = {
         type = "disk";
         device = "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_500GB_S5H7NS1N512889D";
+
         content = {
           type = "gpt";
+
           partitions = {
-            ESP = {
-              size = "512M";
+            esp = {
+              size = "5G";
               type = "EF00";
+
               content = {
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
+
+                mountOptions = [ "defaults" "umask=0077" ];
               };
             };
-            rpool = {
+
+            luks = {
               size = "100%";
+
               content = {
-                type = "zfs";
-                pool = "rpool";
+                type = "luks";
+                name = "crypted";
+
+                content = {
+                  type = "lvm_pv";
+                  vg   = "pool";
+                };
               };
             };
           };
         };
       };
     };
-    zpool = {
-      rpool = {
-        type = "zpool";
-        options = {
-          ashift = "12";
-          cachefile = "none";
-        };
-        rootFsOptions = {
-          acltype = "posixacl";
-          atime = "off";
-          canmount = "off";
-          compression = "zstd";
-          dnodesize = "auto";
-          normalization = "formD";
-          xattr = "sa";
-          mountpoint = "none";
-        };
-        datasets = {
-          "local/root" = {
-            type = "zfs_fs";
-            mountpoint = "/";
-            mountOptions = [ "zfsutil" ];
 
-            postCreateHook = ''
-              zfs snapshot rpool/local/root@blank
-            '';
-          };
-          "local/nix" = {
-            type = "zfs_fs";
-            mountpoint = "/nix";
-            mountOptions = [ "zfsutil" ];
-          };
-          "safe/persist" = {
-            type = "zfs_fs";
-            mountpoint = "/persist";
-            mountOptions = [ "zfsutil" ];
+    lvm_vg = {
+      pool = {
+        type = "lvm_vg";
+
+        lvs = {
+          root = {
+            size = "100%FREE";
+
+            content = {
+              type = "btrfs";
+              extraArgs = [ "-f" ];
+
+              subvolumes = {
+                "/root" = {
+                  mountpoint = "/";
+                };
+
+                "/persist" = {
+                  mountpoint   = "/persist";
+                  mountOptions = [ "compress=zstd" "subvol=persist" "noatime" ];
+                };
+
+                "/nix" = {
+                  mountpoint   = "/nix";
+                  mountOptions = [ "compress=zstd" "subvol=nix" "noatime" ];
+                };
+              };
+            };
           };
         };
       };
     };
-  };
-  fileSystems."/persist".neededForBoot = true;
-
-  boot.initrd.systemd.enable = lib.mkDefault true;
-  boot.initrd.systemd.services.rollback = {
-    description = "Rollback root filesystem to a pristine state on boot";
-    wantedBy = [ "initrd.target" ];
-    after = [ "zfs-import-rpool.service" ];
-    before = [ "sysroot.mount" ];
-    path = with pkgs; [ zfs ];
-    unitConfig.DefaultDependencies = "no";
-    serviceConfig.Type = "oneshot";
-    script = ''
-      zfs rollback -r rpool/local/root@blank && echo "  >> >> rollback complete << <<"
-    '';
-  };
-
-  fileSystems."/games" = {
-    device = "/dev/disk/by-id/nvme-WD_BLACK_SN850X_1000GB_232758800485_1-part1";
-    fsType = "xfs";
-    options = [
-      "defaults"
-      "discard"
-      "noatime"
-    ];
   };
 }

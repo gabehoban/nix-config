@@ -10,7 +10,7 @@
     ./disks.nix
   ];
 
-  #boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.enable = true;
 
   boot.initrd.availableKernelModules = [
     "xhci_pci"
@@ -21,16 +21,9 @@
     "sd_mod"
   ];
   boot.initrd.kernelModules = [ ];
-  boot.initrd.supportedFilesystems = [ "zfs" ];
 
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-  boot.supportedFilesystems = [ "zfs" ];
-
-  boot.zfs = {
-    forceImportRoot = false;
-    devNodes = lib.mkDefault "/dev/disk/by-id";
-  };
 
   services.fstrim.enable = true;
   networking.useDHCP = lib.mkDefault true;
