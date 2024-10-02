@@ -28,9 +28,10 @@
     daemonIOSchedClass = "idle";
 
     settings = {
-      extra-experimental-features = [
-        "flakes"
+      experimental-features = [
         "nix-command"
+        "flakes"
+        "ca-derivations"
       ];
       warn-dirty = false;
       builders-use-substitutes = true;

@@ -1,7 +1,7 @@
 _: {
   imports = [
     ./networkmanager.nix
-    # ./tailscale.nix
+    ./tailscale.nix
     # ./syncthing.nix     #TODO
   ];
 }

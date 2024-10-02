@@ -6,7 +6,7 @@ _: {
     ./gaming.nix
     ./gnome.nix
     ./impermanence.nix
-    # ./lanzaboote.nix
+    ./lanzaboote.nix
     ./pipewire.nix
     ./quiet.nix
     ./yubikey.nix

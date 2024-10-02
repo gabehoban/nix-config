@@ -1,4 +1,8 @@
-_: {
+{ inputs, ... }:
+{
+
+  imports = [ inputs.disko.nixosModules.disko ];
+
   # For impermanence
   boot.initrd.systemd.services.rollback = {
     description = "Rollback BTRFS root subvolume to a pristine state";
@@ -44,7 +48,7 @@ _: {
 
   disko.devices = {
     disk = {
-      main = {
+      disk0 = {
         type = "disk";
         device = "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_500GB_S5H7NS1N512889D";
 
@@ -61,7 +65,10 @@ _: {
                 format = "vfat";
                 mountpoint = "/boot";
 
-                mountOptions = [ "defaults" "umask=0077" ];
+                mountOptions = [
+                  "defaults"
+                  "umask=0077"
+                ];
               };
             };
 
@@ -74,7 +81,7 @@ _: {
 
                 content = {
                   type = "lvm_pv";
-                  vg   = "pool";
+                  vg = "pool";
                 };
               };
             };
@@ -101,13 +108,21 @@ _: {
                 };
 
                 "/persist" = {
-                  mountpoint   = "/persist";
-                  mountOptions = [ "compress=zstd" "subvol=persist" "noatime" ];
+                  mountpoint = "/persist";
+                  mountOptions = [
+                    "compress=zstd"
+                    "subvol=persist"
+                    "noatime"
+                  ];
                 };
 
                 "/nix" = {
-                  mountpoint   = "/nix";
-                  mountOptions = [ "compress=zstd" "subvol=nix" "noatime" ];
+                  mountpoint = "/nix";
+                  mountOptions = [
+                    "compress=zstd"
+                    "subvol=nix"
+                    "noatime"
+                  ];
                 };
               };
             };
