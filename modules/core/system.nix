@@ -23,7 +23,7 @@
         tpm2-tss
         unar
         unzip
-        zfs
+        xfsprogs
         zip
       ]
       ++ [ inputs.agenix.packages.${system}.agenix ];

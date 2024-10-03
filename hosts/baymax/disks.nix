@@ -44,6 +44,10 @@
     "/persist" = {
       neededForBoot = true;
     };
+    "/games" = {
+      device = "/dev/disk/by-id/nvme-WD_BLACK_SN850X_1000GB_232758800485-part1";
+      fsType = "xfs";
+    };
   };
 
   disko.devices = {
