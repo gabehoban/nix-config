@@ -1,4 +1,4 @@
-{ config, inputs, ... }:
+{ inputs, ... }:
 let
   # https://pimalaya.org/himalaya/cli/latest/configuration/icloud-mail.html
   iCloudMailSettings = {
@@ -14,25 +14,24 @@ let
   };
 in
 {
-  home.shellAliases = {
+  programs.fish.shellAliases = {
     H = "himalaya";
     Hr = "himalaya message read";
-    Hd = "himalaya message delete";
-    Hs = "himalaya account sync";
+    Hd = "himalaya message delete && himalaya account sync";
+    Hs = "himalaya account sync && himalaya";
   };
 
   programs.himalaya = {
     enable = true;
   };
 
-  age.secrets.icloudMailPass.rekeyFile = "${inputs.self.outPath}/secrets/icloudMailPass.age";
   accounts.email.accounts = {
     "gabehoban@icloud.com" = iCloudMailSettings // {
       primary = true;
       realName = "Gabriel Hoban";
       address = "gabehoban@icloud.com";
       userName = "gabehoban@icloud.com";
-      passwordCommand = "cat ${config.age.secrets.icloudMailPass.path} | echo -n";
+      passwordCommand = "gpg --quiet --for-your-eyes-only --no-tty --decrypt ${inputs.self.outPath}/secrets/pgp-icloud-mail.asc";
       himalaya = {
         enable = true;
         settings.sync = {
