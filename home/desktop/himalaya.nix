@@ -17,7 +17,7 @@ in
   programs.fish.shellAliases = {
     H = "himalaya";
     Hr = "himalaya message read";
-    Hd = "himalaya message delete && himalaya account sync";
+    Hd = "himalaya message delete";
     Hs = "himalaya account sync && himalaya";
   };
 

@@ -1,7 +1,10 @@
 _: {
   imports = [
+    ./firewall
+    ./networking.nix
     ./networkmanager.nix
+    ./openssh.nix
+    ./resolved.nix
     ./tailscale.nix
-    # ./syncthing.nix     #TODO
   ];
 }

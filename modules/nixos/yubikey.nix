@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 {
   hardware.gpgSmartcards.enable = true;
 
@@ -23,7 +23,7 @@
   '';
 
   programs = {
-    ssh.startAgent = false;
+    ssh.startAgent = lib.mkForce false;
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;

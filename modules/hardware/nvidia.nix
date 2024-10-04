@@ -36,12 +36,13 @@
       __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     };
     systemPackages = with pkgs; [
-      vulkan-loader
-      vulkan-tools
+      cudatoolkit
+      egl-wayland
+      glxinfo
       libva
       libva-utils
-      glxinfo
-      egl-wayland
+      vulkan-loader
+      vulkan-tools
     ];
   };
 }

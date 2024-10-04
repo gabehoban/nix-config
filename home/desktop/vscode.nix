@@ -149,8 +149,8 @@ in
         github.vscode-pull-request-github
       ])
       ++ (with marketplace; [
-        arcticicestudio.nord-visual-studio-code
         antfu.icons-carbon
+        arcticicestudio.nord-visual-studio-code
         christian-kohler.path-intellisense
         editorconfig.editorconfig
         esbenp.prettier-vscode
@@ -171,6 +171,8 @@ in
         usernamehw.errorlens
         yzhang.markdown-all-in-one
       ])
-      ++ (with marketplace-release; [ eamodio.gitlens ]);
+      ++ (with marketplace-release; [
+        eamodio.gitlens
+      ]);
   };
 }

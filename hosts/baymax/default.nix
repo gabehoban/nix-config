@@ -11,7 +11,6 @@
 
     ../../modules/core
     ../../modules/nixos
-    ../../modules/virtualisation
     ../../modules/network
     ../../modules/hardware
     ../../modules/services

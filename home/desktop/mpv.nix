@@ -1,13 +1,5 @@
 { pkgs, ... }:
 {
-  services.plex-mpv-shim = {
-    enable = true;
-    settings = {
-      mpv_ext = true;
-      mpv_ext_no_ovr = true;
-      fullscreen = false;
-    };
-  };
   programs.mpv = {
     enable = true;
     bindings = {

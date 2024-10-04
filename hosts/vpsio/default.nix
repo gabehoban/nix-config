@@ -9,6 +9,6 @@ _: {
     ../../modules/server/nginx.nix
     ../../modules/server/postgres.nix
     ../../modules/server/attic.nix
-    ../../modules/server/headscale.nix
+    ../../modules/server/headscale
   ];
 }

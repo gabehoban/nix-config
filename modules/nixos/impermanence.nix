@@ -26,12 +26,12 @@ in
         "secureboot"
       ] (x: "/etc/${x}")
       ++ forEach [
-        "tailscale"
         "bluetooth"
+        "docker"
+        "libvirt"
         "nixos"
         "pipewire"
-        "libvirt"
-        "docker"
+        "tailscale"
       ] (x: "/var/lib/${x}")
       ++ forEach [
         "coredump"
