@@ -7,6 +7,7 @@
     usePredictableInterfaceNames = true;
     extraHosts = ''
       5.161.231.127 headscale.lab4.cc
+      10.32.40.101  minio.labrats.cc s3.labrats.cc
     '';
 
     nameservers = [

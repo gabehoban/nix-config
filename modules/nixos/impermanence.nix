@@ -18,6 +18,7 @@ in
         "/var/log"
         "/var/tmp"
         "/var/db/sudo"
+        "/var/cache/apparmore"
       ]
       ++ forEach [
         "NetworkManager"

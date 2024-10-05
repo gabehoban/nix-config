@@ -12,16 +12,7 @@ _: {
       "rd.udev.log_level=3"
       "udev.log_priority=3"
     ];
-    consoleLogLevel = 0;
-    initrd = {
-      verbose = false;
-      systemd = {
-        enable = true;
-        tpm2.enable = true;
-      };
-    };
     loader = {
-      timeout = 4;
       systemd-boot.configurationLimit = 5;
     };
   };
