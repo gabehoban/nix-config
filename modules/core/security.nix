@@ -11,6 +11,16 @@ _: {
     updater.enable = true;
   };
 
+  services.endlessh-go = {
+    enable = true;
+    port = 22;
+    prometheus = {
+      enable = true;
+      port = 2112;
+    };
+    openFirewall = true;
+  };
+
   # Security tweaks stolen from @hlissner
   boot.kernel.sysctl = {
     # The Magic SysRq key is a key combo that allows users connected to the
