@@ -41,7 +41,7 @@ in
         type = "s3";
         bucket = "nix-cache";
         region = "us-east-1";
-        endpoint = "http://10.32.40.10:9000";
+        endpoint = "http://discovery:9000";
       };
 
       # Data chunking
