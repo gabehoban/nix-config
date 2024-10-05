@@ -5,7 +5,6 @@
     inputs.agenix.nixosModules.default
     inputs.agenix-rekey.nixosModules.default
     ./gpg.nix
-    ./logrotate.nix
     ./nix.nix
     ./pki.nix
     ./secrets.nix
