@@ -5,9 +5,12 @@
     useDHCP = false;
     useNetworkd = true;
     usePredictableInterfaceNames = true;
+    extraHosts = ''
+      5.161.231.127 headscale.lab4.cc
+    '';
+
     nameservers = [
-      "10.32.40.51"
-      "10.32.40.52"
+      "9.9.9.9"
     ];
     search = [
       "lab4.cc"
