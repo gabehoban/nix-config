@@ -9,13 +9,6 @@ _: {
     rtkit.enable = true;
   };
 
-  services.clamav = {
-    daemon.enable = true;
-    fangfrisch.enable = true;
-    scanner.enable = true;
-    updater.enable = true;
-  };
-
   services.endlessh-go = {
     enable = true;
     port = 22;

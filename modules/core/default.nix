@@ -4,8 +4,6 @@
     inputs.home-manager.nixosModules.default
     inputs.agenix.nixosModules.default
     inputs.agenix-rekey.nixosModules.default
-    ./apparmor.nix
-    ./auditd.nix
     ./boot.nix
     ./documentation.nix
     ./gpg.nix

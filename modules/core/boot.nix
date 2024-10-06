@@ -71,8 +71,6 @@
       "kernel.sysrq" = 0;
       "net.ipv4.icmp_ignore_bogus_error_responses" = 1;
       "net.ipv4.tcp_rfc1337" = 1;
-      "vm.mmap_min_addr" = 65536;
-      "vm.mmap_rnd_bits" = 32;
 
       ## TCP optimization
       "net.ipv4.tcp_fastopen" = 3;

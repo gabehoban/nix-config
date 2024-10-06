@@ -7,7 +7,7 @@
   flake.deploy.nodes = {
     sekio = {
       hostname = "sekio.gabehoban.lab4.cc";
-      sshUser = "gabehoban";
+      sshUser = "root";
       sshOpts = [
         "-p"
         "30"
