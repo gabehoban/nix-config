@@ -8,6 +8,7 @@
 
     ../../modules/core
     ../../modules/network
+    ../../modules/server/blocky.nix
   ];
 
   environment.systemPackages = with pkgs; [

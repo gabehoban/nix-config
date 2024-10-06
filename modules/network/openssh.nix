@@ -20,7 +20,6 @@ in
       enable = true;
       openFirewall = true; # the ssh port(s) should be automatically passed to the firewall's allowedTCPports
       ports = [ 30 ]; # the port(s) openssh daemon should listen on
-      startWhenNeeded = true; # automatically start the ssh daemon when it's required
       settings = {
         PermitRootLogin = lib.mkForce "yes";
 

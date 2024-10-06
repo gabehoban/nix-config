@@ -5,7 +5,7 @@
     base_domain = "lab4.cc";
     domains = [ ];
     nameservers = [
-      "9.9.9.9"
+      "100.77.0.3"
     ];
   };
 }
