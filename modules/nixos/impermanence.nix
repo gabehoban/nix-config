@@ -63,7 +63,7 @@ in
           "rclone"
           "Yubico"
           "syncthing"
-          "fish"
+          "zsh"
           "vesktop"
           "obs-studio"
           "gh"
@@ -71,7 +71,6 @@ in
         ++ forEach [ "nix" ] (x: ".cache/${x}")
         ++ forEach [
           "Steam"
-          "fish"
           "direnv"
         ] (x: ".local/share/${x}")
         ++ [

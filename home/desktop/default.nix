@@ -2,7 +2,6 @@
 {
   imports = [
     ./alacritty.nix
-    ./himalaya.nix
     ./mpv.nix
     ./vscode.nix
     ./xdg.nix

@@ -4,10 +4,10 @@
     ./git.nix
     ./gpg.nix
     ./fastfetch.nix
-    ./fish.nix
     ./direnv.nix
     ./lazygit.nix
-    ./zellij.nix
+    ./starship.nix
+    ./zsh.nix
   ];
 
   home.packages = with pkgs; [

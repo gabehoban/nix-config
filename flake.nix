@@ -14,6 +14,11 @@
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
 
+    deploy-rs = {
+      url = "github:serokell/deploy-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     agenix = {
       url = "github:ryantm/agenix";
       inputs.darwin.follows = "";
@@ -63,7 +68,7 @@
         inputs.treefmt-nix.flakeModule
         inputs.agenix-rekey.flakeModule
         ./hosts
-        # ./deploy.nix
+        ./deploy.nix
       ];
 
       perSystem =
