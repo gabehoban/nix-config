@@ -43,6 +43,23 @@
         ];
       };
 
+      # RPI4 server
+      sekio = nixosSystem {
+        inherit specialArgs;
+        modules = [
+          inputs.nixos-hardware.nixosModules.raspberry-pi-4
+          { networking.hostName = "sekio"; }
+          ./sekio
+
+          {
+            home-manager = {
+              users.${user}.imports = homeImports.sekio;
+              extraSpecialArgs = specialArgs;
+            };
+          }
+        ];
+      };
+
       macbook = nixosSystem {
         inherit specialArgs;
         modules = [

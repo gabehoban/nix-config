@@ -7,7 +7,7 @@
     ./hardware-configuration.nix
 
     ../../modules/core
-    # ../../modules/network
+    ../../modules/network
   ];
 
   environment.systemPackages = with pkgs; [

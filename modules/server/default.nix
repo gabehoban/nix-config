@@ -11,13 +11,6 @@
     enableNg = lib.mkDefault true;
   };
 
-  documentation = {
-    enable = lib.mkDefault false;
-    info.enable = lib.mkDefault false;
-    man.enable = lib.mkDefault false;
-    nixos.enable = lib.mkDefault false;
-  };
-
   xdg = {
     autostart.enable = lib.mkDefault false;
     icons.enable = lib.mkDefault false;

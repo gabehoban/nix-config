@@ -1,4 +1,10 @@
-{ inputs, user, ... }:
+{
+  config,
+  inputs,
+  user,
+  pkgs,
+  ...
+}:
 {
   nixpkgs = {
     config = {
@@ -29,13 +35,21 @@
 
     settings = {
       experimental-features = [
-        "nix-command"
         "flakes"
+        "nix-command"
+        "recursive-nix"
         "ca-derivations"
+        "auto-allocate-uids"
+        "cgroups"
+        "repl-flake"
+        "no-url-literals"
+        "dynamic-derivations"
       ];
       warn-dirty = false;
       builders-use-substitutes = true;
       keep-outputs = true;
+      keep-derivations = true;
+      use-cgroups = pkgs.stdenv.isLinux;
       allowed-users = [ "@wheel" ];
       trusted-users = [
         "root"
@@ -52,6 +66,12 @@
         "main:swo2iC3lOlH6MAGDdH8F3YglXfxMCEd9oksQg++QbS8="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
+      ];
+      system-features = [
+        "nixos-test"
+        "kvm"
+        "recursive-nix"
+        "big-parallel"
       ];
     };
   };
