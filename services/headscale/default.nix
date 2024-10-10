@@ -28,7 +28,6 @@
         grpc_allow_insecure = false;
 
         server_url = "https://headscale.labrats.cc";
-        base_domain = "lab4.cc";
         tls_cert_path = null;
         tls_key_path = null;
 
