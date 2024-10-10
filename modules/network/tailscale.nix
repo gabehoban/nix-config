@@ -20,7 +20,7 @@
     useRoutingFeatures = lib.mkDefault "both";
     authKeyFile = config.age.secrets.tailscale.path;
     extraUpFlags = [
-      "--login-server=https://headscale.lab4.cc"
+      "--login-server=https://headscale.labrats.cc"
       "--advertise-tags=tag:client"
       "--accept-routes"
       "--operator=${user}"

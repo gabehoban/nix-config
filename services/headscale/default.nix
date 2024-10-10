@@ -27,7 +27,8 @@
         grpc_listen_addr = "127.0.0.1:50443";
         grpc_allow_insecure = false;
 
-        server_url = "https://headscale.lab4.cc";
+        server_url = "https://headscale.labrats.cc";
+        base_domain = "lab4.cc";
         tls_cert_path = null;
         tls_key_path = null;
 
@@ -59,7 +60,7 @@
       };
     };
 
-    nginx.virtualHosts."headscale.lab4.cc" = {
+    nginx.virtualHosts."headscale.labrats.cc" = {
       forceSSL = true;
       enableACME = true;
       quic = true;

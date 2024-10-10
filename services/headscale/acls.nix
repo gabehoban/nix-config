@@ -15,7 +15,7 @@ let
   };
 in
 {
-  services.headscale.settings.acl_policy_path = pkgs.writeTextFile {
+  services.headscale.settings.policy.path = pkgs.writeTextFile {
     name = "headscale-acl.hujson";
     text = builtins.toJSON {
       acls = [

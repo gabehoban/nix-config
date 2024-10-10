@@ -6,7 +6,7 @@
     useNetworkd = true;
     usePredictableInterfaceNames = true;
     extraHosts = ''
-      5.161.231.127 headscale.lab4.cc
+      5.161.231.127 headscale.labrats.cc
     '';
 
     nameservers = [
