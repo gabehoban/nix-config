@@ -1,5 +1,4 @@
-{ ... }:
-{
+_: {
   # macos system configuration
   # nix-darwin options documentation: https://daiderd.com/nix-darwin/manual/index.html#sec-options
 

@@ -7,9 +7,8 @@
       userEmail = "gabehoban@icloud.com";
 
       ignores = [
-        ".direnv/"
-        ".env"
-        ".envrc"
+        ".direnv"
+        "result"
       ];
 
       extraConfig = {
