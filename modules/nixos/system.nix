@@ -29,11 +29,6 @@
       ++ [ inputs.agenix.packages.${system}.agenix ];
   };
 
-  home-manager = {
-    useGlobalPkgs = true;
-    useUserPackages = true;
-  };
-
   services = {
     logind = {
       powerKey = "ignore";

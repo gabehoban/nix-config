@@ -25,6 +25,9 @@ let
 
 in
 {
+  imports = [
+    ../postgres
+  ];
   age.secrets.attic-creds.rekeyFile = "${inputs.self.outPath}/secrets/attic-creds.age";
   age.secrets.attic-admin-token.rekeyFile = "${inputs.self.outPath}/secrets/attic-admin-token.age";
 

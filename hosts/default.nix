@@ -1,4 +1,8 @@
-{ self, inputs, ... }:
+{
+  self,
+  inputs,
+  ...
+}:
 {
   flake.nixosConfigurations =
     let
@@ -59,13 +63,25 @@
           }
         ];
       };
+    };
 
-      macbook = nixosSystem {
+  flake.darwinConfigurations =
+    let
+      inherit (inputs.darwin.lib) darwinSystem;
+      specialArgs = {
+        inherit user inputs self;
+      };
+      homeImports = import "${self}/home/profiles";
+      user = "gabehoban";
+    in
+    {
+      # Macbook Pro M2
+      macbook = darwinSystem {
         inherit specialArgs;
         modules = [
           { networking.hostName = "macbook"; }
           ./macbook
-
+          inputs.home-manager.darwinModules.home-manager
           {
             home-manager = {
               users.${user}.imports = homeImports.macbook;
@@ -73,6 +89,7 @@
             };
           }
         ];
+        system = "aarch64-darwin";
       };
     };
 }

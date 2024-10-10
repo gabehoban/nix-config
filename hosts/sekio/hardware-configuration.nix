@@ -1,18 +1,19 @@
 {
+  inputs,
   lib,
   pkgs,
-  modulesPath,
   ...
 }:
 {
   imports = [
-    (modulesPath + "/installer/scan/not-detected.nix")
+    "${inputs.nixpkgs}/nixos/modules/installer/sd-card/sd-image.nix"
     ./disks.nix
   ];
 
   boot = {
     kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
     loader = {
+      timeout = 0;
       grub.enable = lib.mkForce false;
       generic-extlinux-compatible.enable = lib.mkForce true;
     };

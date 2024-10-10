@@ -1,15 +1,4 @@
-{ user, ... }:
-{
-  home = {
-    username = user;
-    homeDirectory = "/home/${user}";
-    stateVersion = "24.05";
-    extraOutputsToInstall = [
-      "doc"
-      "devdoc"
-    ];
-  };
-
+_: {
   programs.home-manager.enable = true;
 
   manual = {

@@ -9,6 +9,11 @@
     impermanence.url = "github:nix-community/impermanence";
     treefmt-nix.url = "github:numtide/treefmt-nix";
 
+    darwin = {
+      url = "github:lnl7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
@@ -62,6 +67,7 @@
       systems = [
         "x86_64-linux"
         "aarch64-linux"
+        "aarch64-darwin"
       ];
 
       imports = [

@@ -8,12 +8,7 @@
     inputs.chaotic.nixosModules.default
 
     ./hardware-configuration.nix
-
-    ../../modules/core
-    ../../modules/nixos
-    ../../modules/network
-    ../../modules/hardware
-    ../../modules/services
+    ../../modules/profiles/baymax.nix
   ];
 
   boot.kernelPackages = pkgs.linuxPackages_cachyos;

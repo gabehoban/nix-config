@@ -5,11 +5,16 @@
 {
   imports = [
     ./hardware-configuration.nix
-
-    ../../modules/core
-    ../../modules/network
-    ../../modules/server/blocky.nix
+    ../../modules/profiles/sekio.nix
   ];
+
+  nixpkgs = {
+    overlays = [
+      (_final: super: {
+        makeModulesClosure = x: super.makeModulesClosure (x // { allowMissing = true; });
+      })
+    ];
+  };
 
   environment.systemPackages = with pkgs; [
     libraspberrypi

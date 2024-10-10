@@ -7,6 +7,12 @@
       displayManager.gdm.enable = true;
       desktopManager.gnome.enable = true;
     };
+    dbus.packages = with pkgs; [
+      gcr
+      gnome-settings-daemon
+    ];
+    gnome.gnome-keyring.enable = true;
+    gvfs.enable = true;
   };
   systemd.sleep.extraConfig = ''
     AllowSuspend=no
