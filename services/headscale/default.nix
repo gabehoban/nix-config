@@ -37,12 +37,6 @@
           "fd7a:115c:a1e0:77::/64"
         ];
 
-        # database
-        db_type = "sqlite3";
-        db_path = "/var/lib/headscale/db.sqlite";
-        db_name = "headscale";
-        db_user = config.services.headscale.user;
-
         # misc
         randomize_client_port = false;
         disable_check_updates = true;
