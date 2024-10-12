@@ -60,6 +60,8 @@ in
 
     # Define default system user.
     users.mutableUsers = false;
+    users.groups.plugdev = { };
+
     users.users.${vars.user} = {
       isNormalUser = true;
       uid = 1000;
@@ -76,7 +78,7 @@ in
       description = cfg.fullname;
       hashedPasswordFile = config.sops.secrets.user-passwd.path;
     };
-    users.groups.plugdev = { };
+    users.users.root.hashedPasswordFile = config.sops.secrets.user-passwd.path;
 
     home-manager.users.${vars.user} = {
       home.stateVersion = "24.05";

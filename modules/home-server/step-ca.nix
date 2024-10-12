@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 let
   cfg = config.syscfg.server;
   root_ca =
@@ -46,17 +46,17 @@ in
     default = false;
   };
 
-  config = {
+  config = lib.mkIf cfg.step-ca {
     users.groups.keys = {};
 
     sops.secrets.step_password = {
       mode = "0440";
-      file = ../../secrets/step-ca.yaml;
+      sopsFile = ../../secrets/step-ca.yaml;
       group = config.users.groups.keys.name;
     };
     sops.secrets.step_intermediate_ca_key = {
       mode = "0440";
-      file = ../../secrets/step-ca.yaml;
+      sopsFile = ../../secrets/step-ca.yaml;
       group = config.users.groups.keys.name;
     };
 

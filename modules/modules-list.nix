@@ -7,7 +7,7 @@
   ./autoupgrade.nix
   ./development
   ./graphics
-  # ./home-server
+  ./home-server
   ./networking
   ./options.nix
   ./profiles/base.nix

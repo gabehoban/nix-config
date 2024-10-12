@@ -38,7 +38,7 @@
     security.harden = true;
 
     tailscale = {
-      enable = false;
+      enable = true;
     };
   };
 

@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 let
   cfg = config.syscfg.server;
   inherit (lib.modules) mkDefault;
@@ -134,6 +134,12 @@ in
           action = ''nftables-multiport[name=NGINXBOT, port="443", protocol=tcp]'';
         };
       };
+    };
+    environment.persistence."/persist" = {
+      directories = [
+        { directory = "/var/log/nginx"; user = "nginx"; group = "nginx"; }
+        { directory = "/var/lib/acme"; user = "acme"; group = "nginx"; }
+      ];
     };
   };
 }

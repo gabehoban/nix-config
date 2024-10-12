@@ -1,7 +1,6 @@
 {
   imports = [
     ./tailscale.nix
-    ./headscale.nix
     ./openssh.nix
     ./time.nix
   ];
@@ -14,6 +13,9 @@
         "/etc/machine-id"
       ];
     };
+    networking.extraHosts = ''
+      5.161.231.127 headscale.labrats.cc
+    '';
     systemd.services.NetworkManager-wait-online.enable = false;
     systemd.network.wait-online.enable = false;
   };

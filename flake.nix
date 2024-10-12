@@ -46,6 +46,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    deploy-rs = {
+      url = "github:serokell/deploy-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -105,7 +110,10 @@
             ...
           }:
           {
-            devShells.default = pkgs.mkShell { inputsFrom = [ config.flake-root.devShell ]; };
+            devShells.default = pkgs.mkShell { 
+              inputsFrom = [ config.flake-root.devShell ];
+              packages = with pkgs; [ deploy-rs ];
+            };
             treefmt.config = {
               package = pkgs.treefmt;
               inherit (config.flake-root) projectRootFile;

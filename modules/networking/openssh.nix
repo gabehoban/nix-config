@@ -28,9 +28,11 @@ in
         openFirewall = true; # the ssh port(s) should be automatically passed to the firewall's allowedTCPports
         ports = [ 30 ]; # the port(s) openssh daemon should listen on
         settings = {
+          PermitRootLogin = lib.mkForce "yes";
+
           # no password auth
           # force publickey authentication only
-          PasswordAuthentication = false;
+          PasswordAuthentication = lib.mkForce false;
           AuthenticationMethods = "publickey";
           PubkeyAuthentication = "yes";
           ChallengeResponseAuthentication = "no";

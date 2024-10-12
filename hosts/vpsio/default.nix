@@ -26,8 +26,13 @@
 
     security.harden = true;
 
+    server ={
+      nginx = true;
+      headscale = true;
+    };
+
     tailscale = {
-      enable = false;
+      enable = true;
     };
   };
 

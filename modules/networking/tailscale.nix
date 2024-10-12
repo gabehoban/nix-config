@@ -16,19 +16,10 @@ let
     ;
 in
 {
-  options.syscfg.tailscale = {
-    enable = mkEnableOption "Tailscale configuration";
-    exitNode = mkEnableOption "exit node configuration";
-    ssh = mkOption {
-      description = "Enables openssh for access through tailscale only";
-      type = types.bool;
-      default = true;
-    };
-    auth = mkOption {
-      description = "Performs a oneshot authentication with an auth-key";
-      type = types.bool;
-      default = true;
-    };
+  options.syscfg.tailscale.enable = lib.mkOption {
+    description = "Configure tailscale client.";
+    type = lib.types.bool;
+    default = false;
   };
 
   config = mkMerge [
@@ -45,31 +36,23 @@ in
         type = "tun";
       };
 
+      sops.secrets = {
+        tailscale-auth = {
+          sopsFile = ../../secrets/all.yaml;
+        };
+      };
+
       services.tailscale = {
         enable = true;
         permitCertUid = "root";
         useRoutingFeatures = lib.mkDefault "both";
-        authKeyFile = config.age.secrets.tailscale.path;
+        authKeyFile = config.sops.secrets.tailscale-auth.path;
         extraUpFlags = [
           "--login-server=https://headscale.labrats.cc"
-          "--advertise-tags=tag:client"
           "--accept-routes"
           "--operator=${vars.user}"
           "--ssh"
         ];
-      };
-
-      services.openssh = {
-        enable = true;
-
-        # Security: do not allow password auth or root login.
-        settings = {
-          PasswordAuthentication = false;
-          PermitRootLogin = "no";
-        };
-
-        # Do not open firewall rules, tailscale can access only.
-        openFirewall = false;
       };
 
       systemd.services = {
@@ -102,7 +85,7 @@ in
             fi
 
             # otherwise authenticate with tailscale
-            ${pkgs.tailscale}/bin/tailscale up --auth-key 'file:${config.services.tailscale.authKeyFile}' ${toString config.services.tailscale.extraUpFlags}
+            ${pkgs.tailscale}/bin/tailscale up --auth-key 'file:${config.sops.secrets.tailscale-auth.path}' ${toString config.services.tailscale.extraUpFlags}
           '';
         };
       };

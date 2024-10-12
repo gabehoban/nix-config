@@ -1,22 +1,25 @@
 { lib, config, ... }:
 let
-  cfg = config.syscfg.net;
+  cfg = config.syscfg.server;
 in
 {
-  options.syscfg.net = {
-    headscale = lib.mkEnableOption "Headscale Server";
+  options.syscfg.server.headscale = lib.mkOption {
+    description = "Enables Headscale Server";
+    type = lib.types.bool;
+    default = false;
   };
+
   config = lib.mkIf cfg.headscale {
     networking.firewall.allowedUDPPorts = [3478];
 
     sops.secrets = {
       headscale-private-key = {
         owner = "headscale";
-        file = ../../secrets/headscale.yaml;
+        sopsFile = ../../secrets/headscale.yaml;
       };
       headscale-noise-private-key = {
         owner = "headscale";
-        file = ../../secrets/headscale.yaml;
+        sopsFile = ../../secrets/headscale.yaml;
       };
     };
   
@@ -74,12 +77,12 @@ in
             region_code = "headscale";
             region_name = "Headscale Embedded DERP";
             region_id = 999;
+            private_key_path = config.sops.secrets.headscale-private-key.path;
           };
           urls = [ ];
           paths = [ ];
           auto_update_enabled = false;
           update_frequency = "6h";
-          private_key_path = config.sops.secrets.headscale-private-key.path;
         };
         dns = {
           magic_dns = true;
@@ -119,6 +122,9 @@ in
       extraConfig = ''
         add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
       '';
+    };
+    environment.persistence."/persist" = {
+      directories = [ { directory = "/var/lib/headscale"; user = "headscale"; group = "headscale"; } ];
     };
   };
 }
