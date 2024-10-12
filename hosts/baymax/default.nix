@@ -1,5 +1,6 @@
 {
   self,
+  pkgs,
   ...
 }:
 {
@@ -24,7 +25,7 @@
 
     development = {
       enable = true;
-      systems = [
+      emulation.systems = [
         "aarch64-linux"
       ];
     };

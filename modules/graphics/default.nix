@@ -17,6 +17,7 @@ in
   imports = [
     ./gnome.nix
     ./apps.nix
+    ./nvidia.nix
   ];
   options.syscfg.graphics = {
     enable = mkOption {

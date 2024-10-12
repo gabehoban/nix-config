@@ -1,9 +1,12 @@
 [
   #  ./theme.nix
   ./applications/_1password.nix
+  ./applications/alacritty.nix
   ./applications/firefox.nix
+  ./applications/gnupg.nix
   ./applications/neovim.nix
   ./applications/steam.nix
+  ./applications/vscode.nix
   ./autoupgrade.nix
   ./development
   ./graphics

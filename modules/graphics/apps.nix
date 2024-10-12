@@ -51,6 +51,7 @@ in
       environment.systemPackages = with pkgs; [
         rpi-imager
         gnome-firmware
+        alacritty
 
         # Re-add GNOME apps that are needed
         evince
