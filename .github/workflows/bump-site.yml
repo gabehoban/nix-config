@@ -1,0 +1,28 @@
+name: Bump huma.id site
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v27
+      - run: nix flake lock --update-input humaid-site
+
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          title: Bump huma.id site
+          commit-message: Bump huma.id site
+          body: |
+            Update the [humaid-site flake](https://github.com/humaidq/huma.id) to latest.
+            This is an auto-generated commit.
+          labels: automated pr
+          assignees: humaidq
+          reviewers: humaidq

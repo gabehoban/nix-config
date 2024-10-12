@@ -1,0 +1,18 @@
+keys:
+  - &user_gabehoban 3EADE0CB32D1BC80DF96F538AFD8F294983C4F95
+  - &host_baymax age1enj5ukzeqfr0tn20yzsqh62ash6ttaj9fvm8det85hs7z66xtszs43rwxp
+  - &host_casio age1d64778zlc25xwf5rd2xlcus0t05dc6zcm6ldnu9guz206zgnagxsgclfua
+  - &host_sekio age17ys2qrdyehrumu9akyyhtlm3dsjwkuqwr76fadv8kmpg8wvuwv8qtqrx8j
+  - &host_vpsio age18wwfnp45g7d69p5jxcwtfxx9t2nun7wmw4xht2ehyn6vanvwe9sqtvnnaw
+  - &host_srvio age1szdey59vqv2ylzshllf2s63pyqatzulph4yz032sfkq9s63p5d2s8cj22d
+creation_rules:
+  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - pgp:
+        - *user_gabehoban
+        age:
+        - *host_baymax
+        - *host_casio
+        - *host_sekio
+        - *host_vpsio
+        - *host_srvio

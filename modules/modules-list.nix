@@ -1,0 +1,19 @@
+[
+  #  ./theme.nix
+  ./applications/_1password.nix
+  ./applications/firefox.nix
+  ./applications/neovim.nix
+  ./applications/steam.nix
+  ./autoupgrade.nix
+  ./development
+  ./graphics
+  # ./home-server
+  ./networking
+  ./options.nix
+  ./profiles/base.nix
+  ./profiles/server.nix
+  ./profiles/webserver.nix
+  ./security
+  ./shell
+  ./topology/home.nix
+]
