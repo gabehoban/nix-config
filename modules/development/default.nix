@@ -22,7 +22,6 @@ in
     };
   };
 
-
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       # We need basic git on all computers, needed for flakes too.
@@ -30,7 +29,7 @@ in
         dev.enable = true;
         man.generateCaches = true;
       };
-      
+
       home-manager.users."${vars.user}" = {
         programs = {
           git = {

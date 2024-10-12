@@ -1,7 +1,5 @@
 {
   self,
-  lib,
-  inputs,
   ...
 }:
 {
@@ -19,20 +17,20 @@
     profiles.base = true;
 
     graphics = {
-      gnome  = true;
-      apps   = true;
+      gnome = true;
+      apps = true;
       nvidia = true;
     };
 
     development = {
-      enable  = true;
+      enable = true;
       systems = [
         "aarch64-linux"
       ];
     };
 
     security = {
-      harden  = true;
+      harden = true;
       yubikey = true;
     };
 

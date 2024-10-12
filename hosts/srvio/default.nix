@@ -1,8 +1,6 @@
 {
   self,
   pkgs,
-  vars,
-  lib,
   ...
 }:
 {
@@ -24,12 +22,12 @@
 
   syscfg = {
     autoupgrade.enable = false;
-    profiles.base      = true;
-    profiles.server    = true;
+    profiles.base = true;
+    profiles.server = true;
     # profiles.webserver = true;
 
     development = {
-      enable  = true;
+      enable = true;
       emulation.systems = [
         "aarch64-linux"
       ];

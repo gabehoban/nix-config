@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   cfg = config.syscfg.server;
   inherit (lib.modules) mkDefault;
@@ -137,8 +142,16 @@ in
     };
     environment.persistence."/persist" = {
       directories = [
-        { directory = "/var/log/nginx"; user = "nginx"; group = "nginx"; }
-        { directory = "/var/lib/acme"; user = "acme"; group = "nginx"; }
+        {
+          directory = "/var/log/nginx";
+          user = "nginx";
+          group = "nginx";
+        }
+        {
+          directory = "/var/lib/acme";
+          user = "acme";
+          group = "nginx";
+        }
       ];
     };
   };

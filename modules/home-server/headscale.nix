@@ -10,7 +10,7 @@ in
   };
 
   config = lib.mkIf cfg.headscale {
-    networking.firewall.allowedUDPPorts = [3478];
+    networking.firewall.allowedUDPPorts = [ 3478 ];
 
     sops.secrets = {
       headscale-private-key = {
@@ -22,10 +22,10 @@ in
         sopsFile = ../../secrets/headscale.yaml;
       };
     };
-  
+
     environment.systemPackages = [ config.services.headscale.package ];
-  
-    services.headscale =  {
+
+    services.headscale = {
       enable = true;
       address = "127.0.0.1";
       port = 8085;
@@ -69,7 +69,7 @@ in
         };
 
         logtail.enabled = false;
-        
+
         derp = {
           server = {
             enabled = true;
@@ -124,7 +124,13 @@ in
       '';
     };
     environment.persistence."/persist" = {
-      directories = [ { directory = "/var/lib/headscale"; user = "headscale"; group = "headscale"; } ];
+      directories = [
+        {
+          directory = "/var/lib/headscale";
+          user = "headscale";
+          group = "headscale";
+        }
+      ];
     };
   };
 }

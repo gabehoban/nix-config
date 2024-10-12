@@ -1,7 +1,6 @@
 {
   self,
   pkgs,
-  vars,
   lib,
   ...
 }:
@@ -20,13 +19,13 @@
 
   syscfg = {
     autoupgrade.enable = false;
-    profiles.base      = true;
-    profiles.server    = true;
+    profiles.base = true;
+    profiles.server = true;
     # profiles.webserver = true;
 
     security.harden = true;
 
-    server ={
+    server = {
       nginx = true;
       headscale = true;
     };

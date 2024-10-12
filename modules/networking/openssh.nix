@@ -159,10 +159,12 @@ in
         "/etc/ssh/ssh_host_ed25519_key.pub"
       ];
       users."${vars.user}" = {
-        directories = [{
-          directory = ".ssh";
-          mode = "0700";
-        }];
+        directories = [
+          {
+            directory = ".ssh";
+            mode = "0700";
+          }
+        ];
       };
     };
   };

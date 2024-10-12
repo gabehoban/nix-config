@@ -110,7 +110,7 @@
             ...
           }:
           {
-            devShells.default = pkgs.mkShell { 
+            devShells.default = pkgs.mkShell {
               inputsFrom = [ config.flake-root.devShell ];
               packages = with pkgs; [ deploy-rs ];
             };

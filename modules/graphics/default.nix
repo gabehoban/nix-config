@@ -10,9 +10,7 @@ let
   inherit (lib)
     mkOption
     types
-    mkMerge
     mkIf
-    mkEnableOption
     ;
 in
 {
@@ -27,7 +25,7 @@ in
       default = cfg.gnome;
     };
   };
-  config =  mkIf cfg.enable {
+  config = mkIf cfg.enable {
     services.pipewire = {
       enable = true;
       alsa.enable = true;
@@ -35,7 +33,7 @@ in
       pulse.enable = true;
       wireplumber.enable = true;
     };
-    hardware.pulseaudio.enable = false; 
+    hardware.pulseaudio.enable = false;
 
     programs.dconf.enable = true;
 

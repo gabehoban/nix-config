@@ -80,7 +80,10 @@
         vpsio = {
           hostname = "5.161.231.127";
           sshUser = "root";
-          sshOpts = [ "-p" "30" ];
+          sshOpts = [
+            "-p"
+            "30"
+          ];
           profiles.system = {
             path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.vpsio;
           };
@@ -88,7 +91,10 @@
         sekio = {
           hostname = "10.32.40.52";
           sshUser = "root";
-          sshOpts = [ "-p" "30" ];
+          sshOpts = [
+            "-p"
+            "30"
+          ];
           profiles.system = {
             path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.sekio;
           };
@@ -96,7 +102,10 @@
         srvio = {
           hostname = "10.32.40.200";
           sshUser = "root";
-          sshOpts = [ "-p" "30" ];
+          sshOpts = [
+            "-p"
+            "30"
+          ];
           profiles.system = {
             path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.srvio;
           };

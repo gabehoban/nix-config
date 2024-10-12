@@ -1,7 +1,4 @@
-{ config, lib, ... }:
-let
-  cfg = config.syscfg.ntp;
-in
+{ config, ... }:
 {
   config = {
     # Use chrony as timeserver. Although chrony is more heavy (includes server

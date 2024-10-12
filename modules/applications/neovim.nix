@@ -7,11 +7,6 @@
 }:
 let
   cfg = config.syscfg.applications;
-  dev = config.syscfg.development.enable;
-
-  lazygit_config = pkgs.writeText "lazygit.yaml" (
-    lib.generators.toYAML { } { git.commit.signOff = true; }
-  );
 in
 {
   options.syscfg.applications.neovim.enable = lib.mkOption {

@@ -23,12 +23,11 @@ in
     # Setup home-manager
     home-manager.useGlobalPkgs = true;
     home-manager.useUserPackages = true;
-    home-manager.sharedModules =
-      [
-        inputs.sops-nix.homeManagerModules.sops
-        inputs.nixvim.homeManagerModules.nixvim
-        inputs.nix-index-database.hmModules.nix-index
-      ];
+    home-manager.sharedModules = [
+      inputs.sops-nix.homeManagerModules.sops
+      inputs.nixvim.homeManagerModules.nixvim
+      inputs.nix-index-database.hmModules.nix-index
+    ];
     topology.self.name = config.networking.hostName;
 
     topology.networks.tailscale0 = {
@@ -47,14 +46,14 @@ in
       defaultSopsFormat = "yaml";
       age.keyFile = "/persist/var/lib/sops-nix/key.txt";
       secrets = {
-       user-passwd = {
-         sopsFile = ../secrets/all.yaml;
-         neededForUsers = true;
-       };
-       github-token = {
-         sopsFile = ../secrets/all.yaml;
-         owner = vars.user;
-       };
+        user-passwd = {
+          sopsFile = ../secrets/all.yaml;
+          neededForUsers = true;
+        };
+        github-token = {
+          sopsFile = ../secrets/all.yaml;
+          owner = vars.user;
+        };
       };
     };
 
@@ -105,7 +104,7 @@ in
 
         # Enable flakes
         experimental-features = [
-         "flakes"
+          "flakes"
           "nix-command"
           "recursive-nix"
           "ca-derivations"
@@ -142,7 +141,7 @@ in
 
       # API Rate limit for GitHub
       extraOptions = ''
-       !include ${config.sops.secrets.github-token.path}
+        !include ${config.sops.secrets.github-token.path}
       '';
     };
 
