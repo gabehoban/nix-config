@@ -20,13 +20,15 @@
       (_self: super: {
         ubootRaspberryPi4_64bit = super.ubootRaspberryPi4_64bit.overrideAttrs (_oldAttrs: {
           extraConfig = ''
-            CONFIG_AUTOBOOT=y
+            CONFIG_BOOTDELAY=-2
+            CONFIG_SILENT_CONSOLE=y
+            CONFIG_SYS_DEVICE_NULLDEV=y
+            CONFIG_SILENT_CONSOLE_UPDATE_ON_SET=y
+            CONFIG_SILENT_U_BOOT_ONLY=y
             CONFIG_AUTOBOOT_KEYED=y
-            CONFIG_AUTOBOOT_STOP_STR="\x0b"
-            CONFIG_AUTOBOOT_KEYED_CTRLC=y
-            CONFIG_AUTOBOOT_PROMPT="autoboot in 1 second (hold 'CTRL^C' to abort)\n"
-            CONFIG_BOOT_RETRY_TIME=15
-            CONFIG_RESET_TO_RETRY=y
+            CONFIG_AUTOBOOT_PROMPT="NO UART\0"
+            CONFIG_AUTOBOOT_DELAY_STR="dfg\0"
+            CONFIG_AUTOBOOT_STOP_STR="1234\0"
           '';
         });
       })

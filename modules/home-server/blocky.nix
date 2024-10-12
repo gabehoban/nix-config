@@ -101,13 +101,23 @@ in
         settings = {
           connectIPVersion = "v4";
           upstreamTimeout = "5s";
+          startVerifyUpstream = false;
           minTlsServeVersion = "1.2";
           ports = {
             dns = 53;
             tls = 853;
           };
-          upstream.default = [ "127.0.0.1:5335" ];
-          startVerifyUpstream = true;
+          upstreams = {
+            strategy = "strict";
+            timeout = "30s";
+            init.strategy = "fast";
+            groups = {
+              default = [
+                "tcp+udp:127.0.0.1:5335"
+                "tcp-tls:dns.quad9.net"
+              ];
+            };
+          };
           blocking = {
             loading = {
               strategy = "fast";
@@ -183,6 +193,15 @@ in
               ];
             };
           };
+          customDNS = {
+            customTTL = "1h";
+            mapping = {
+              # Global Mappings
+              "headscale.labrats.cc" = "5.161.231.127";
+              # SRVIO Services
+              "cache.lab4.cc" = "100.77.210.83";
+            };
+          };
           caching = {
             minTime = "2h";
             maxTime = "12h";
@@ -199,7 +218,6 @@ in
       blocky = {
         after = [
           "unbound.service"
-          "postgresql.service"
         ];
         requires = [ "unbound.service" ];
         serviceConfig = {
