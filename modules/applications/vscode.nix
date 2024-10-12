@@ -129,61 +129,61 @@ in
   };
   config = lib.mkIf cfg.vscode.enable {
     home-manager.users.${vars.user} = {
-        programs.vscode = {
-            enable = true;
-            mutableExtensionsDir = false;
-            userSettings =
-            {
-                "extensions.autoCheckUpdates" = false;
-                "extensions.ignoreRecommendations" = true;
-                "update.mode" = "none";
-            }
-            # General settings
-            // editor
-            // explorer
-            // files
-            // telemetry
-            // terminal
-            // window
-            // workbench
-            # Extension specific settings
-            // git
-            // path-intellisense
-            # Language specific settings
-            // formatter
-            // bash
-            // nix;
-            extensions =
-            (with pkgs.vscode-extensions; [
-                github.vscode-github-actions
-                github.vscode-pull-request-github
-            ])
-            ++ (with marketplace; [
-                antfu.icons-carbon
-                arcticicestudio.nord-visual-studio-code
-                christian-kohler.path-intellisense
-                editorconfig.editorconfig
-                esbenp.prettier-vscode
-                jnoortheen.nix-ide
-                mads-hartmann.bash-ide-vscode
-                mikestead.dotenv
-                mkhl.direnv
-                mkhl.shfmt
-                ms-python.black-formatter
-                ms-python.isort
-                ms-python.pylint
-                ms-python.python
-                ms-python.vscode-pylance
-                naumovs.color-highlight
-                oderwat.indent-rainbow
-                redhat.vscode-yaml
-                usernamehw.errorlens
-                yzhang.markdown-all-in-one
-            ])
-            ++ (with marketplace-release; [
-                eamodio.gitlens
-            ]);
-        };
+      programs.vscode = {
+        enable = true;
+        mutableExtensionsDir = false;
+        userSettings =
+          {
+            "extensions.autoCheckUpdates" = false;
+            "extensions.ignoreRecommendations" = true;
+            "update.mode" = "none";
+          }
+          # General settings
+          // editor
+          // explorer
+          // files
+          // telemetry
+          // terminal
+          // window
+          // workbench
+          # Extension specific settings
+          // git
+          // path-intellisense
+          # Language specific settings
+          // formatter
+          // bash
+          // nix;
+        extensions =
+          (with pkgs.vscode-extensions; [
+            github.vscode-github-actions
+            github.vscode-pull-request-github
+          ])
+          ++ (with marketplace; [
+            antfu.icons-carbon
+            arcticicestudio.nord-visual-studio-code
+            christian-kohler.path-intellisense
+            editorconfig.editorconfig
+            esbenp.prettier-vscode
+            jnoortheen.nix-ide
+            mads-hartmann.bash-ide-vscode
+            mikestead.dotenv
+            mkhl.direnv
+            mkhl.shfmt
+            ms-python.black-formatter
+            ms-python.isort
+            ms-python.pylint
+            ms-python.python
+            ms-python.vscode-pylance
+            naumovs.color-highlight
+            oderwat.indent-rainbow
+            redhat.vscode-yaml
+            usernamehw.errorlens
+            yzhang.markdown-all-in-one
+          ])
+          ++ (with marketplace-release; [
+            eamodio.gitlens
+          ]);
+      };
     };
   };
 }
