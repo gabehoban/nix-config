@@ -97,14 +97,14 @@ in
           "vpsio"
           "casio"
           "sekio"
-          "skyio"
+          "srvio"
         ];
 
         # generate the ssh config for the hosts
         mkHostConfig = hostname: ''
           # Configuration for ${hostname}
           Host ${hostname}
-            HostName ${hostname}
+            HostName ${hostname}.lab4.cc
           Port ${toString (lib.elemAt config.services.openssh.ports 0)}
             StrictHostKeyChecking=accept-new
         '';

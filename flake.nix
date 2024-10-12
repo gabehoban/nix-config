@@ -117,6 +117,13 @@
             treefmt.config = {
               package = pkgs.treefmt;
               inherit (config.flake-root) projectRootFile;
+              settings.global.excludes = [
+                "*.yaml"
+                "*.yml"
+                "*.png"
+                "*.json"
+                "*.md"
+              ];
               programs = {
                 nixfmt.enable = true;
                 nixfmt.package = pkgs.nixfmt-rfc-style;

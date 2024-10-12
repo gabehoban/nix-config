@@ -35,7 +35,7 @@
     };
 
     tailscale = {
-      enable = false;
+      enable = true;
     };
   };
 

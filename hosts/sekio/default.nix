@@ -1,5 +1,4 @@
 {
-  config,
   self,
   inputs,
   ...
@@ -14,11 +13,8 @@
   syscfg = {
     tailscale = {
       enable = true;
-      exitNode = true;
-      ssh = true;
     };
     profiles.server = true;
-    o11y.client.enable = true;
 
     # TODO re-enable
     security.harden = false;
@@ -33,15 +29,6 @@
 
     # TODO define connections as nm files
     networkmanager.enable = false;
-    wireless = {
-      enable = true;
-      environmentFile = config.sops.secrets.wifi-2g.path;
-      networks = {
-        "@ssid@" = {
-          psk = "@pass@";
-        };
-      };
-    };
   };
 
   nixpkgs.hostPlatform = "aarch64-linux";

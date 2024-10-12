@@ -98,6 +98,17 @@ in
           maxretry = lib.mkDefault 5;
         };
         logrotate.settings."/var/log/fail2ban/fail2ban.log" = { };
+
+        endlessh-go = {
+          enable = true;
+          port = 22;
+          prometheus = {
+            enable = true;
+            listenAddress = "127.0.0.1";
+            port = 2112;
+          };
+          openFirewall = true;
+        };
       };
 
       boot = {
