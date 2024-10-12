@@ -25,9 +25,12 @@ in
   config = lib.mkMerge [
     {
       # We need basic git on all computers, needed for flakes too.
-      documentation = {
-        dev.enable = true;
-        man.generateCaches = true;
+      documentation = lib.mapAttrs (_: lib.mkForce) {
+        enable = false;
+        doc.enable = false;
+        info.enable = false;
+        nixos.enable = false;
+        man.enable = false;
       };
 
       home-manager.users."${vars.user}" = {
