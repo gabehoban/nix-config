@@ -49,64 +49,72 @@ in
     default = false;
   };
 
-  config = lib.mkIf cfg.step-ca {
-    users.groups.keys = { };
+  config = lib.mkMerge [
+    {
+      security.pki.certificates = [
+        root_ca
+        intermediate_ca
+      ];
+    }
+    (lib.mkIf cfg.step-ca {
+      users.groups.keys = { };
 
-    sops.secrets.step_password = {
-      mode = "0440";
-      sopsFile = ../../secrets/step-ca.yaml;
-      group = config.users.groups.keys.name;
-    };
-    sops.secrets.step_intermediate_ca_key = {
-      mode = "0440";
-      sopsFile = ../../secrets/step-ca.yaml;
-      group = config.users.groups.keys.name;
-    };
+      sops.secrets.step_password = {
+        mode = "0440";
+        sopsFile = ../../secrets/step-ca.yaml;
+        group = config.users.groups.keys.name;
+      };
+      sops.secrets.step_intermediate_ca_key = {
+        mode = "0440";
+        sopsFile = ../../secrets/step-ca.yaml;
+        group = config.users.groups.keys.name;
+      };
 
-    security.pki.certificates = [
-      root_ca
-      intermediate_ca
-    ];
+      security.pki.certificates = [
+        root_ca
+        intermediate_ca
+      ];
 
-    services.step-ca = {
-      enable = true;
-      address = "127.0.0.1";
-      port = 8444;
-      intermediatePasswordFile = config.sops.secrets.step_password.path;
-      # See
-      # https://smallstep.com/docs/step-ca/configuration#basic-configuration-options
-      settings = {
-        dnsNames = [
-          "localhost"
-          "127.0.0.1"
-          "*.lab4.cc"
-        ];
-        root = root_ca_file;
-        crt = intermediate_ca_file;
-        key = config.sops.secrets.step_intermediate_ca_key.path;
-        db = {
-          type = "badger";
-          dataSource = "/var/lib/step-ca/db";
-        };
-        authority = {
-          claims = {
-            minTLSCertDuration = "5m";
-            maxTLSCertDuration = "24h";
-            defaultTLSCertDuration = "24h";
-          };
-          provisioners = [
-            {
-              type = "ACME";
-              name = "acme";
-              forceCN = true;
-            }
+      services.step-ca = {
+        enable = true;
+        address = "127.0.0.1";
+        port = 8444;
+        intermediatePasswordFile = config.sops.secrets.step_password.path;
+        # See
+        # https://smallstep.com/docs/step-ca/configuration#basic-configuration-options
+        settings = {
+          dnsNames = [
+            "localhost"
+            "127.0.0.1"
+            "*.lab4.cc"
           ];
+          root = root_ca_file;
+          crt = intermediate_ca_file;
+          key = config.sops.secrets.step_intermediate_ca_key.path;
+          db = {
+            type = "badger";
+            dataSource = "/var/lib/step-ca/db";
+          };
+          authority = {
+            claims = {
+              minTLSCertDuration = "5m";
+              maxTLSCertDuration = "24h";
+              defaultTLSCertDuration = "24h";
+            };
+            provisioners = [
+              {
+                type = "ACME";
+                name = "acme";
+                forceCN = true;
+              }
+            ];
+          };
         };
       };
-    };
 
-    systemd.services.step-ca.serviceConfig = {
-      SupplementaryGroups = [ config.users.groups.keys.name ];
-    };
-  };
+      systemd.services.step-ca.serviceConfig = {
+        SupplementaryGroups = [ config.users.groups.keys.name ];
+      };
+    })
+  ];
 }

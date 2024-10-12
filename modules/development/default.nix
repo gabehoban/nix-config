@@ -23,7 +23,7 @@ in
   };
 
   config = lib.mkMerge [
-    (lib.mkIf cfg.enable {
+    {
       # We need basic git on all computers, needed for flakes too.
       documentation = {
         dev.enable = true;
@@ -93,14 +93,11 @@ in
       # Only include general helpful development tools
       environment.systemPackages = with pkgs; [
         bat
-        ffmpeg
         gdb
         gnupg
-        imagemagick
         licensor
         minify
-        OVMF
-        qemu_kvm
+
         scc
         sqlite
 
@@ -121,11 +118,19 @@ in
         nixfmt-rfc-style
         nixpkgs-review
       ];
-
+    }
+    (lib.mkIf (cfg.emulation.systems != [ ]) {
+      environment.systemPackages = with pkgs; [
+        imagemagick
+        ffmpeg
+        OVMF
+        qemu_kvm
+      ];
       users.users.${vars.user}.extraGroups = [ "docker" ];
       virtualisation.docker.enable = true;
       virtualisation.oci-containers.backend = "docker";
+
+      boot.binfmt.emulatedSystems = cfg.emulation.systems;
     })
-    (lib.mkIf (cfg.emulation.systems != [ ]) { boot.binfmt.emulatedSystems = cfg.emulation.systems; })
   ];
 }

@@ -9,30 +9,19 @@
     inputs.nixos-hardware.nixosModules.raspberry-pi-4
     (import ./hardware.nix)
   ];
+  networking.hostName = "sekio";
 
   syscfg = {
-    tailscale = {
-      enable = true;
-    };
+    profiles.base = true;
     profiles.server = true;
 
-    # TODO re-enable
-    security.harden = false;
+    security.harden = true;
+
+    tailscale = {
+      enable = false;
+    };
   };
 
-  topology.self.interfaces.end0.network = "home";
-  networking = {
-    hostName = "argali";
-
-    # TODO properly configure firewall rules
-    firewall.enable = false;
-
-    # TODO define connections as nm files
-    networkmanager.enable = false;
-  };
-
+  system.stateVersion = "24.05";
   nixpkgs.hostPlatform = "aarch64-linux";
-  system.stateVersion = "23.11";
-
-  services.openssh.enable = true;
 }

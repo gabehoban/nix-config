@@ -78,7 +78,7 @@
 
       deploy.nodes = {
         vpsio = {
-          hostname = "5.161.231.127";
+          hostname = "vpsio.lab4.cc";
           sshUser = "root";
           sshOpts = [
             "-p"
@@ -89,7 +89,7 @@
           };
         };
         sekio = {
-          hostname = "10.32.40.52";
+          hostname = "sekio.lab4.cc";
           sshUser = "root";
           sshOpts = [
             "-p"
@@ -100,7 +100,7 @@
           };
         };
         srvio = {
-          hostname = "10.32.40.200";
+          hostname = "srvio.lab4.cc";
           sshUser = "root";
           sshOpts = [
             "-p"
@@ -118,10 +118,10 @@
           vpsio = self.nixosConfigurations.vpsio.config.system.build.toplevel;
           srvio = self.nixosConfigurations.srvio.config.system.build.toplevel;
         };
-        aarch64-linux = {
-          casio = self.nixosConfigurations.casio.config.system.build.toplevel;
-          sekio = self.nixosConfigurations.sekio.config.system.build.toplevel;
-        };
+        # aarch64-linux = {
+        #   casio = self.nixosConfigurations.casio.config.system.build.toplevel;
+        #   sekio = self.nixosConfigurations.sekio.config.system.build.toplevel;
+        # };
       };
     };
 }

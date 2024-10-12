@@ -13,25 +13,37 @@
   ];
   nixpkgs = {
     hostPlatform = "aarch64-linux";
-    # Temporary fix for kernel build fail
-    # https://github.com/NixOS/nixpkgs/issues/154163
     overlays = [
       (_final: super: {
         makeModulesClosure = x: super.makeModulesClosure (x // { allowMissing = true; });
       })
+      (_self: super: {
+        ubootRaspberryPi4_64bit = super.ubootRaspberryPi4_64bit.overrideAttrs (_oldAttrs: {
+          extraConfig = ''
+            CONFIG_AUTOBOOT=y
+            CONFIG_AUTOBOOT_KEYED=y
+            CONFIG_AUTOBOOT_STOP_STR="\x0b"
+            CONFIG_AUTOBOOT_KEYED_CTRLC=y
+            CONFIG_AUTOBOOT_PROMPT="autoboot in 1 second (hold 'CTRL^C' to abort)\n"
+            CONFIG_BOOT_RETRY_TIME=15
+            CONFIG_RESET_TO_RETRY=y
+          '';
+        });
+      })
     ];
   };
 
+  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_rpi4;
+
   syscfg = {
-    security.harden = false;
+    security.harden = true;
     profiles.base = true;
-    profiles.basePlus = true;
   };
 
   system.stateVersion = "24.05";
 
   networking = {
-    firewall.enable = false;
+    firewall.enable = lib.mkForce false;
     hostName = "syscfgOS-rpi";
   };
 
@@ -52,7 +64,7 @@
 
   users.users.${vars.user} = {
     isNormalUser = true;
-    hashedPassword = "$6$67sQfb8Pm3Jyvdvo$OPXnLbgHCdoRfhlhhz/pygvJ32ZA.L0HifV.fBSVW47SsfKK6xiroi/Xx.hcB6YJ94XXaiUH5zqDvnAmKq6gE1";
+    hashedPassword = "$7$CU..../....rtH/ZQtOTGlDUQyQz69Ti1$kn5YDoADsxNipuP1QLxQ7vC8OY8WJdWd9RNuwRcZHC.";
     hashedPasswordFile = lib.mkForce null;
   };
 }

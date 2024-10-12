@@ -55,7 +55,7 @@ in
 
         # Re-add GNOME apps that are needed
         evince
-        gnome.gnome-system-monitor
+        gnome-system-monitor
         gnome-text-editor
         loupe
         gnome-obfuscate

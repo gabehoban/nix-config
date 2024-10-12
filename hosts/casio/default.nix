@@ -9,24 +9,19 @@
     inputs.nixos-hardware.nixosModules.raspberry-pi-4
     (import ./hardware.nix)
   ];
+  networking.hostName = "casio";
 
   syscfg = {
+    profiles.base = true;
+    profiles.server = true;
+
+    security.harden = true;
+
     tailscale = {
       enable = false;
     };
-    profiles.server = true;
-    security.harden = true;
   };
 
-  networking = {
-    hostName = "arkelli";
-
-    firewall.enable = true;
-    networkmanager.enable = false;
-  };
-
-  nixpkgs.hostPlatform = "aarch64-linux";
   system.stateVersion = "24.05";
-
-  services.openssh.enable = true;
+  nixpkgs.hostPlatform = "aarch64-linux";
 }
