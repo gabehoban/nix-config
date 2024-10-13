@@ -17,7 +17,6 @@ in
   config = lib.mkIf cfg.steam.enable {
     programs.steam = {
       enable = true;
-      extest.enable = true;
       localNetworkGameTransfers.openFirewall = true;
       protontricks.enable = true;
       extraCompatPackages = [ pkgs.proton-ge-bin ];
