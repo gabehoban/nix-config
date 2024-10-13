@@ -5,7 +5,6 @@
     ./headscale.nix
     ./hydra.nix
     ./nginx.nix
-    ./step-ca.nix
   ];
   options.syscfg.server = {
     enable = lib.mkOption {

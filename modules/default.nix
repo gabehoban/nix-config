@@ -110,7 +110,6 @@ in
           "ca-derivations"
           "auto-allocate-uids"
           "cgroups"
-          "repl-flake"
           "no-url-literals"
           "dynamic-derivations"
         ];

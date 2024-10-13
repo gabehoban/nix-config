@@ -14,16 +14,21 @@
           directory = "/var/lib/private";
           mode = "0700";
         }
-        # {
-        #   directory = "/var/log/nginx";
-        #   user = "nginx";
-        #   group = "nginx";
-        # }
-        # {
-        #   directory = "/var/lib/acme";
-        #   user = "acme";
-        #   group = "nginx";
-        # }
+        {
+          directory = "/var/lib/acme";
+          user = "acme";
+          group = "nginx";
+        }
+        {
+          directory = "/var/lib/hydra";
+          user = "hydra";
+          group = "hydra";
+        }
+        {
+          directory = "/var/lib/postgresql";
+          user = "postgres";
+          group = "postgres";
+        }
       ];
       files = [
         "/etc/machine-id"
@@ -40,13 +45,13 @@
           "documents"
           "downloads"
           "pictures"
-        ];
-        files = [
-          ".config/zsh/.zsh_history"
           {
             directory = ".ssh";
             mode = "0700";
           }
+        ];
+        files = [
+          ".config/zsh/.zsh_history"
         ];
       };
     };

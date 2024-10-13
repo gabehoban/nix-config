@@ -23,19 +23,22 @@
 
   syscfg = {
     autoupgrade.enable = false;
+    security.harden = true;
+
     profiles.base = true;
     profiles.server = true;
-    # profiles.webserver = true;
 
     development = {
       enable = true;
       emulation.systems = [
         "aarch64-linux"
+        "i686-linux"
+        "riscv64-linux"
       ];
     };
 
-    security.harden = true;
-
+    server.nginx = true;
+    server.hydra = true;
     tailscale = {
       enable = true;
     };

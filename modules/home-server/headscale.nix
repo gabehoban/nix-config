@@ -90,8 +90,19 @@ in
 
           search_domains = [ ];
           nameservers.global = [
-            "1.1.1.1"
-            "1.0.0.1"
+            "100.80.65.16" # Sekio
+          ];
+          extra_records = [
+            {
+              name = "hydra.lab4.cc";
+              type = "A";
+              value = "100.77.210.83";
+            }
+            {
+              name = "nix-cache.lab4.cc";
+              type = "A";
+              value = "100.77.210.83";
+            }
           ];
         };
       };

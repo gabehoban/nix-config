@@ -45,13 +45,13 @@
           "documents"
           "downloads"
           "pictures"
-        ];
-        files = [
-          ".config/zsh/.zsh_history"
           {
             directory = ".ssh";
             mode = "0700";
           }
+        ];
+        files = [
+          ".config/zsh/.zsh_history"
         ];
       };
     };

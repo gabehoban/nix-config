@@ -6,7 +6,6 @@
   self,
   inputs,
   lib,
-  modulesPath,
   ...
 }:
 let

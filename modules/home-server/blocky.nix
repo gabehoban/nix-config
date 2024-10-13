@@ -193,7 +193,8 @@ in
               # Global Mappings
               "headscale.labrats.cc" = "5.161.231.127";
               # SRVIO Services
-              "cache.lab4.cc" = "100.77.210.83";
+              "hydra.lab4.cc" = "100.77.210.83";
+              "nix-cache.lab4.cc" = "100.77.210.83";
             };
           };
           log = {

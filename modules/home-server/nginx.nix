@@ -16,12 +16,18 @@ in
   };
 
   config = lib.mkIf cfg.nginx {
-    security = {
-      acme = {
-        acceptTerms = true;
-        defaults.email = "certs@lab4.cc";
+    sops.secrets = {
+      cloudflare-env = {
+        sopsFile = ../../secrets/cloudflare.yaml;
+        owner = "nginx";
       };
     };
+
+    security.acme.acceptTerms = true;
+    security.acme.defaults.email = "certs@lab4.cc";
+    security.acme.defaults.dnsProvider = "cloudflare";
+    security.acme.defaults.dnsResolver = "1.1.1.1:53";
+    security.acme.defaults.environmentFile = "${config.sops.secrets.cloudflare-env.path}";
 
     networking.firewall.allowedTCPPorts = [
       80
