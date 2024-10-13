@@ -37,6 +37,7 @@ in
       buildMachines = [
         {
           hostName = "localhost";
+          protocol = null;
           systems = [
             "x86_64-linux"
             "aarch64-linux"
@@ -50,7 +51,7 @@ in
             "benchmark"
             "local"
           ];
-          maxJobs = 1;
+          maxJobs = 2;
         }
       ];
     };
@@ -92,7 +93,7 @@ in
           '';
         };
         locations."/" = {
-          proxyPass = "http://[::1]:5000";
+          proxyPass = "http://localhost:5000";
           extraConfig = ''
             proxy_redirect http:// https://;
             proxy_http_version 1.1;
