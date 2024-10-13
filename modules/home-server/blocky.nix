@@ -37,6 +37,7 @@ in
         package = pkgs.unbound-full;
         settings = {
           server = {
+            port = "5335";
             aggressive-nsec = true;
             cache-max-ttl = 86400;
             cache-min-ttl = 300;
@@ -100,8 +101,6 @@ in
         enable = true;
         settings = {
           connectIPVersion = "v4";
-          upstreamTimeout = "5s";
-          startVerifyUpstream = false;
           minTlsServeVersion = "1.2";
           ports = {
             dns = 53;
@@ -124,7 +123,7 @@ in
               concurrency = 8;
               refreshPeriod = "4h";
             };
-            blackLists = {
+            denylists = {
               ads = [
                 "https://adaway.org/hosts.txt"
                 "https://blocklistproject.github.io/Lists/ads.txt"
@@ -149,12 +148,8 @@ in
               malicious = [
                 "https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt"
                 "https://phishing.army/download/phishing_army_blocklist_extended.txt"
-                "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt"
-                "https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Risk/hosts"
                 "https://s3.amazonaws.com/lists.disconnect.me/simple_malvertising.txt"
                 "https://v.firebog.net/hosts/Prigent-Crypto.txt"
-                "https://v.firebog.net/hosts/RPiList-Malware.txt"
-                "https://v.firebog.net/hosts/RPiList-Phishing.txt"
               ];
               misc = [
                 "https://bitbucket.org/ethanr/dns-blacklists/raw/8575c9f96e5b4a1308f2f12394abd86d0927a4a0/bad_lists/Mandiant_APT1_Report_Appendix_D.txt"
@@ -166,12 +161,11 @@ in
                 "https://big.oisd.nl/domainswild"
               ];
             };
-            whiteLists =
+            allowlists =
               let
                 customWhitelist = pkgs.writeText "misc.txt" ''
                   ax.phobos.apple.com.edgesuite.net
                   amp-api-edge.apps.apple.com
-                  (\.|^)dscx\.akamaiedge\.net$
                   *.flake.sh
                   *.discord.com
                 '';
@@ -201,6 +195,9 @@ in
               # SRVIO Services
               "cache.lab4.cc" = "100.77.210.83";
             };
+          };
+          log = {
+            level = "warn";
           };
           caching = {
             minTime = "2h";

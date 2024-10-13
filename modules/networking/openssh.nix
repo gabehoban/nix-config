@@ -151,21 +151,5 @@ in
       };
     users.users.${vars.user}.openssh.authorizedKeys.keys = sshKeys;
     users.users.root.openssh.authorizedKeys.keys = sshKeys;
-
-    environment.persistence."/persist" = {
-      hideMounts = true;
-      files = [
-        "/etc/ssh/ssh_host_ed25519_key"
-        "/etc/ssh/ssh_host_ed25519_key.pub"
-      ];
-      users."${vars.user}" = {
-        directories = [
-          {
-            directory = ".ssh";
-            mode = "0700";
-          }
-        ];
-      };
-    };
   };
 }

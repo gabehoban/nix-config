@@ -140,19 +140,5 @@ in
         };
       };
     };
-    environment.persistence."/persist" = {
-      directories = [
-        {
-          directory = "/var/log/nginx";
-          user = "nginx";
-          group = "nginx";
-        }
-        {
-          directory = "/var/lib/acme";
-          user = "acme";
-          group = "nginx";
-        }
-      ];
-    };
   };
 }

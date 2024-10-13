@@ -8,8 +8,6 @@
 let
   cfg = config.syscfg.tailscale;
   inherit (lib)
-    mkOption
-    types
     mkMerge
     mkIf
     ;
@@ -87,9 +85,6 @@ in
             ${pkgs.tailscale}/bin/tailscale up --auth-key 'file:${config.sops.secrets.tailscale-auth.path}' ${toString config.services.tailscale.extraUpFlags}
           '';
         };
-      };
-      environment.persistence."/persist" = {
-        directories = [ "/var/lib/tailscale" ];
       };
     })
   ];

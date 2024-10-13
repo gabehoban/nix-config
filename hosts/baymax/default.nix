@@ -8,6 +8,7 @@
     self.nixosModules.syscfgOS
     (import ./hardware.nix)
     (import ./disk.nix)
+    (import ./persist.nix)
   ];
   networking.hostName = "baymax";
 
@@ -48,6 +49,8 @@
 
     efi.canTouchEfiVariables = true;
   };
+
+  sops.age.keyFile = "/persist/var/lib/sops-nix/key.txt";
 
   topology.self = {
     hardware.info = "Desktop PC";

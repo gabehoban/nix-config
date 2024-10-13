@@ -242,10 +242,6 @@ in
           "porn"
         ];
       };
-
-      environment.persistence."/persist" = {
-        directories = [ "/var/lib/fail2ban" ];
-      };
     })
   ];
 }

@@ -123,14 +123,5 @@ in
         add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
       '';
     };
-    environment.persistence."/persist" = {
-      directories = [
-        {
-          directory = "/var/lib/headscale";
-          user = "headscale";
-          group = "headscale";
-        }
-      ];
-    };
   };
 }

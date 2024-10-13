@@ -13,14 +13,14 @@
 
   syscfg = {
     profiles.base = true;
-    profiles.server = true;
 
-    security.harden = true;
+    server.blocky = true;
 
-    tailscale = {
-      enable = false;
-    };
+    stratum.enable = true;
+    tailscale.enable = true;
   };
+
+  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
 
   nixpkgs = {
     hostPlatform = "aarch64-linux";
@@ -31,15 +31,8 @@
       (_self: super: {
         ubootRaspberryPi4_64bit = super.ubootRaspberryPi4_64bit.overrideAttrs (_oldAttrs: {
           extraConfig = ''
-            CONFIG_AUTOBOOT_DELAY_STR="dfg\0"
-            CONFIG_AUTOBOOT_KEYED=y
-            CONFIG_AUTOBOOT_PROMPT="NO UART\0"
-            CONFIG_AUTOBOOT_STOP_STR="1234\0"
+            CONFIG_AUTOBOOT=y
             CONFIG_BOOTDELAY=-2
-            CONFIG_SILENT_CONSOLE_UPDATE_ON_SET=y
-            CONFIG_SILENT_CONSOLE=y
-            CONFIG_SILENT_U_BOOT_ONLY=y
-            CONFIG_SYS_DEVICE_NULLDEV=y
           '';
         });
       })

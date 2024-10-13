@@ -9,6 +9,7 @@
     self.nixosModules.syscfgOS
     (import ./hardware.nix)
     (import ./disks.nix)
+    (import ./persist.nix)
   ];
   networking.hostName = "vpsio";
 
@@ -34,6 +35,8 @@
       enable = true;
     };
   };
+
+  sops.age.keyFile = "/persist/var/lib/sops-nix/key.txt";
 
   topology.self = {
     hardware.info = "NixOS VPS Cloud Server";

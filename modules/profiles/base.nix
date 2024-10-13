@@ -171,21 +171,6 @@ in
           configFile."user-dirs.dirs".force = true;
         };
       };
-      environment.persistence."/persist" = {
-        users."${vars.user}" = {
-          directories = [
-            "desktop"
-            "documents"
-            "downloads"
-            "pictures"
-            ".1Password"
-            ".mozilla"
-            ".local/share/direnv"
-            ".config/sops"
-          ];
-          files = [ ".config/zsh/.zsh_history" ];
-        };
-      };
     })
   ];
 }
