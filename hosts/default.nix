@@ -118,10 +118,10 @@
           vpsio = self.nixosConfigurations.vpsio.config.system.build.toplevel;
           srvio = self.nixosConfigurations.srvio.config.system.build.toplevel;
         };
-        # aarch64-linux = {
-        #   casio = self.nixosConfigurations.casio.config.system.build.toplevel;
-        #   sekio = self.nixosConfigurations.sekio.config.system.build.toplevel;
-        # };
+        aarch64-linux = {
+          casio = self.nixosConfigurations.casio.config.system.build.toplevel;
+          sekio = self.nixosConfigurations.sekio.config.system.build.toplevel;
+        };
       };
     };
 }
