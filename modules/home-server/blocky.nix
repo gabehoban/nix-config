@@ -187,16 +187,6 @@ in
               ];
             };
           };
-          customDNS = {
-            customTTL = "1h";
-            mapping = {
-              # Global Mappings
-              "headscale.labrats.cc" = "5.161.231.127";
-              # SRVIO Services
-              "hydra.lab4.cc" = "100.77.210.83";
-              "nix-cache.lab4.cc" = "100.77.210.83";
-            };
-          };
           log = {
             level = "warn";
           };

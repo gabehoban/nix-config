@@ -93,6 +93,7 @@ in
             "100.80.65.16" # Sekio
           ];
           extra_records = [
+            # SRVIO Records
             {
               name = "hydra.lab4.cc";
               type = "A";
@@ -102,6 +103,22 @@ in
               name = "nix-cache.lab4.cc";
               type = "A";
               value = "100.77.210.83";
+            }
+            # DISCOVERY Records
+            {
+              name = "truenas.lab4.cc";
+              type = "A";
+              value = "100.114.122.47";
+            }
+            {
+              name = "minio.lab4.cc";
+              type = "A";
+              value = "100.114.122.47";
+            }
+            {
+              name = "s3.lab4.cc";
+              type = "A";
+              value = "100.114.122.47";
             }
           ];
         };

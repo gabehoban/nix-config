@@ -121,7 +121,10 @@
           {
             devShells.default = pkgs.mkShell {
               inputsFrom = [ config.flake-root.devShell ];
-              packages = with pkgs; [ deploy-rs ];
+              packages = with pkgs; [
+                deploy-rs
+                attic-client
+              ];
             };
             treefmt.config = {
               package = pkgs.treefmt;
