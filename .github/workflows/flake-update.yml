@@ -1,0 +1,65 @@
+name: Flake Updater
+
+on:
+  schedule:
+    - cron: "30 02 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  update_flake:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: DeterminateSystems/nix-installer-action@v14
+        with:
+          extra-conf: accept-flake-config = true
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+      - run: git config --global user.name "dev-baymax[bot]"
+      - run: git config --global user.email "132212085+dev-baymax[bot]@users.noreply.github.com"
+      - name: Update flake
+        shell: bash
+        run: |
+          has_pr_open=$(gh pr list --label flake --json number)
+          if [ $has_pr_open != "[]" ]
+          then
+            echo "There is already a update PR, dont create a new one."
+
+            gh pr checkout $(gh pr list --label flake  --json number | jq ".[].number")
+            commits_ahead=$(git rev-list --count HEAD..origin/main)
+            echo "Commits ahead: $commits_ahead"
+            git log --oneline -5
+            echo "----------"
+            git log --oneline -5 origin/main
+            if [ $commits_ahead -ne 0 ]
+            then
+              git fetch origin
+              git status
+              git rebase origin/main
+              git push --force-with-lease
+            fi
+            exit 0
+          fi
+
+          nix flake update
+
+          git diff-index --quiet HEAD -- && echo "no changes" && exit 0
+          git switch -c update-flake_$(date -I)
+          git commit -am "flake.lock: Update $(date -I)"
+
+          nix flake check --show-trace
+
+          git push -u origin update-flake_$(date -I)
+          PR=$(gh pr create \
+          --base main \
+          --body "Automatic package update for flake.lock on $(date -I)" \
+          --label bot --label flake \
+          --fill \
+          --title "Update for flake.lock $(date -I)")
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
