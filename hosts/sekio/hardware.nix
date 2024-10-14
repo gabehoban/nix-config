@@ -13,8 +13,10 @@ let
   dtCfg = config.hardware.deviceTree;
   cfg = blCfg.generic-extlinux-compatible;
   timeoutStr = if blCfg.timeout == null then "-1" else toString blCfg.timeout;
-  builderScript =
-    <nixpkgs/nixos/modules/system/boot/loader/generic-extlinux-compatible/extlinux-conf-builder.sh>;
+  builderScript = builtins.fetchurl {
+    url = "https://raw.githubusercontent.com/NixOS/nixpkgs/refs/tags/24.05/nixos/modules/system/boot/loader/generic-extlinux-compatible/extlinux-conf-builder.sh";
+    sha256 = "0zwfdd378c13g9j7cxkfmfz5s9gfwawya4sd42ak1g1dx35nq5hp";
+  };
   fixedBuilderScriptName = "extlinux-conf-builder-no-interaction.sh";
   fixedBuilderScript = pkgs.runCommand fixedBuilderScriptName { } ''
     (
