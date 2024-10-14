@@ -61,7 +61,7 @@ in
       ];
     };
 
-    sops.secrets."attic-private-key" = {
+    sops.secrets."attic-credentials" = {
       sopsFile = ../../secrets/hydra.yaml;
       mode = "600";
     };
@@ -70,7 +70,7 @@ in
 
     services.atticd = {
       enable = true;
-      credentialsFile = config.sops.secrets.attic-private-key.path;
+      credentialsFile = config.sops.secrets.attic-credentials.path;
 
       settings = {
         listen = "127.0.0.1:8080";
