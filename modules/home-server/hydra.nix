@@ -83,7 +83,7 @@ in
           type = "s3";
           region = "us-east-1";
           bucket = "attic-cache";
-          endpoint = "http://100.114.122.47:9000";
+          endpoint = "https://s3.lab4.cc";
         };
 
         # Data chunking
