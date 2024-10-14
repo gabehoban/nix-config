@@ -22,9 +22,9 @@ in
       '';
     };
 
-    nix.settings.allowed-uris = "github: git+https://github.com/ git+ssh://github.com/ https://github.com/";
+    nix.settings.allowed-uris = "github: git+https://github.com/ git+ssh://github.com/ https://github.com/ https://raw.githubusercontent.com/NixOS/nixpkgs/";
     nix.extraOptions = ''
-      allowed-uris = github: git+https://github.com/ git+ssh://github.com/ https://github.com/
+      allowed-uris = github: git+https://github.com/ git+ssh://github.com/ https://github.com/ https://raw.githubusercontent.com/NixOS/nixpkgs/
     '';
 
     nix.settings.trusted-users = [
