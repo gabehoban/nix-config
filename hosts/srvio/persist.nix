@@ -9,6 +9,7 @@
         "/var/lib/nixos"
         "/var/lib/sops-nix"
         "/var/lib/tailscale"
+        "/var/lib/attic-watch-store"
         "/var/log"
         {
           directory = "/var/lib/private";
