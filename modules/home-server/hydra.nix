@@ -23,7 +23,7 @@ in
       notificationSender = "hydra@localhost";
       useSubstitutes = true;
       extraConfig = ''
-        binary_cache_public_uri = https://nix-cache.lab4.cc
+        binary_cache_public_uri = https://nix-cache.lab4.cc/main
       '';
     };
 

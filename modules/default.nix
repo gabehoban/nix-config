@@ -117,13 +117,14 @@ in
         substituters = [
           "https://cache.nixos.org?priority=10"
           "https://nix-community.cachix.org"
-          "https://nix-cache.lab4.cc"
+          "https://nix-cache.lab4.cc/main"
           "https://nyx.chaotic.cx"
         ];
         trusted-public-keys = [
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
           "nix-cache.lab4.cc:B5eUOBimkQFrWTTF2e7fRKm/j7EyTnJ4SgvXu804fs8="
+          "main:OgEYxQaDFUQ00yzsyGBHamozb35sBqNmq5/DONu0oeY="
           "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
         ];
         system-features = [
