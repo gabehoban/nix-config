@@ -17,6 +17,7 @@ in
     inputs.impermanence.nixosModules.impermanence
     inputs.nix-topology.nixosModules.default
     inputs.sops-nix.nixosModules.sops
+    inputs.attic.nixosModules.atticd
   ] ++ (import ./modules-list.nix);
 
   config = {

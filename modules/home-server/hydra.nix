@@ -1,4 +1,9 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 let
   cfg = config.syscfg.server;
 in
@@ -56,18 +61,42 @@ in
       ];
     };
 
-    sops.secrets."nix-cache-privkey" = {
+    sops.secrets."attic-private-key" = {
       sopsFile = ../../secrets/hydra.yaml;
-      owner = "harmonia";
       mode = "600";
     };
 
-    services.harmonia = {
+    environment.systemPackages = [ pkgs.attic-client ];
+
+    services.atticd = {
       enable = true;
-      signKeyPaths = [ config.sops.secrets."nix-cache-privkey".path ];
+      credentialsFile = config.sops.secrets.attic-private-key.path;
+
       settings = {
-        bind = "0.0.0.0:5000";
-        priority = 50;
+        listen = "127.0.0.1:8080";
+
+        api-endpoint = "https://nix-cache.lab4.cc/";
+        soft-delete-caches = false;
+        require-proof-of-possession = true;
+
+        storage = {
+          type = "s3";
+          region = "us-east-1";
+          bucket = "attic-cache";
+          endpoint = "http://100.114.122.47:9000";
+        };
+
+        # Data chunking
+        chunking = {
+          nar-size-threshold = 64 * 1024; # 64 KiB
+          min-size = 16 * 1024; # 16 KiB
+          avg-size = 64 * 1024; # 64 KiB
+          max-size = 256 * 1024; # 256 KiB
+        };
+        compression = {
+          type = "zstd";
+          level = 8;
+        };
       };
     };
 
@@ -86,17 +115,10 @@ in
         enableACME = true;
         forceSSL = true;
         acmeRoot = null;
-        locations."= /" = {
-          return = ''200 'Nix Cache by gabehoban\n\nPublic key:\n\n  nix-cache.lab4.cc:B5eUOBimkQFrWTTF2e7fRKm/j7EyTnJ4SgvXu804fs8=\n\nNixOS Configuration:\n\n  nix.settings = {\n    substituters = [\n      "https://nix-cache.lab4.cc"\n    ];\n    trusted-public-keys = [\n      "nix-cache.lab4.cc:B5eUOBimkQFrWTTF2e7fRKm/j7EyTnJ4SgvXu804fs8="\n    ];\n  }\n\nTry:\n\n  nix build --substituters "https://nix-cache.lab4.cc" \\\n  --trusted-public-keys "nix-cache.lab4.cc:B5eUOBimkQFrWTTF2e7fRKm/j7EyTnJ4SgvXu804fs8=" \\\n  "git+https://git.clerie.de/clerie/fieldpoc.git#fieldpoc"\n\n.-*..*-.' '';
-          extraConfig = ''
-            types { } default_type "text/plain; charset=utf-8";
-          '';
-        };
         locations."/" = {
-          proxyPass = "http://localhost:5000";
+          proxyPass = "http://localhost:8080";
           extraConfig = ''
             proxy_redirect http:// https://;
-            proxy_http_version 1.1;
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection $connection_upgrade;
           '';
