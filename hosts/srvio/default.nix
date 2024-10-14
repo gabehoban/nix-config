@@ -22,7 +22,7 @@
   };
 
   syscfg = {
-    autoupgrade.enable = false;
+    autoupgrade.enable = true;
     security.harden = true;
 
     profiles.base = true;

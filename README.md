@@ -1,7 +1,6 @@
 # syscfgOS: My Secure NixOS Configuration
 
 ![NixOS Flake](https://img.shields.io/badge/NixOS-flake-blue?logo=nixos)
-![Wayland By Default](https://img.shields.io/badge/Wayland-196f5e?logo=wayland)
 ![secrets sops-nix](https://img.shields.io/badge/secrets-sops--nix-blue)
 
 ## Goal
@@ -30,21 +29,19 @@ use case.
 
 Systems managed by this flake.
 
-| Name      | System           | CPU       | RAM  | GPU                 | Role | OS  | State |
-| --------- | ---------------- | --------- | ---- | ------------------- | ---- | --- | ----- |
-| `serow`   | ThinkPad T590    | i7-8565U  | 16GB | Intel UHD 8th Gen   | 💻️  | ❄️  | ✅    |
-| `tahr`    | ThinkPad P1 Gen3 | i9-10885H | 32GB | NVIDIA Quadro T2000 | 💻️  | ❄️  | ✅    |
-| `takin`   | MacBook Pro      | M2 Max    | 64GB | M2 Max              | 💻️  |    | 🚧    |
-| `goral`   | VMWare Fusion    | M2 Max    | 64GB | M2 Max              | 💻️  | ❄️  | ✅    |
-| `duisk`   | Vultr VPS        | vCPU      | 4GB  | None                | ☁️   | ❄️  | ✅    |
-| `argali`  | RPi 4B           | BCM2711   | 8GB  | None                | ☁️   | ❄️  | ✅    |
-| `arkelli` | RPi 4B           | BCM2711   | 8GB  | None                | ☁️   | ❄️  | ✅    |
-| `boerbok` | Star64           | SiFive    | 8GB  | None                | ☁️   | ❄️  | 🚧    |
+| Name      | System             | CPU        | RAM  | GPU                     | Role | OS   | State |
+| --------- | ------------------ | ---------- | ---- | ----------------------- | ---- | ---- | ----- |
+| `baymax`  | Desktop PC         | i9-12900KF | 64GB | NVIDIA GeForce RTX 3060 | 💻️   | ❄️    | ✅    |
+| `macbook` | MacBook Pro        | M2 Max     | 64GB | M2 Max                  | 💻️   |     | 🚧    |
+| `srvio`   | Dell OptiPlex 7040 | i5-6500    | 32GB | Intel HD Graphics 530   | 💻️   | ❄️    | ✅    |
+| `vpsio`   | Hetzner VPS CPX31  | 4 vCPU     | 8GB  | None                    | ☁️    | ❄️    | ✅    |
+| `casio`   | RPI 4B+ Rev 1.5    | BCM2711    | 8GB  | None                    | ☁️    | ❄️    | ✅    |
+| `sekio`   | RPI 4B+ Rev 1.5    | BCM2711    | 8GB  | None                    | ☁️    | ❄️    | ✅    |
 
 Rebuilding a system:
 
 ```
-sudo nixos-rebuild switch --flake github:humaidq/dotfiles#<hostname> --refresh
+sudo nixos-rebuild switch --flake github:gabehoban/nix-config#<hostname> --refresh
 ```
 
 ## Bootstrapping
@@ -54,20 +51,16 @@ sudo nixos-rebuild switch --flake github:humaidq/dotfiles#<hostname> --refresh
 Build and flash the installer image:
 
 ```
-nix build github:humaidq/dotfiles#installer
+nix build github:gabehoban/nix-config#installer
 sudo cp ./result/iso/*.iso /dev/sdX
 ```
 
 Alternatively, this ISO works with [Ventoy].
 
-After booting, either partition manually or use the disko configuration. Copy
-the hardware configuration and configure the host on another machine, push it
-to the repository.
-
 Then you may finally install with:
 
 ```
-sudo nixos-install --root /mnt --flake github:humaidq/dotfiles#<host>
+sudo nixos-install --root /mnt --flake github:gabehoban/nix-config#<host>
 ```
 
 ### Raspberry Pi
@@ -75,7 +68,7 @@ sudo nixos-install --root /mnt --flake github:humaidq/dotfiles#<host>
 Build and flash the SD card image:
 
 ```
-nix build github:humaidq/dotfiles#packages.aarch64-linux.rpi4-bootstrap
+nix build github:gabehoban/nix-config#packages.aarch64-linux.rpi4-bootstrap
 sudo cp ./result/*.img /dev/mmcblkX
 ```
 
@@ -98,7 +91,12 @@ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix 
 Then run the following (without sudo):
 
 ```
-darwin-rebuild switch --flake github:humaidq/dotfiles#takin --refresh
+darwin-rebuild switch --flake github:gabehoban/nix-config#macbook --refresh
 ```
+# Credits
 
-[Ventoy]: https://www.ventoy.net/en/index.html
+Other dotfiles that I learned / copy from:
+
+- Nix Flakes
+  - [humaidq/dotfiles](https://github.com/humaidq/dotfiles): General flake / files structure
+  - [koenw/stratum](https://github.com/koenw/stratum): RPI Stratum 1 NTP Server

@@ -2,27 +2,32 @@ name: Flake Updater
 
 on:
   schedule:
-    - cron: "30 02 * * *"
+    - cron: "* */12 * * *"
   workflow_dispatch: {}
 
 jobs:
   update_flake:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
         with:
           lfs: false
-      - uses: DeterminateSystems/nix-installer-action@v14
+      - name: Configure Nix Environment
+        uses: DeterminateSystems/nix-installer-action@v14
         with:
           extra-conf: accept-flake-config = true
-      - uses: actions/create-github-app-token@v1
+      - name: Generate GitHub Bot Token
+        uses: actions/create-github-app-token@v1
         id: app-token
         with:
           app-id: "${{ secrets.BOT_APP_ID }}"
           private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
-      - run: git config --global user.name "dev-baymax[bot]"
-      - run: git config --global user.email "132212085+dev-baymax[bot]@users.noreply.github.com"
-      - name: Update flake
+      - name: Set GitHub Bot Username
+        run: git config --global user.name "dev-baymax[bot]"
+      - name: Set GitHub Bot Email
+        run: git config --global user.email "132212085+dev-baymax[bot]@users.noreply.github.com"
+      - name: Update Flake and Push
         shell: bash
         run: |
           has_pr_open=$(gh pr list --label flake --json number)

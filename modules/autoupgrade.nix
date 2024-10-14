@@ -10,10 +10,9 @@ in
       allowReboot = true;
       randomizedDelaySec = "45min";
       rebootWindow = {
-        lower = "01:00";
-        upper = "05:00";
+        lower = "04:00";
+        upper = "07:00";
       };
-      dates = "01:30";
       flake = "github:gabehoban/nix-config#${config.networking.hostName}";
       flags = [
         "--refresh"

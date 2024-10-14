@@ -12,6 +12,7 @@
   networking.hostName = "sekio";
 
   syscfg = {
+    autoupgrade.enable = true;
     profiles.base = true;
 
     server.blocky = true;

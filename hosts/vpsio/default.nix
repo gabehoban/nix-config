@@ -19,10 +19,9 @@
   };
 
   syscfg = {
-    autoupgrade.enable = false;
+    autoupgrade.enable = true;
     profiles.base = true;
     profiles.server = true;
-    # profiles.webserver = true;
 
     security.harden = true;
 

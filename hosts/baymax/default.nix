@@ -14,7 +14,7 @@
 
   # My configuration specific settings
   syscfg = {
-    autoupgrade.enable = false;
+    autoupgrade.enable = true;
 
     profiles.base = true;
 
