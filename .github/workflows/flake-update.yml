@@ -66,5 +66,7 @@ jobs:
           --label bot --label flake \
           --fill \
           --title "Update for flake.lock $(date -I)")
+
+          gh pr merge --auto -r "$PR"
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
