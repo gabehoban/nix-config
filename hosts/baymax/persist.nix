@@ -24,6 +24,7 @@
         directories = [
           ".1Password"
           ".config/sops"
+          ".config/nix"
           ".local/share/direnv"
           ".mozilla"
           "desktop"
@@ -36,7 +37,7 @@
           }
         ];
         files = [
-          ".config/zsh/.zsh_history"
+          ".config/zsh_history/histfile"
         ];
       };
     };
