@@ -28,6 +28,7 @@ in
     environment.systemPackages = [ pkgs.blocky ];
 
     services = {
+      postgresql.enable = true;
       resolved.enable = lib.mkForce false;
       unbound = {
         enable = true;
@@ -105,6 +106,7 @@ in
           ports = {
             dns = 53;
             tls = 853;
+            http = 4000;
           };
           upstreams = {
             strategy = "strict";
@@ -198,11 +200,62 @@ in
             prefetchExpires = "2h";
             prefetchThreshold = 5;
           };
+          queryLog = {
+            type = "postgresql";
+            target = "postgres://blocky?host=/run/postgresql";
+            logRetentionDays = 90;
+          };
+          prometheus.enable = true;
+        };
+      };
+      postgresql = {
+        ensureDatabases = [ "blocky" ];
+        ensureUsers = [
+          {
+            name = "blocky";
+            ensureDBOwnership = true;
+          }
+          {
+            name = "grafana";
+          }
+        ];
+      };
+      prometheus.scrapeConfigs = [
+        {
+          job_name = "blocky";
+          scrape_interval = "15s";
+          static_configs = [ { targets = [ "127.0.0.1:4000" ]; } ];
+        }
+      ];
+      grafana = {
+        declarativePlugins = with pkgs.grafanaPlugins; [ grafana-piechart-panel ];
+        settings.panels.disable_sanitize_html = true;
+        provision.datasources.settings = {
+          apiVersion = 1;
+          datasources = [
+            {
+              name = "Blocky Query Log";
+              type = "postgres";
+              url = "/run/postgresql";
+              database = "blocky";
+              user = "grafana";
+              orgId = 1;
+            }
+          ];
+          deleteDatasources = [
+            {
+              name = "Blocky Query Log";
+              orgId = 1;
+            }
+          ];
         };
       };
     };
 
     systemd.services = {
+      postgresql.postStart = lib.mkAfter ''
+        $PSQL -tAc 'GRANT pg_read_all_data TO grafana'
+      '';
       blocky = {
         after = [
           "unbound.service"

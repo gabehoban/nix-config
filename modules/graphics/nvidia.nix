@@ -16,7 +16,6 @@ in
 
     boot.kernelParams = [
       "nvidia-drm.fbdev=1"
-      "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
     ];
 
     hardware = {
@@ -57,5 +56,9 @@ in
         vulkan-tools
       ];
     };
+    systemd.sleep.extraConfig = ''
+      AllowSuspend=no
+      AllowHibernation=no
+    '';
   };
 }

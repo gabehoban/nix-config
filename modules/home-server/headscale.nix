@@ -1,4 +1,8 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  ...
+}:
 let
   cfg = config.syscfg.server;
 in
@@ -104,6 +108,17 @@ in
               type = "A";
               value = "100.77.210.83";
             }
+            # SEKIO Records
+            {
+              name = "auth.sekio.lab4.cc";
+              type = "A";
+              value = "100.80.65.16";
+            }
+            {
+              name = "grafana.sekio.lab4.cc";
+              type = "A";
+              value = "100.80.65.16";
+            }
             # DISCOVERY Records
             {
               name = "truenas.lab4.cc";
@@ -127,6 +142,7 @@ in
     services.nginx.virtualHosts."headscale.labrats.cc" = {
       forceSSL = true;
       enableACME = true;
+      acmeRoot = null;
       quic = true;
       http3 = true;
 

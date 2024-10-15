@@ -2,8 +2,7 @@
   imports = [
     ./tailscale.nix
     ./openssh.nix
-    ./stratum.nix
-    ./time.nix
+    ./chrony.nix
   ];
   config = {
     networking.extraHosts = ''

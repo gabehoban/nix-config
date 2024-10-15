@@ -41,6 +41,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -53,11 +58,6 @@
 
     attic = {
       url = "github:zhaofengli/attic";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    deploy-rs = {
-      url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -83,7 +83,11 @@
   };
 
   outputs =
-    inputs@{ nixpkgs, flake-parts, ... }:
+    inputs@{
+      nixpkgs,
+      flake-parts,
+      ...
+    }:
     flake-parts.lib.mkFlake
       {
         inherit inputs;
@@ -97,6 +101,7 @@
       {
         imports = [
           inputs.flake-root.flakeModule
+          inputs.git-hooks.flakeModule
           inputs.treefmt-nix.flakeModule
           inputs.nix-topology.flakeModule
           ./hosts
@@ -122,10 +127,22 @@
             devShells.default = pkgs.mkShell {
               inputsFrom = [ config.flake-root.devShell ];
               packages = with pkgs; [
-                deploy-rs
+                just
                 attic-client
               ];
             };
+
+            pre-commit = {
+              check.enable = true;
+              settings.hooks = {
+                actionlint.enable = true;
+                nil.enable = true;
+                shellcheck.enable = true;
+                statix.enable = true;
+                treefmt.enable = true;
+              };
+            };
+
             treefmt.config = {
               package = pkgs.treefmt;
               inherit (config.flake-root) projectRootFile;

@@ -15,8 +15,12 @@
     profiles.base = true;
 
     server.blocky = true;
+    server.grafana = true;
+    server.prometheus = true;
+    server.nginx = true;
+    server.oauth2 = true;
 
-    stratum.enable = true;
+    stratum_1.enable = true;
     tailscale.enable = true;
   };
 

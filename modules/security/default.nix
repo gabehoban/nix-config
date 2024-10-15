@@ -163,6 +163,7 @@ in
           "af_802154"
           "affs"
           "appletalk"
+          "iwlwifi"
           "atm"
           "ax25"
           "befs"

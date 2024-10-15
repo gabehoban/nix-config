@@ -45,7 +45,6 @@
           inherit specialArgs;
           modules = [ self.nixosModules.host-srvio ];
         };
-
       };
 
       packages.x86_64-linux = {
@@ -73,42 +72,6 @@
             self.nixosModules.host-rpi4-bootstrap
             { sdImage.compressImage = false; }
           ];
-        };
-      };
-
-      deploy.nodes = {
-        vpsio = {
-          hostname = "vpsio.lab4.cc";
-          sshUser = "root";
-          sshOpts = [
-            "-p"
-            "30"
-          ];
-          profiles.system = {
-            path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.vpsio;
-          };
-        };
-        sekio = {
-          hostname = "sekio.lab4.cc";
-          sshUser = "root";
-          sshOpts = [
-            "-p"
-            "30"
-          ];
-          profiles.system = {
-            path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.sekio;
-          };
-        };
-        srvio = {
-          hostname = "srvio.lab4.cc";
-          sshUser = "root";
-          sshOpts = [
-            "-p"
-            "30"
-          ];
-          profiles.system = {
-            path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.srvio;
-          };
         };
       };
 
