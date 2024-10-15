@@ -130,27 +130,27 @@ in
           };
         };
       };
-      systemd.services.attic-watch-store = {
-        wantedBy = [
-          "multi-user.target"
-          "network-online.target"
-        ];
-        after = [ "network-online.target" ];
-        environment.HOME = "/run/attic-watch-store";
-        serviceConfig = {
-          MemoryHigh = "5%";
-          MemoryMax = "10%";
-        };
-        path = [ pkgs.attic-client ];
-        script = ''
-          set -eux -o pipefail
-          ATTIC_TOKEN=$(< ${config.sops.secrets."attic-auth-token".path})
-          # Replace https://cache.<domain> with your own cache URL.
-          attic login nix-cache https://nix-cache.lab4.cc $ATTIC_TOKEN
-          attic use main
-          exec attic watch-store nix-cache:main
-        '';
+    };
+    systemd.services.attic-watch-store = {
+      wantedBy = [
+        "multi-user.target"
+        "network-online.target"
+      ];
+      after = [ "network-online.target" ];
+      environment.HOME = "/run/attic-watch-store";
+      serviceConfig = {
+        MemoryHigh = "5%";
+        MemoryMax = "10%";
       };
+      path = [ pkgs.attic-client ];
+      script = ''
+        set -eux -o pipefail
+        ATTIC_TOKEN=$(< ${config.sops.secrets.attic-auth-token.path})
+        # Replace https://cache.<domain> with your own cache URL.
+        attic login nix-cache https://nix-cache.lab4.cc $ATTIC_TOKEN
+        attic use main
+        exec attic watch-store nix-cache:main
+      '';
     };
   };
 }
