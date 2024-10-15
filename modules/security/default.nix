@@ -28,41 +28,46 @@ in
     (mkIf cfg.yubikey {
       hardware.gpgSmartcards.enable = true;
 
-      environment.systemPackages = with pkgs; [
-        age
-        age-plugin-yubikey
-        gnupg
-        libu2f-host
-        yubico-piv-tool
-        yubikey-manager
-        yubikey-manager-qt
-        yubikey-personalization
-        yubikey-personalization-gui
-        yubikey-touch-detector
-        yubioath-flutter
-      ];
-
-      environment.shellInit = ''
-        export GPG_TTY="$(tty)"
-        export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-        gpgconf --launch gpg-agent
-        gpg-connect-agent updatestartuptty /bye > /dev/null
-      '';
-
-      programs.gnupg.agent = {
-        enable = true;
-        enableExtraSocket = true;
-        enableSSHSupport = true;
-        settings = {
-          default-cache-ttl = 34560000;
-          max-cache-ttl = 34560000;
-        };
+      environment = {
+        systemPackages = with pkgs; [
+          age
+          age-plugin-yubikey
+          gnupg
+          libu2f-host
+          yubico-piv-tool
+          yubikey-manager
+          yubikey-manager-qt
+          yubikey-personalization
+          yubikey-personalization-gui
+          yubikey-touch-detector
+          yubioath-flutter
+        ];
+        shellInit = ''
+          export GPG_TTY="$(tty)"
+          export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+          gpgconf --launch gpg-agent
+          gpg-connect-agent updatestartuptty /bye > /dev/null
+        '';
       };
-      programs.ssh.startAgent = lib.mkForce false;
 
-      services.pcscd.enable = true;
-      services.udev.packages = [ pkgs.yubikey-personalization ];
-      services.yubikey-agent.enable = true;
+      programs = {
+        gnupg.agent = {
+          enable = true;
+          enableExtraSocket = true;
+          enableSSHSupport = true;
+          settings = {
+            default-cache-ttl = 34560000;
+            max-cache-ttl = 34560000;
+          };
+        };
+        ssh.startAgent = lib.mkForce false;
+      };
+
+      services = {
+        pcscd.enable = true;
+        udev.packages = [ pkgs.yubikey-personalization ];
+        yubikey-agent.enable = true;
+      };
     })
     (mkIf cfg.harden {
       # Only enable firewall on non-VMs. VMs rely on host's firewall.

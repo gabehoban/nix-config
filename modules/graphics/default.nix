@@ -27,20 +27,23 @@ in
     };
   };
   config = mkIf cfg.enable {
-    services.pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-      wireplumber.enable = true;
+    services = {
+      pipewire = {
+        enable = true;
+        alsa.enable = true;
+        alsa.support32Bit = true;
+        pulse.enable = true;
+        wireplumber.enable = true;
+      };
+      xserver = {
+        enable = true;
+        excludePackages = [ pkgs.xterm ];
+        displayManager.gdm.enable = true;
+      };
     };
     hardware.pulseaudio.enable = false;
 
     programs.dconf.enable = true;
-
-    services.xserver.enable = true;
-    services.xserver.excludePackages = [ pkgs.xterm ];
-    services.xserver.displayManager.gdm.enable = true;
 
     # Make system look better overall when we have a graphical system
     boot.plymouth = {

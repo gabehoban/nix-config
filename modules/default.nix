@@ -22,23 +22,27 @@ in
 
   config = {
     # Setup home-manager
-    home-manager.useGlobalPkgs = true;
-    home-manager.useUserPackages = true;
-    home-manager.sharedModules = [
-      inputs.sops-nix.homeManagerModules.sops
-      inputs.nixvim.homeManagerModules.nixvim
-      inputs.nix-index-database.hmModules.nix-index
-    ];
+    home-manager = {
+      useGlobalPkgs = true;
+      useUserPackages = true;
+      sharedModules = [
+        inputs.sops-nix.homeManagerModules.sops
+        inputs.nixvim.homeManagerModules.nixvim
+        inputs.nix-index-database.hmModules.nix-index
+      ];
+    };
     topology.self.name = config.networking.hostName;
 
-    topology.networks.tailscale0 = {
-      name = "Tailscale";
-      cidrv4 = "100.64.0.0/10";
-    };
+    topology.networks = {
+      tailscale0 = {
+        name = "Tailscale";
+        cidrv4 = "100.64.0.0/10";
+      };
 
-    topology.networks.home = {
-      name = "Home LAN";
-      cidrv4 = "192.168.1.0/24";
+      home = {
+        name = "Home LAN";
+        cidrv4 = "192.168.1.0/24";
+      };
     };
 
     # Setup sops-nix
@@ -58,27 +62,29 @@ in
       };
     };
 
-    # Define default system user.
-    users.mutableUsers = false;
-    users.groups.plugdev = { };
-
-    users.users.${vars.user} = {
-      isNormalUser = true;
-      uid = 1000;
-      extraGroups = [
-        "plugdev"
-        "dialout"
-        "video"
-        "audio"
-        "disk"
-        "networkmanager"
-        "wheel"
-        "kvm"
-      ];
-      description = cfg.fullname;
-      hashedPasswordFile = config.sops.secrets.user-passwd.path;
+    users = {
+      mutableUsers = false;
+      groups.plugdev = { };
+      users = {
+        ${vars.user} = {
+          isNormalUser = true;
+          uid = 1000;
+          extraGroups = [
+            "plugdev"
+            "dialout"
+            "video"
+            "audio"
+            "disk"
+            "networkmanager"
+            "wheel"
+            "kvm"
+          ];
+          description = cfg.fullname;
+          hashedPasswordFile = config.sops.secrets.user-passwd.path;
+        };
+        root.hashedPasswordFile = config.sops.secrets.user-passwd.path;
+      };
     };
-    users.users.root.hashedPasswordFile = config.sops.secrets.user-passwd.path;
 
     home-manager.users.${vars.user} = {
       home.stateVersion = "24.05";

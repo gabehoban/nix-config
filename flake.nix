@@ -126,6 +126,9 @@
           {
             devShells.default = pkgs.mkShell {
               inputsFrom = [ config.flake-root.devShell ];
+              shellHook = ''
+                ${config.pre-commit.installationScript}
+              '';
               packages = with pkgs; [
                 just
                 attic-client

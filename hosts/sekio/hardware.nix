@@ -44,40 +44,41 @@ let
 in
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
-
-  boot.initrd.availableKernelModules = [
-    "bcm2835_dma"
-    "i2c_bcm2835"
-    "sun4i_drm"
-    "sun8i_drm_hdmi"
-    "sun8i_mixer"
-    "usb_storage"
-    "usbhid"
-    "vc4"
-    "xhci_pci"
-  ];
-  boot.kernelModules = [
-    "i2c_dev"
-    "rtc_rv3028"
-    "pps_gpio"
-  ];
-  boot.kernelParams = [
-    "panic=1"
-    "boot.panic_on_fail"
-    "8250.nr_uarts=1"
-  ];
-  boot.blacklistedKernelModules = [
-    "bluetooth"
-    "brcmfmac"
-    "brcmutil"
-    "btbcm"
-    "hci_uart"
-  ];
-  boot.extraModulePackages = [ ];
-  boot.loader = {
-    grub.enable = false;
-    generic-extlinux-compatible.enable = true;
+  boot = {
+    loader = {
+      grub.enable = false;
+      generic-extlinux-compatible.enable = true;
+    };
+    initrd.availableKernelModules = [
+      "bcm2835_dma"
+      "i2c_bcm2835"
+      "sun4i_drm"
+      "sun8i_drm_hdmi"
+      "sun8i_mixer"
+      "usb_storage"
+      "usbhid"
+      "vc4"
+      "xhci_pci"
+    ];
+    kernelModules = [
+      "i2c_dev"
+      "rtc_rv3028"
+      "pps_gpio"
+    ];
+    kernelParams = [
+      "panic=1"
+      "boot.panic_on_fail"
+      "8250.nr_uarts=1"
+    ];
+    blacklistedKernelModules = [
+      "bluetooth"
+      "brcmfmac"
+      "brcmutil"
+      "btbcm"
+      "hci_uart"
+    ];
   };
+
   system.build.installBootLoader = lib.mkForce "${fixedBuilder} ${builderArgs} -c";
 
   fileSystems = {
@@ -94,248 +95,239 @@ in
 
   swapDevices = [ ];
 
-  hardware.raspberry-pi."4".apply-overlays-dtmerge.enable = true;
-  hardware.raspberry-pi."4".i2c1.enable = true;
-  hardware.deviceTree = {
-    enable = true;
-    filter = "*-rpi-*.dtb";
-    overlays = [
-      {
-        name = "rpi4-pps-gpio-overlay";
-        dtsText = ''
-          /dts-v1/;
-          /plugin/;
+  hardware = {
+    raspberry-pi."4" = {
+      apply-overlays-dtmerge.enable = true;
+      i2c1.enable = true;
+    };
+    deviceTree = {
+      enable = true;
+      filter = "*-rpi-*.dtb";
+      overlays = [
+        {
+          name = "rpi4-pps-gpio-overlay";
+          dtsText = ''
+            /dts-v1/;
+            /plugin/;
 
-          / {
-            compatible = "brcm,bcm2711";
-            fragment@0 {
-              target-path = "/";
-              __overlay__ {
-                pps: pps@12 {
-                  compatible = "pps-gpio";
+            / {
+              compatible = "brcm,bcm2711";
+              fragment@0 {
+                target-path = "/";
+                __overlay__ {
+                  pps: pps@12 {
+                    compatible = "pps-gpio";
+                    pinctrl-names = "default";
+                    pinctrl-0 = <&pps_pins>;
+                    gpios = <&gpio 18 0>;
+                    status = "okay";
+                  };
+                };
+              };
+
+              fragment@1 {
+                target = <&gpio>;
+                __overlay__ {
+                  pps_pins: pps_pins@12 {
+                    brcm,pins =     <18>;
+                    brcm,function = <0>;    // in
+                    brcm,pull =     <0>;    // off
+                  };
+                };
+              };
+
+              __overrides__ {
+                gpiopin = <&pps>,"gpios:4",
+                    <&pps>,"reg:0",
+                    <&pps_pins>,"brcm,pins:0",
+                    <&pps_pins>,"reg:0";
+                assert_falling_edge = <&pps>,"assert-falling-edge?";
+                capture_clear = <&pps>,"capture-clear?";
+                pull = <&pps_pins>,"brcm,pull:0";
+              };
+            };
+          '';
+        }
+        {
+          name = "miniuart-bt";
+          dtsText = ''
+            /dts-v1/;
+            /plugin/;
+
+            #include <dt-bindings/gpio/gpio.h>
+
+            /{
+              compatible = "brcm,bcm2835";
+
+              fragment@0 {
+                target = <&uart0>;
+                __overlay__ {
                   pinctrl-names = "default";
-                  pinctrl-0 = <&pps_pins>;
-                  gpios = <&gpio 18 0>;
+                  pinctrl-0 = <&uart0_pins>;
                   status = "okay";
                 };
               };
-            };
 
-            fragment@1 {
-              target = <&gpio>;
-              __overlay__ {
-                pps_pins: pps_pins@12 {
-                  brcm,pins =     <18>;
-                  brcm,function = <0>;    // in
-                  brcm,pull =     <0>;    // off
+              fragment@1 {
+                target = <&bt>;
+                __overlay__ {
+                  status = "disabled";
                 };
               };
-            };
 
-            __overrides__ {
-              gpiopin = <&pps>,"gpios:4",
-                  <&pps>,"reg:0",
-                  <&pps_pins>,"brcm,pins:0",
-                  <&pps_pins>,"reg:0";
-              assert_falling_edge = <&pps>,"assert-falling-edge?";
-              capture_clear = <&pps>,"capture-clear?";
-              pull = <&pps_pins>,"brcm,pull:0";
-            };
-          };
-        '';
-      }
-      {
-        name = "miniuart-bt";
-        dtsText = ''
-          /dts-v1/;
-          /plugin/;
-
-          #include <dt-bindings/gpio/gpio.h>
-
-          /{
-            compatible = "brcm,bcm2835";
-
-            fragment@0 {
-              target = <&uart0>;
-              __overlay__ {
-                pinctrl-names = "default";
-                pinctrl-0 = <&uart0_pins>;
-                status = "okay";
-              };
-            };
-
-            fragment@1 {
-              target = <&bt>;
-              __overlay__ {
-                status = "disabled";
-              };
-            };
-
-            fragment@2 {
-              target = <&uart1>;
-              __overlay__ {
-                pinctrl-names = "default";
-                pinctrl-0 = <&uart1_pins &bt_pins &fake_bt_cts>;
-                status = "okay";
-              };
-            };
-
-            fragment@3 {
-              target = <&uart0_pins>;
-              __overlay__ {
-                brcm,pins;
-                brcm,function;
-                brcm,pull;
-              };
-            };
-
-            fragment@4 {
-              target = <&uart1_pins>;
-              __overlay__ {
-                brcm,pins = <32 33>;
-                brcm,function = <2>; /* alt5=UART1 */
-                brcm,pull = <0 2>;
-              };
-            };
-
-            fragment@5 {
-              target = <&gpio>;
-              __overlay__ {
-                fake_bt_cts: fake_bt_cts {
-                  brcm,pins = <31>;
-                  brcm,function = <1>; /* output */
+              fragment@2 {
+                target = <&uart1>;
+                __overlay__ {
+                  pinctrl-names = "default";
+                  pinctrl-0 = <&uart1_pins &bt_pins &fake_bt_cts>;
+                  status = "okay";
                 };
               };
-            };
 
-            fragment@6 {
-              target-path = "/aliases";
-              __overlay__ {
-                serial0 = "/soc/serial@7e201000";
-                serial1 = "/soc/serial@7e215040";
+              fragment@3 {
+                target = <&uart0_pins>;
+                __overlay__ {
+                  brcm,pins;
+                  brcm,function;
+                  brcm,pull;
+                };
+              };
+
+              fragment@4 {
+                target = <&uart1_pins>;
+                __overlay__ {
+                  brcm,pins = <32 33>;
+                  brcm,function = <2>; /* alt5=UART1 */
+                  brcm,pull = <0 2>;
+                };
+              };
+
+              fragment@5 {
+                target = <&gpio>;
+                __overlay__ {
+                  fake_bt_cts: fake_bt_cts {
+                    brcm,pins = <31>;
+                    brcm,function = <1>; /* output */
+                  };
+                };
+              };
+
+              fragment@6 {
+                target-path = "/aliases";
+                __overlay__ {
+                  serial0 = "/soc/serial@7e201000";
+                  serial1 = "/soc/serial@7e215040";
+                };
+              };
+
+              fragment@7 {
+                target = <&minibt>;
+                minibt_frag: __overlay__ {
+                };
+              };
+
+              __overrides__ {
+                krnbt = <&minibt_frag>,"status";
               };
             };
+          '';
+        }
+        {
+          name = "disable-bt";
+          dtsText = ''
+            /dts-v1/;
+            /plugin/;
 
-            fragment@7 {
-              target = <&minibt>;
-              minibt_frag: __overlay__ {
-              };
-            };
+            // #include <dt-bindings/gpio/gpio.h>
 
-            __overrides__ {
-              krnbt = <&minibt_frag>,"status";
-            };
-          };
-        '';
-      }
-      {
-        name = "disable-bt";
-        dtsText = ''
-          /dts-v1/;
-          /plugin/;
-
-          // #include <dt-bindings/gpio/gpio.h>
-
-          /{
-            compatible = "brcm,bcm2835";
-
-            fragment@0 {
-              target = <&uart1>;
-              __overlay__ {
-                status = "disabled";
-              };
-            };
-
-            fragment@1 {
-              target = <&uart0>;
-              __overlay__ {
-                pinctrl-names = "default";
-                pinctrl-0 = <&uart0_pins>;
-                status = "okay";
-              };
-            };
-
-            fragment@2 {
-              target = <&bt>;
-              __overlay__ {
-                status = "disabled";
-              };
-            };
-
-            fragment@3 {
-              target = <&uart0_pins>;
-              __overlay__ {
-                brcm,pins;
-                brcm,function;
-                brcm,pull;
-              };
-            };
-
-            fragment@4 {
-              target = <&bt_pins>;
-              __overlay__ {
-                brcm,pins;
-                brcm,function;
-                brcm,pull;
-              };
-            };
-
-            fragment@5 {
-              target-path = "/aliases";
-              __overlay__ {
-                serial0 = "/soc/serial@7e201000";
-                serial1 = "/soc/serial@7e215040";
-              };
-            };
-          };
-        '';
-      }
-      {
-        name = "i2c-rtc";
-        dtsText = ''
-          /dts-v1/;
-          /plugin/;
-
-          / {
-              compatible = "brcm,bcm2708";
+            /{
+              compatible = "brcm,bcm2835";
 
               fragment@0 {
-                  target = <&i2c_arm>;
-                  __overlay__ {
-                      #address-cells = <1>;
-                      #size-cells = <0>;
-                      status = "okay";
-
-                      rv3028@52 {
-                          compatible = "microcrystal,rv3028";
-                          reg = <0x52>;
-                          trickle-resistor-ohms = <11000>;
-                          status = "okay";
-                      };
-                  };
+                target = <&uart1>;
+                __overlay__ {
+                  status = "disabled";
+                };
               };
-          };
-        '';
-      }
-    ];
+
+              fragment@1 {
+                target = <&uart0>;
+                __overlay__ {
+                  pinctrl-names = "default";
+                  pinctrl-0 = <&uart0_pins>;
+                  status = "okay";
+                };
+              };
+
+              fragment@2 {
+                target = <&bt>;
+                __overlay__ {
+                  status = "disabled";
+                };
+              };
+
+              fragment@3 {
+                target = <&uart0_pins>;
+                __overlay__ {
+                  brcm,pins;
+                  brcm,function;
+                  brcm,pull;
+                };
+              };
+
+              fragment@4 {
+                target = <&bt_pins>;
+                __overlay__ {
+                  brcm,pins;
+                  brcm,function;
+                  brcm,pull;
+                };
+              };
+
+              fragment@5 {
+                target-path = "/aliases";
+                __overlay__ {
+                  serial0 = "/soc/serial@7e201000";
+                  serial1 = "/soc/serial@7e215040";
+                };
+              };
+            };
+          '';
+        }
+        {
+          name = "i2c-rtc";
+          dtsText = ''
+            /dts-v1/;
+            /plugin/;
+
+            / {
+                compatible = "brcm,bcm2708";
+
+                fragment@0 {
+                    target = <&i2c_arm>;
+                    __overlay__ {
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+                        status = "okay";
+
+                        rv3028@52 {
+                            compatible = "microcrystal,rv3028";
+                            reg = <0x52>;
+                            trickle-resistor-ohms = <11000>;
+                            status = "okay";
+                        };
+                    };
+                };
+            };
+          '';
+        }
+      ];
+    };
   };
 
   environment.systemPackages = with pkgs; [
     i2c-tools
   ];
-
-  # systemd.services.add-i2c-rtc = {
-  #   description = "";
-  #   wantedBy = [ "time-sync.target" ];
-  #   serviceConfig = {
-  #     Type = "oneshot";
-  #     User = "root";
-  #   };
-  #   script = ''
-  #     # Inform the kernel about the (${cfg.model}) i2c RTC
-  #     echo "rtc_rv3028" "${cfg.address}" > "/sys/class/i2c-adapter/i2c-${toString cfg.bus}/new_device"
-  #   '';
-  # };
 
   networking.useDHCP = lib.mkDefault true;
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";

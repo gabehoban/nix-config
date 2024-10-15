@@ -18,29 +18,31 @@ in
     services.gnome.gnome-online-accounts.enable = false;
 
     # Exclude some packages we don't want
-    environment.gnome.excludePackages = with pkgs; [
-      gnome-photos
-      gnome-tour
-      gnome-text-editor
-      gnome-console
-      cheese
-      gnome-music
-      epiphany
-      geary
-      evince
-      gnome-characters
-      totem
-      tali
-      iagno
-      hitori
-      atomix
-    ];
-    environment.sessionVariables = {
-      NIXOS_OZONE_WL = "1";
-      EGL_PLATFORM = "wayland";
-      XDG_SESSION_TYPE = "wayland";
+    environment = {
+      sessionVariables = {
+        NIXOS_OZONE_WL = "1";
+        EGL_PLATFORM = "wayland";
+        XDG_SESSION_TYPE = "wayland";
+      };
+      systemPackages = with pkgs; [ dconf-editor ];
+      gnome.excludePackages = with pkgs; [
+        gnome-photos
+        gnome-tour
+        gnome-text-editor
+        gnome-console
+        cheese
+        gnome-music
+        epiphany
+        geary
+        evince
+        gnome-characters
+        totem
+        tali
+        iagno
+        hitori
+        atomix
+      ];
     };
-    environment.systemPackages = with pkgs; [ dconf-editor ];
 
     home-manager.users."${vars.user}" =
       { lib, ... }:

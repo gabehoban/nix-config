@@ -12,13 +12,16 @@
   networking.hostName = "casio";
 
   syscfg = {
+    autoupgrade.enable = true;
     profiles.base = true;
 
-    server.blocky = true;
-    server.grafana = true;
-    server.prometheus = true;
-    server.nginx = true;
-    server.oauth2 = true;
+    server = {
+      blocky = true;
+      grafana = true;
+      prometheus = true;
+      nginx = true;
+      oauth2 = true;
+    };
 
     stratum_1.enable = true;
     tailscale.enable = true;

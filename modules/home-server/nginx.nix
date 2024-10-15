@@ -23,11 +23,15 @@ in
       };
     };
 
-    security.acme.acceptTerms = true;
-    security.acme.defaults.email = "certs@lab4.cc";
-    security.acme.defaults.dnsProvider = "cloudflare";
-    security.acme.defaults.dnsResolver = "1.1.1.1:53";
-    security.acme.defaults.environmentFile = "${config.sops.secrets.cloudflare-env.path}";
+    security.acme = {
+      acceptTerms = true;
+      defaults = {
+        email = "certs@lab4.cc";
+        dnsProvider = "cloudflare";
+        dnsResolver = "1.1.1.1:53";
+        environmentFile = "${config.sops.secrets.cloudflare-env.path}";
+      };
+    };
 
     networking.firewall.allowedTCPPorts = [
       80

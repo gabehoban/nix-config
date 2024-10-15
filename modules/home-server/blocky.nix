@@ -15,15 +15,19 @@ in
   };
 
   config = lib.mkIf cfg.blocky {
-    networking.firewall.allowedTCPPorts = [
-      53
-      5335
-    ];
-    networking.firewall.allowedUDPPorts = [
-      53
-      5335
-    ];
-    networking.resolvconf.useLocalResolver = true;
+    networking = {
+      resolvconf.useLocalResolver = true;
+      firewall = {
+        allowedTCPPorts = [
+          53
+          5335
+        ];
+        allowedUDPPorts = [
+          53
+          5335
+        ];
+      };
+    };
 
     environment.systemPackages = [ pkgs.blocky ];
 
