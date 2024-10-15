@@ -138,9 +138,7 @@
             pre-commit = {
               check.enable = true;
               settings.hooks = {
-                actionlint.enable = true;
                 nil.enable = true;
-                shellcheck.enable = true;
                 statix.enable = true;
                 treefmt.enable = true;
               };
@@ -161,7 +159,6 @@
                 nixfmt.package = pkgs.nixfmt-rfc-style;
                 deadnix.enable = true;
                 statix.enable = true;
-                shellcheck.enable = true;
               };
             };
             formatter = config.treefmt.build.wrapper;

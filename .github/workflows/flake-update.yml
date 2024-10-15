@@ -35,7 +35,7 @@ jobs:
           then
             echo "There is already a update PR, dont create a new one."
 
-            gh pr checkout $(gh pr list --label flake  --json number | jq ".[].number")
+            gh pr checkout $(gh pr list --label flake  --json number | jq .[].number)
             commits_ahead=$(git rev-list --count HEAD..origin/main)
             echo "Commits ahead: $commits_ahead"
             git log --oneline -5
