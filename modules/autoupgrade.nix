@@ -17,6 +17,7 @@ in
         lower = "04:00";
         upper = "07:00";
       };
+      dates = "02:00";
       flake = "github:gabehoban/nix-config#${config.networking.hostName}";
       flags = [
         "--refresh"
