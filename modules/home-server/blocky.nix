@@ -33,6 +33,7 @@ in
 
     services = {
       postgresql.enable = true;
+
       resolved.enable = lib.mkForce false;
       unbound = {
         enable = true;
@@ -107,21 +108,18 @@ in
         settings = {
           connectIPVersion = "v4";
           minTlsServeVersion = "1.2";
+          ede.enable = true;
           ports = {
             dns = 53;
             tls = 853;
             http = 4000;
           };
+          bootstrapDns = "tcp+udp:1.1.1.1";
           upstreams = {
             strategy = "strict";
             timeout = "30s";
             init.strategy = "fast";
-            groups = {
-              default = [
-                "tcp+udp:127.0.0.1:5335"
-                "tcp-tls:dns.quad9.net"
-              ];
-            };
+            groups.default = [ "tcp+udp:127.0.0.1:5335" ];
           };
           blocking = {
             loading = {
