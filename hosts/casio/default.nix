@@ -12,7 +12,7 @@
   networking.hostName = "casio";
 
   syscfg = {
-    autoupgrade.enable = true;
+    autoupgrade.enable = false;
     profiles.base = true;
 
     server = {
