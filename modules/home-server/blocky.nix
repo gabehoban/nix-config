@@ -198,6 +198,7 @@ in
               # K3S Homelab
               "status.labrats.cc" = "10.32.40.126";
               "kromgo.labrats.cc" = "10.32.40.126";
+              "piped-api.labrats.cc" = "10.32.40.126";
               "labrats.cc" = "10.32.40.121";
             };
           };
