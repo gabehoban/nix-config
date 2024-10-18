@@ -191,6 +191,16 @@ in
               ];
             };
           };
+          customDNS = {
+            customTTL = "1h";
+            filterUnmappedTypes = true;
+            mapping = {
+              # K3S Homelab
+              "status.labrats.cc" = "10.32.40.126";
+              "kromgo.labrats.cc" = "10.32.40.126";
+              "labrats.cc" = "10.32.40.121";
+            };
+          };
           log = {
             level = "warn";
           };
