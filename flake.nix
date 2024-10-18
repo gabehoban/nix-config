@@ -151,6 +151,7 @@
                 "*.png"
                 "*.json"
                 "*.md"
+                "./modules/home-server/headscale.nix"
               ];
               programs = {
                 nixfmt.enable = true;

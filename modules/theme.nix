@@ -22,10 +22,6 @@
       };
       image = ./graphics/wallpaper.png;
       polarity = "dark";
-      targets.plymouth = {
-        logo = ../assets/syscfg-bios.png;
-        logoAnimated = false;
-      };
       fonts = {
         sansSerif = {
           package = pkgs.inter;
