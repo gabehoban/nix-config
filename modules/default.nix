@@ -11,13 +11,12 @@ let
 in
 {
   imports = [
+    inputs.attic.nixosModules.atticd
     inputs.chaotic.nixosModules.default
     inputs.disko.nixosModules.disko
     inputs.home-manager.nixosModules.home-manager
     inputs.impermanence.nixosModules.impermanence
-    inputs.nix-topology.nixosModules.default
     inputs.sops-nix.nixosModules.sops
-    inputs.attic.nixosModules.atticd
   ] ++ (import ./modules-list.nix);
 
   config = {
@@ -26,23 +25,10 @@ in
       useGlobalPkgs = true;
       useUserPackages = true;
       sharedModules = [
-        inputs.sops-nix.homeManagerModules.sops
-        inputs.nixvim.homeManagerModules.nixvim
         inputs.nix-index-database.hmModules.nix-index
+        inputs.nixvim.homeManagerModules.nixvim
+        inputs.sops-nix.homeManagerModules.sops
       ];
-    };
-    topology.self.name = config.networking.hostName;
-
-    topology.networks = {
-      tailscale0 = {
-        name = "Tailscale";
-        cidrv4 = "100.64.0.0/10";
-      };
-
-      home = {
-        name = "Home LAN";
-        cidrv4 = "192.168.1.0/24";
-      };
     };
 
     # Setup sops-nix

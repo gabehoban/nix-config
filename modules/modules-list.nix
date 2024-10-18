@@ -18,5 +18,4 @@
   ./profiles/webserver.nix
   ./security
   ./shell
-  ./topology/home.nix
 ]

@@ -40,6 +40,7 @@
           ".1Password"
           ".config/sops"
           ".config/nix"
+          ".local/share/zsh"
           ".local/share/direnv"
           ".mozilla"
           "desktop"
@@ -50,9 +51,6 @@
             directory = ".ssh";
             mode = "0700";
           }
-        ];
-        files = [
-          ".config/zsh_history/histfile"
         ];
       };
     };

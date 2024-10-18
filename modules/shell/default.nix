@@ -7,6 +7,8 @@
 }:
 let
   cfg = config.syscfg.shell;
+
+  zsh-histdb-skim = pkgs.callPackage ../../pkgs/zsh-skim-histdb.nix { };
 in
 {
   options.syscfg.shell.zsh = lib.mkOption {
@@ -23,88 +25,27 @@ in
       programs.zsh.enable = true;
       users.users."${vars.user}".shell = pkgs.zsh;
       home-manager.users."${vars.user}" = {
+        home.packages = [ pkgs.sqlite-interactive ];
         programs = {
           zsh = {
             enable = true;
-            dotDir = ".config/zsh";
             autocd = true;
             enableVteIntegration = true;
-            initExtra = ''
-              # Load colours and set prompt
-              autoload -U colors && colors
-              if [[ -n "$NIX_SHELL_PACKAGES" ]]; then
-                ps_nix="$fg[cyan]{$(echo $NIX_SHELL_PACKAGES | tr " " "," )} "
+            dotDir = ".config/zsh";
+            history = {
+              path = "\${XDG_DATA_HOME-$HOME/.local/share}/zsh/history";
+              save = 1000500;
+              size = 1000000;
+            };
+            initExtra = lib.readFile ./zshrc;
+            initExtraFirst = ''
+              HISTDB_FILE=''${XDG_DATA_HOME-$HOME/.local/share}/zsh/history.db
+
+              # Do this early so fast-syntax-highlighting can wrap and override this
+              if autoload history-search-end; then
+                zle -N history-beginning-search-backward-end history-search-end
+                zle -N history-beginning-search-forward-end  history-search-end
               fi
-              PS1="$ps_nix%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
-
-              # setup sensible options
-              setopt interactivecomments
-              setopt magicequalsubst
-              setopt nonomatch
-              setopt notify
-              setopt numericglobsort
-              setopt promptsubst
-
-              # enable completion features
-              autoload -Uz compinit
-              compinit -d ~/.cache/zcompdump
-              zstyle ':completion:*:*:*:*:*' menu select
-              zstyle ':completion:*' auto-description 'specify: %d'
-              zstyle ':completion:*' completer _expand _complete
-              zstyle ':completion:*' format 'Completing %d'
-              zstyle ':completion:*' group-name \'\'
-              zstyle ':completion:*' list-colors \'\'
-              zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-              zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-              zstyle ':completion:*' rehash true
-              zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-              zstyle ':completion:*' use-compctl false
-              zstyle ':completion:*' verbose true
-              zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
-
-              # History configurations
-              HISTFILE=~/.config/zsh_history/histfile
-              HISTSIZE=1000
-              SAVEHIST=2000
-              setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
-              setopt hist_ignore_dups       # ignore duplicated commands history list
-              setopt hist_ignore_space      # ignore commands that start with space
-              setopt hist_verify            # show command with history expansion to user before running it
-              #setopt share_history         # share command history data
-
-              # configure key keybindings
-              bindkey -e                                        # emacs key bindings
-              bindkey ' ' magic-space                           # do history expansion on space
-              bindkey '^U' backward-kill-line                   # ctrl + U
-              bindkey '^[[3;5~' kill-word                       # ctrl + Supr
-              bindkey '^[[3~' delete-char                       # delete
-              bindkey '^[[P' delete-char                        # fix delete for st
-              bindkey '^[[1;5C' forward-word                    # ctrl + ->
-              bindkey '^[[1;5D' backward-word                   # ctrl + <-
-              bindkey '^[[5~' beginning-of-buffer-or-history    # page up
-              bindkey '^[[6~' end-of-buffer-or-history          # page down
-              bindkey '^[[H' beginning-of-line                  # home
-              bindkey '^[[F' end-of-line                        # end
-              bindkey '^[[Z' undo                               # shift + tab undo last action
-              bindkey '^f' vi-forward-char                      # for auto-complete
-
-              source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-              source ${pkgs.zsh-nix-shell}/share/zsh-nix-shell/nix-shell.plugin.zsh
-              export PATH=/opt/homebrew/bin:$PATH
-
-              function mkcd() {
-                if [[ -z $1 ]]; then
-                  echo "Usage: mkcd <directory>"
-                  return 1
-                fi
-                mkdir -p $1 && cd $1
-              }
-
-              if [[ $OSTYPE == linux* ]]; then
-                alias open="xdg-open"
-              fi
-
-              echo "$fg[cyan]Welcome back ${config.syscfg.fullname} to your local terminal."
             '';
             shellAliases = {
               vim = "nvim";
@@ -123,18 +64,135 @@ in
               tree = "tree -C";
               history = "history 0";
             };
-            history = {
-              size = 10000000;
-            };
             sessionVariables = {
               EDITOR = "nvim";
             };
+            plugins = [
+              {
+                # Must be before plugins that wrap widgets, such as zsh-autosuggestions or fast-syntax-highlighting
+                name = "fzf-tab";
+                src = "${pkgs.zsh-fzf-tab}/share/fzf-tab";
+              }
+              {
+                name = "fast-syntax-highlighting";
+                src = "${pkgs.zsh-fast-syntax-highlighting}/share/zsh/site-functions";
+              }
+              {
+                name = "zsh-autosuggestions";
+                file = "zsh-autosuggestions.zsh";
+                src = "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions";
+              }
+              {
+                name = "zsh-histdb";
+                src = pkgs.fetchFromGitHub {
+                  owner = "larkery";
+                  repo = "zsh-histdb";
+                  rev = "30797f0c50c31c8d8de32386970c5d480e5ab35d";
+                  hash = "sha256-PQIFF8kz+baqmZWiSr+wc4EleZ/KD8Y+lxW2NT35/bg=";
+                };
+              }
+              {
+                name = "zsh-histdb-skim";
+                src = "${zsh-histdb-skim}/share/zsh-histdb-skim";
+              }
+            ];
+          };
+          starship = {
+            enable = true;
+            settings = {
+              add_newline = true;
+              format = lib.concatStrings [
+                "($username )"
+                "($hostname )"
+                "$directory "
+                "($git_branch )"
+                "($git_commit )"
+                "$git_state"
+                "$git_status"
+                "\n$character"
+              ];
+              command_timeout = 60; # 60ms must be enough. I like a responsive prompt more than additional git information.
+              username = {
+                format = "[$user]($style)";
+                style_root = "bold red";
+                style_user = "bold purple";
+                aliases.root = "";
+              };
+              hostname = {
+                format = "[$hostname]($style)[$ssh_symbol](green)";
+                ssh_only = true;
+                ssh_symbol = " 󰣀";
+                style = "bold red";
+              };
+              directory = {
+                format = "[$path]($style)[$read_only]($read_only_style)";
+                fish_style_pwd_dir_length = 1;
+                style = "bold blue";
+              };
+              character = {
+                success_symbol = "\\$";
+                error_symbol = "\\$";
+                vimcmd_symbol = "[](bold green)";
+                vimcmd_replace_one_symbol = "[](bold purple)";
+                vimcmd_replace_symbol = "[](bold purple)";
+                vimcmd_visual_symbol = "[](bold yellow)";
+              };
+              git_branch = {
+                format = "[$symbol$branch]($style)";
+                symbol = " ";
+                style = "green";
+              };
+              git_commit = {
+                commit_hash_length = 8;
+                format = "[$hash$tag]($style)";
+                style = "green";
+              };
+              git_status = {
+                conflicted = "$count";
+                ahead = "⇡$count";
+                behind = "⇣$count";
+                diverged = "⇡$ahead_count⇣$behind_count";
+                untracked = "?$count";
+                stashed = "\\$$count";
+                modified = "!$count";
+                staged = "+$count";
+                renamed = "→$count";
+                deleted = "-$count";
+                format = lib.concatStrings [
+                  "[($conflicted )](red)"
+                  "[($stashed )](magenta)"
+                  "[($staged )](green)"
+                  "[($deleted )](red)"
+                  "[($renamed )](blue)"
+                  "[($modified )](yellow)"
+                  "[($untracked )](blue)"
+                  "[($ahead_behind )](green)"
+                ];
+              };
+              status = {
+                disabled = false;
+                pipestatus = true;
+                pipestatus_format = "$pipestatus => [$int( $signal_name)]($style)";
+                pipestatus_separator = "[|]($style)";
+                pipestatus_segment_format = "[$status]($style)";
+                format = "[$status( $signal_name)]($style)";
+                style = "red";
+              };
+              python = {
+                format = "[$symbol$pyenv_prefix($version )(\($virtualenv\) )]($style)";
+              };
+              cmd_duration = {
+                format = "[ $duration]($style)";
+                style = "yellow";
+              };
+              time = {
+                format = "[ $time]($style)";
+                style = "cyan";
+                disabled = false;
+              };
+            };
           };
           eza = {
-            enable = true;
-            enableZshIntegration = true;
-          };
-          zoxide = {
             enable = true;
             enableZshIntegration = true;
           };

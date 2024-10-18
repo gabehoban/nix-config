@@ -26,13 +26,6 @@ in
         allowedUDPPorts = [ config.services.tailscale.port ];
       };
 
-      topology.self.interfaces.tailscale0 = {
-        addresses = [ config.networking.hostName ];
-        network = "tailscale0";
-        virtual = true;
-        type = "tun";
-      };
-
       sops.secrets = {
         tailscale-auth = {
           sopsFile = ../../secrets/all.yaml;

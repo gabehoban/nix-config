@@ -46,10 +46,6 @@
 
   sops.age.keyFile = "/persist/var/lib/sops-nix/key.txt";
 
-  topology.self = {
-    hardware.info = "NixOS Homelab Server";
-  };
-
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
   chaotic.scx.enable = true;
 

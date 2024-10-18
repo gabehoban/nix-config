@@ -14,7 +14,6 @@
 
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     impermanence.url = "github:nix-community/impermanence";
-    nix-topology.url = "github:oddlama/nix-topology";
 
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
@@ -103,7 +102,6 @@
           inputs.flake-root.flakeModule
           inputs.git-hooks.flakeModule
           inputs.treefmt-nix.flakeModule
-          inputs.nix-topology.flakeModule
           ./hosts
         ];
         flake = {
@@ -166,7 +164,6 @@
               pkgs = import inputs.nixpkgs {
                 inherit system inputs;
                 config.allowUnfree = true;
-                overlays = [ inputs.nix-topology.overlays.default ];
               };
             };
           };
