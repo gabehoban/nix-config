@@ -71,6 +71,7 @@ in
           "sponsorBlocker@ajay.app" = extension "sponsor-block";
           "uBlock0@raymondhill.net" = extension "ublock-origin";
           "{d634138d-c276-4fc8-924b-40a0ea21d284}" = extension "1password-x-password-manager";
+          "{12cf650b-1822-40aa-bff0-996df6948878}" = extension "cookies-txt";
           "{74145f27-f039-47ce-a470-a662b129930a}" = extension "clearurls";
         };
         Preferences = {
