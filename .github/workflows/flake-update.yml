@@ -57,7 +57,7 @@ jobs:
           git switch -c update-flake_$(date -I)
           git commit -am "flake.lock: Update $(date -I)"
 
-          nix flake check --show-trace
+          nix flake check --all-systems --show-trace
 
           git push -fu origin update-flake_$(date -I)
           PR=$(gh pr create \

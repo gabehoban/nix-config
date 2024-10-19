@@ -11,7 +11,6 @@ let
 in
 {
   imports = [
-    inputs.attic.nixosModules.atticd
     inputs.chaotic.nixosModules.default
     inputs.disko.nixosModules.disko
     inputs.home-manager.nixosModules.home-manager

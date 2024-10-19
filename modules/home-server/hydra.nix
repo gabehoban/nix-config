@@ -75,7 +75,7 @@ in
       };
       atticd = {
         enable = true;
-        credentialsFile = config.sops.secrets.attic-credentials.path;
+        environmentFile = config.sops.secrets."attic-credentials".path;
 
         settings = {
           listen = "127.0.0.1:8080";
@@ -132,11 +132,12 @@ in
       };
     };
     systemd.services.attic-watch-store = {
-      wantedBy = [
-        "multi-user.target"
+      wantedBy = [ "multi-user.target" ];
+      wants = [ "network-online.target" ];
+      after = [
         "network-online.target"
+        "atticd.service"
       ];
-      after = [ "network-online.target" ];
       environment.HOME = "/run/attic-watch-store";
       serviceConfig = {
         MemoryHigh = "5%";
