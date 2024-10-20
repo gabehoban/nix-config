@@ -4,6 +4,10 @@
   pkgs,
   ...
 }:
+let
+  chrony-exporter = pkgs.callPackage ../../pkgs/chrony-exporter.nix { };
+  gpsd-exporter = pkgs.callPackage ../../pkgs/gpsd-exporter.nix { };
+in
 {
   options.syscfg.stratum_1.enable = lib.mkOption {
     description = "Configure Stratum 1 NTP server.";
@@ -25,9 +29,9 @@
         extraConfig = lib.mkMerge [
           ''
             # Common Pools
-            pool   time.cloudflare.com iburst
-            pool   time.apple.com      iburst
-            pool   time.nist.gov       iburst
+            pool   time.cloudflare.com iburst minpoll 5 maxpoll 5 polltarget 16 maxdelay 0.030 maxdelaydevratio 2 maxsources 6
+            pool   time.apple.com      iburst minpoll 5 maxpoll 5 polltarget 16 maxdelay 0.030 maxdelaydevratio 2 maxsources 6
+            pool   time.nist.gov       iburst minpoll 5 maxpoll 5 polltarget 16 maxdelay 0.030 maxdelaydevratio 2 maxsources 6
 
             # Step if adjustment >1s.
             makestep 1.0 3
@@ -63,8 +67,9 @@
             ntsdumpdir /var/lib/chrony
 
             # Configure NUMA Time Sources
-            refclock SHM 0 poll 8 refid NMEA offset 0.0339 precision 1e-3 poll 3 noselect
-            refclock PPS /dev/pps0 refid PPS lock NMEA maxlockage 2 poll 4 precision 1e-7 prefer
+            refclock SHM 0 poll 8 refid GPS precision 1e-1 offset 0.090 delay 0.2 noselect
+            refclock SHM 1 refid PPS precision 1e-7 prefer
+            refclock PPS /dev/pps0 lock GPS maxlockage 2 poll 4 refid kPPS precision 1e-7 prefer
           '')
         ];
       };
@@ -73,10 +78,13 @@
       # Disable getty console on /dev/ttyS0
       systemd.services."serial-getty@ttyS0".enable = false;
 
+      # Force cpu power mode
+      powerManagement.cpuFreqGovernor = "performance";
+
       # Widen permissions on GPIO devices for Chrony and GPSD
       services.udev.extraRules = ''
         ACTION=="add", KERNEL=="pps0", MODE="0666"
-        ACTION=="add", KERNEL=="ttyS0", MODE="0666"
+        ACTION=="add", KERNEL=="ttyS0", MODE="0666, RUN+="${pkgs.setserial}/bin/setserial /dev/ttyAMA0 low_latency"
       '';
 
       services.gpsd = {
@@ -88,14 +96,55 @@
           "/dev/ttyS0"
           "/dev/pps0"
         ];
+        extraArgs = [
+          "--badtime"
+          "--passive"
+          "--speed 115200"
+        ];
       };
-      environment.systemPackages = with pkgs; [
-        gpsd
-        pps-tools
-        jq
-      ];
+      environment.systemPackages =
+        [
+          chrony-exporter
+          gpsd-exporter
+        ]
+        ++ (with pkgs; [
+          gpsd
+          i2c-tools
+          jq
+          minicom
+          pps-tools
+          python312Packages.gps3
+          python312Packages.prometheus-client
+          python312Packages.smbus2
+          setserial
+        ]);
 
-      # Manually initialize RTC module in RPI hat
+      sops.secrets."service_options" = {
+        sopsFile = ../../secrets/gpsd.yaml;
+      };
+      systemd.services.chrony-exporter = {
+        description = "chrony_exporter";
+        wants = [ "network.target" ];
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          Type = "simple";
+          User = "root";
+          ExecStart = ''${chrony-exporter}/bin/chrony_exporter --no-collector.dns-lookups'';
+        };
+      };
+      systemd.services.gpsd-exporter = {
+        description = "chrony_exporter";
+        before = [ "gpsd.service" ];
+        wants = [ "network.target" ];
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          Type = "simple";
+          User = "root";
+          Environment = "PYTHONUNBUFFERED=1";
+          EnvironmentFile = config.sops.secrets."service_options".path;
+          ExecStart = ''${gpsd-exporter}/bin/gpsd_exporter.py $GPSD_MON_OPTIONS'';
+        };
+      };
       systemd.services.add-i2c-rtc = {
         description = "";
         wantedBy = [ "time-sync.target" ];
