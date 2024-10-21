@@ -99,32 +99,42 @@ in
         extraArgs = [
           "--badtime"
           "--passive"
-          "--speed 115200"
+          "--speed=115200"
         ];
       };
-      environment.systemPackages =
-        [
-          chrony-exporter
-          gpsd-exporter
-        ]
-        ++ (with pkgs; [
-          gpsd
-          i2c-tools
-          jq
-          minicom
-          pps-tools
-          python312Packages.gps3
-          python312Packages.prometheus-client
-          python312Packages.smbus2
-          setserial
-        ]);
+      environment.systemPackages = with pkgs; [
+        gpsd
+        i2c-tools
+        jq
+        minicom
+        pps-tools
+        python312Packages.smbus2
+        setserial
+      ];
 
       sops.secrets."service_options" = {
         sopsFile = ../../secrets/gpsd.yaml;
       };
+      services = {
+        prometheus.scrapeConfigs = [
+          {
+            job_name = "chrony";
+            scrape_interval = "15s";
+            static_configs = [ { targets = [ "127.0.0.1:9123" ]; } ];
+          }
+          {
+            job_name = "gpsd";
+            scrape_interval = "15s";
+            static_configs = [ { targets = [ "127.0.0.1:9101" ]; } ];
+          }
+        ];
+      };
       systemd.services.chrony-exporter = {
-        description = "chrony_exporter";
-        wants = [ "network.target" ];
+        description = "chrony-exporter";
+        wants = [
+          "network.target"
+          "chronyd.service"
+        ];
         wantedBy = [ "multi-user.target" ];
         serviceConfig = {
           Type = "simple";
@@ -133,16 +143,16 @@ in
         };
       };
       systemd.services.gpsd-exporter = {
-        description = "chrony_exporter";
-        before = [ "gpsd.service" ];
-        wants = [ "network.target" ];
+        description = "gpsd-exporter";
+        wants = [
+          "network.target"
+          "gpsd.service"
+        ];
         wantedBy = [ "multi-user.target" ];
         serviceConfig = {
           Type = "simple";
           User = "root";
-          Environment = "PYTHONUNBUFFERED=1";
-          EnvironmentFile = config.sops.secrets."service_options".path;
-          ExecStart = ''${gpsd-exporter}/bin/gpsd_exporter.py $GPSD_MON_OPTIONS'';
+          ExecStart = ''${gpsd-exporter}/bin/gpsd-exporter'';
         };
       };
       systemd.services.add-i2c-rtc = {
