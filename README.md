@@ -1,4 +1,4 @@
-# syscfgOS: My Secure NixOS Configuration
+# syscfgOS: My NixOS Configuration
 
 ![NixOS Flake](https://img.shields.io/badge/NixOS-flake-blue?logo=nixos)
 ![secrets sops-nix](https://img.shields.io/badge/secrets-sops--nix-blue)
